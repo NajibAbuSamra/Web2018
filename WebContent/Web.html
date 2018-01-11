@@ -9,17 +9,30 @@
 <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
 
 <!-- Latest compiled and minified JavaScript -->
-<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script><head>
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+<!-- Login CSS -->
+<link rel="stylesheet" href="CSS/login.css">
 <meta charset="ISO-8859-1">
-<title>BookBrowser</title>
+<title>BookStop</title>
 </head>
 <body>
 <div class="jumbotron">
   <div class="container">
     <h1>Welcome to BookStop!</h1>
-    <p><a class="btn btn-primary btn-lg" href="#" role="button">Learn more</a></p>
   </div>
 </div>
+
+<div class="login-page">
+		<div class="form">
+			<h3>Log in to your account</h3>
+			<form class="login-form" action="Login" method="post">
+				<input name="uName" type="text" placeholder="Username " /> 
+				<input name="uPass"  type="password" placeholder="Password" />
+				<input id="inputButton"  type="submit" value="Log in" />
+			</form>
+		</div>
+	</div>
 
 </body>
 </html>
