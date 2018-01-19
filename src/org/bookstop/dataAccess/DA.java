@@ -8,7 +8,7 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import org.apache.tomcat.dbcp.dbcp2.BasicDataSource;
 
-public class DA {
+public class DA implements DataInterface{
 
 	Connection conn = null;
 
