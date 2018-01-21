@@ -7,6 +7,7 @@ public final class DataContract {
 		public static final String COL_USERNAME = "username";
 		public static final String COL_EMAIL = "email";
 		public static final String COL_ADDRESS = "address";
+		public static final String COL_PHONE = "phone";
 		public static final String COL_PASSWORD = "password";
 		public static final String COL_NICKNAME = "nickname";
 		public static final String COL_DESCRIPTION = "description";

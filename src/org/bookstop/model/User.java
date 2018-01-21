@@ -4,21 +4,25 @@ public class User {
 	private String username;
 	private String email;
 	private String address;
+	private String phone;
 	private String password;
 	private String nickname;
 	private String description;
 	private String picture;
+	private int type;
 	
-	public User(String username, String email, String address, String password, String nickname, String description,
-			String picture) {
+	public User(String username, String email, String address, String phone, String password, String nickname, String description,
+			String picture, int type) {
 		super();
 		this.username = username;
 		this.email = email;
 		this.address = address;
+		this.phone = phone;
 		this.password = password;
 		this.nickname = nickname;
 		this.description = description;
 		this.picture = picture;
+		this.type=type;
 	}
 
 	public String getUsername() {
@@ -45,6 +49,14 @@ public class User {
 		this.address = address;
 	}
 
+	public String getPhone() {
+		return phone;
+	}
+
+	public void setPhone(String phone) {
+		this.phone = phone;
+	}
+	
 	public String getPassword() {
 		return password;
 	}
@@ -77,5 +89,8 @@ public class User {
 		this.picture = picture;
 	}
 	
+	public int getType() {
+		return type;
+	}
 	
 }

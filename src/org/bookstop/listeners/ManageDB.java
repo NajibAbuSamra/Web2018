@@ -25,6 +25,7 @@ import org.apache.tomcat.dbcp.dbcp2.BasicDataSource;
 import org.bookstop.constants.AppConstants;
 import org.bookstop.constants.SQLstatements;
 import org.bookstop.model.Book;
+import org.bookstop.model.User;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -44,15 +45,22 @@ public class ManageDB implements ServletContextListener {
 		// TODO Auto-generated constructor stub
 	}
 
-	// utility that checks whether the customer tables already exists
+	// utility that checks whether a table already exists
 	private boolean tableAlreadyExists(SQLException e) {
-		boolean exists;
+		boolean exists = false;
 		if (e.getSQLState().equals("X0Y32")) {
 			exists = true;
-		} else {
-			exists = false;
 		}
+		
 		return exists;
+	}
+	
+	private void createTable(Connection conn, String stm) throws SQLException{
+		Statement stmt = conn.createStatement();
+		stmt.executeUpdate(stm);
+		// commit update
+		conn.commit();
+		stmt.close();
 	}
 
 	/**
@@ -91,12 +99,17 @@ public class ManageDB implements ServletContextListener {
 
 			boolean created = false;
 			try {
-				// create Customers table
-				Statement stmt = conn.createStatement();
-				stmt.executeUpdate(SQLstatements.CREATE_BOOKS_TABLE);
-				// commit update
-				conn.commit();
-				stmt.close();
+				// create Books table
+				createTable(conn,SQLstatements.CREATE_BOOKS_TABLE);
+				//create Users table
+				createTable(conn,SQLstatements.CREATE_USERS_TABLE);
+				//create Reviews table
+				createTable(conn, SQLstatements.CREATE_REVIEWS_TABLE);
+				//create Likes table
+				createTable(conn,SQLstatements.CREATE_LIKES_TABLE);
+				//create Transactions table
+				createTable(conn, SQLstatements.CREATE_TRANSACTIONS_TABLE);
+				
 			} catch (SQLException e) {
 				// check if exception thrown since table was already created (so we created the
 				// database already
@@ -110,12 +123,17 @@ public class ManageDB implements ServletContextListener {
 
 			// if no database exist in the past - further populate its records in the table
 			if (!created) {
-				// populate customers table with customer data from json file
+				// populate books table with book data from json file
 				Collection<Book> books = loadBooks(
 						cntx.getResourceAsStream(File.separator + AppConstants.BOOKS_FILE));
 				PreparedStatement pstmt = conn.prepareStatement(SQLstatements.INSERT_BOOK_STMT);
 				for (Book book : books) {
+					//TODO: create json file and set proper attributes so the db is created correctly
 					pstmt.setString(1, book.getName());
+					pstmt.setString(2, book.getImg());
+					pstmt.setDouble(3, book.getPrice());
+					pstmt.setString(4, book.getDescription());
+					pstmt.setString(5, book.getLink());
 					pstmt.executeUpdate();
 				}
 
@@ -123,6 +141,27 @@ public class ManageDB implements ServletContextListener {
 				conn.commit();
 				// close statements
 				pstmt.close();
+				
+				//TODO: create admin user
+				User admin = new User("admin","najib.as1990@gmail.com","Address","049813963","Passw0rd","Overlord","He who rules them all.",null,1);
+				PreparedStatement pstmt2 = conn.prepareStatement(SQLstatements.INSERT_USER_STMT);
+				pstmt2.setInt(1, admin.getType());
+				pstmt2.setString(2, admin.getUsername());
+				pstmt2.setString(3, admin.getEmail());
+				pstmt2.setString(4, admin.getAddress());
+				pstmt2.setString(5, admin.getPhone());
+				pstmt2.setString(6, admin.getPassword());
+				pstmt2.setString(7, admin.getNickname());
+				pstmt2.setString(8, admin.getDescription());
+				pstmt2.setString(9, admin.getPicture());
+				pstmt.executeUpdate();
+				
+				// commit update
+				conn.commit();
+				// close statements
+				pstmt2.close();
+				
+				//TODO: at this time no further pre-configuration is needed
 			}
 
 			// close connection
