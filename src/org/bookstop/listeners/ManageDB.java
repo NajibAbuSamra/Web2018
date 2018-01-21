@@ -116,6 +116,10 @@ public class ManageDB implements ServletContextListener {
 				// in the past
 				created = tableAlreadyExists(e);
 				if (!created) {
+					//TODO: in case of error should delete all created tables. Add below
+					
+					
+					
 					throw e;// re-throw the exception so it will be caught in the
 					// external try..catch and recorded as error in the log
 				}

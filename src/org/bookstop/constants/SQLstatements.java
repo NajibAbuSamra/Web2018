@@ -42,8 +42,8 @@ public final class SQLstatements {
 			+ DataContract.ReviewsTable.COL_TEXT + " VARCHAR(255) NOT NULL,"
 			+ DataContract.ReviewsTable.COL_VERIFIED + "BIT NOT NULL,"
 			+ "PRIMARY KEY ("+DataContract.ReviewsTable.COL_ID+"),"
-			+ "CONSTRAINT username_ref FOREIGN KEY ("+DataContract.ReviewsTable.COL_USERNAME+") REFERENCES "+DataContract.UsersTable.TABLE_NAME+"("+DataContract.UsersTable.COL_USERNAME+"),"
-			+ "CONSTRAINT bookid_ref FOREIGN KEY ("+DataContract.ReviewsTable.COL_BOOKID+") REFERENCES "+DataContract.BooksTable.TABLE_NAME+"("+DataContract.BooksTable.COL_ID+"))";
+			+ "CONSTRAINT username_ref FOREIGN KEY ("+DataContract.ReviewsTable.COL_USERNAME+") REFERENCES "+DataContract.UsersTable.TABLE_NAME+"("+DataContract.UsersTable.COL_USERNAME+") ON DELETE CASCADE,"
+			+ "CONSTRAINT bookid_ref FOREIGN KEY ("+DataContract.ReviewsTable.COL_BOOKID+") REFERENCES "+DataContract.BooksTable.TABLE_NAME+"("+DataContract.BooksTable.COL_ID+") ON DELETE CASCADE)";
 	
 	public final static String INSERT_REVIEW_STMT = "INSERT INTO " + DataContract.ReviewsTable.TABLE_NAME + " VALUES(?,?,?,?)";
 	public final static String UPDATE_REVIEW_VERIFIED_STM = "UPDATE " + DataContract.ReviewsTable.TABLE_NAME + " SET " + DataContract.ReviewsTable.COL_VERIFIED + " = ?"; 
@@ -52,8 +52,8 @@ public final class SQLstatements {
 	public final static String CREATE_LIKES_TABLE = "CREATE TABLE " + DataContract.LikesTable.TABLE_NAME + "("
 			+DataContract.LikesTable.COL_USERNAME + " VARCHAR(10) NOT NULL,"
 			+DataContract.LikesTable.COL_BOOKID + " INTEGER NOT NULL,"
-			+ "CONSTRAINT username_ref FOREIGN KEY ("+DataContract.LikesTable.COL_USERNAME+") REFERENCES "+DataContract.UsersTable.TABLE_NAME+"("+DataContract.UsersTable.COL_USERNAME+"),"
-			+ "CONSTRAINT bookid_ref FOREIGN KEY ("+DataContract.LikesTable.COL_BOOKID+") REFERENCES "+DataContract.BooksTable.TABLE_NAME+"("+DataContract.BooksTable.COL_ID+"))";
+			+ "CONSTRAINT username_ref FOREIGN KEY ("+DataContract.LikesTable.COL_USERNAME+") REFERENCES "+DataContract.UsersTable.TABLE_NAME+"("+DataContract.UsersTable.COL_USERNAME+") ON DELETE CASCADE,"
+			+ "CONSTRAINT bookid_ref FOREIGN KEY ("+DataContract.LikesTable.COL_BOOKID+") REFERENCES "+DataContract.BooksTable.TABLE_NAME+"("+DataContract.BooksTable.COL_ID+") ON DELETE CASCADE)";
 	
 	public final static String INSERT_LIKE_STMT = "INSERT INTO " + DataContract.LikesTable.TABLE_NAME + " VALUES(?,?)";
 
@@ -68,8 +68,8 @@ public final class SQLstatements {
 			+DataContract.TransactionsTable.COL_EXPIRYYEAR + " INTEGER(2) NOT NULL,"
 			+DataContract.TransactionsTable.COL_CVV + " INTEGER(4) NOT NULL," //max length of cvv is 4
 			+DataContract.TransactionsTable.COL_FULLNAME + " VARCHAR(255) NOT NULL,"
-			+ "CONSTRAINT username_ref FOREIGN KEY ("+DataContract.TransactionsTable.COL_USERNAME+") REFERENCES "+DataContract.UsersTable.TABLE_NAME+"("+DataContract.UsersTable.COL_USERNAME+"),"
-			+ "CONSTRAINT bookid_ref FOREIGN KEY ("+DataContract.TransactionsTable.COL_BOOKID+") REFERENCES "+DataContract.BooksTable.TABLE_NAME+"("+DataContract.BooksTable.COL_ID+"))";
+			+ "CONSTRAINT username_ref FOREIGN KEY ("+DataContract.TransactionsTable.COL_USERNAME+") REFERENCES "+DataContract.UsersTable.TABLE_NAME+"("+DataContract.UsersTable.COL_USERNAME+") ON DELETE CASCADE,"
+			+ "CONSTRAINT bookid_ref FOREIGN KEY ("+DataContract.TransactionsTable.COL_BOOKID+") REFERENCES "+DataContract.BooksTable.TABLE_NAME+"("+DataContract.BooksTable.COL_ID+") ON DELETE CASCADE)";
 
 	public final static String INSERT_TRANSACTION_STMT = "INSERT INTO " + DataContract.TransactionsTable.TABLE_NAME + " VALUES(?,?,?,?,?,?,?,?)";
 }
