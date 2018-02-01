@@ -119,7 +119,8 @@ public class ManageDB implements ServletContextListener {
 				// database already
 				// in the past
 				logger.log(Level.SEVERE, "contextInitialized: sql exception while creating tables");
-				cntx.log("Error during database initialization", e);
+				//TODO: for debug, remove when done
+				//cntx.log("Error during database initialization", e);
 				created = tableAlreadyExists(e);
 				if (!created) {
 					//TODO: in case of error should delete all created tables. Add below
