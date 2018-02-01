@@ -46,8 +46,8 @@ public final class DataContract {
 		public static final String COL_BOOKID = "bookid";
 		public static final String COL_CARDCOMPANY = "company";
 		public static final String COL_CARDNUMBER = "cardnumber";
-		public static final String COL_EXPIRYMONTH = "month";
-		public static final String COL_EXPIRYYEAR = "year";
+		public static final String COL_EXPIRYMONTH = "expMonth";
+		public static final String COL_EXPIRYYEAR = "expYear";
 		public static final String COL_CVV = "cvv";
 		public static final String COL_FULLNAME = "fullname";
 	}
