@@ -11,6 +11,8 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Collection;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
@@ -87,6 +89,8 @@ public class ManageDB implements ServletContextListener {
 	 * @see ServletContextListener#contextInitialized(ServletContextEvent)
 	 */
 	public void contextInitialized(ServletContextEvent event) {
+		Logger logger = Logger.getLogger("ManageDB");
+		logger.log(Level.INFO, "contextInitialized: Start...");
 		ServletContext cntx = event.getServletContext();
 
 		try {
@@ -96,7 +100,7 @@ public class ManageDB implements ServletContextListener {
 			BasicDataSource ds = (BasicDataSource) context
 					.lookup(cntx.getInitParameter(AppConstants.DB_DATASOURCE) + AppConstants.OPEN);
 			Connection conn = ds.getConnection();
-
+			logger.log(Level.INFO, "contextInitialized: Connection to db opened...");
 			boolean created = false;
 			try {
 				// create Books table
@@ -114,12 +118,12 @@ public class ManageDB implements ServletContextListener {
 				// check if exception thrown since table was already created (so we created the
 				// database already
 				// in the past
+				logger.log(Level.SEVERE, "contextInitialized: sql exception while creating tables");
+				cntx.log("Error during database initialization", e);
 				created = tableAlreadyExists(e);
 				if (!created) {
 					//TODO: in case of error should delete all created tables. Add below
-					
-					
-					
+					logger.log(Level.SEVERE, "contextInitialized: Error, something happened...");
 					throw e;// re-throw the exception so it will be caught in the
 					// external try..catch and recorded as error in the log
 				}
@@ -127,6 +131,11 @@ public class ManageDB implements ServletContextListener {
 
 			// if no database exist in the past - further populate its records in the table
 			if (!created) {
+				logger.log(Level.INFO, "contextInitialized: Tables created, populating with books...");
+				if(conn!=null) {
+					logger.log(Level.INFO, "contextInitialized:EXITING*********************");
+					return;
+				}
 				// populate books table with book data from json file
 				Collection<Book> books = loadBooks(
 						cntx.getResourceAsStream(File.separator + AppConstants.BOOKS_FILE));
@@ -199,10 +208,10 @@ public class ManageDB implements ServletContextListener {
 		//this is a require type definition by the Gson utility so Gson will 
 		//understand what kind of object representation should the json file match
 		Type type = new TypeToken<Collection<Book>>(){}.getType();
-		Collection<Book> customers = gson.fromJson(jsonFileContent.toString(), type);
+		Collection<Book> books = gson.fromJson(jsonFileContent.toString(), type);
 		//close
 		br.close();	
-		return customers;
+		return books;
 
 	}
 

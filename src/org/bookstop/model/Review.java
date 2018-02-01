@@ -4,9 +4,9 @@ public class Review {
 	private String username;
 	private int bookID;
 	private String text;
-	private boolean verified;
+	private int verified;
 	
-	public Review(String username, int bookID, boolean verified, String text) {
+	public Review(String username, int bookID, int verified, String text) {
 		super();
 		this.username = username;
 		this.bookID = bookID;
@@ -26,10 +26,10 @@ public class Review {
 	public void setBookID(int bookID) {
 		this.bookID = bookID;
 	}
-	public boolean isApproved() {
+	public int isApproved() {
 		return verified;
 	}
-	public void setApproved(boolean verified) {
+	public void setApproved(int verified) {
 		this.verified = verified;
 	}
 	public String getText() {
