@@ -45,7 +45,7 @@ public final class SQLstatements {
 			+ "CONSTRAINT username_reviews_ref FOREIGN KEY ("+DataContract.ReviewsTable.COL_USERNAME+") REFERENCES "+DataContract.UsersTable.TABLE_NAME+"("+DataContract.UsersTable.COL_USERNAME+") ON DELETE CASCADE,"
 			+ "CONSTRAINT bookid_reviews_ref FOREIGN KEY ("+DataContract.ReviewsTable.COL_BOOKID+") REFERENCES "+DataContract.BooksTable.TABLE_NAME+"("+DataContract.BooksTable.COL_ID+") ON DELETE CASCADE)";
 	
-	public final static String INSERT_REVIEW_STMT = "INSERT INTO " + DataContract.ReviewsTable.TABLE_NAME + " VALUES(?,?,?,?)";
+	public final static String INSERT_REVIEW_STMT = "INSERT INTO " + DataContract.ReviewsTable.TABLE_NAME + " VALUES(DEFAULT,?,?,?,?)";
 	public final static String UPDATE_REVIEW_VERIFIED_STM = "UPDATE " + DataContract.ReviewsTable.TABLE_NAME + " SET " + DataContract.ReviewsTable.COL_VERIFIED + " = ?";
 	public final static String DELETE_REVIEW_BY_USERNAME_AND_BOOKID_STMT = "DELETE FROM " + DataContract.ReviewsTable.TABLE_NAME + " WHERE " + DataContract.ReviewsTable.COL_USERNAME + " = ? AND " + DataContract.ReviewsTable.COL_BOOKID + " = ?";
 	
@@ -75,7 +75,7 @@ public final class SQLstatements {
 			+ "CONSTRAINT username_trans_ref FOREIGN KEY ("+DataContract.TransactionsTable.COL_USERNAME+") REFERENCES "+DataContract.UsersTable.TABLE_NAME+"("+DataContract.UsersTable.COL_USERNAME+") ON DELETE CASCADE,"
 			+ "CONSTRAINT bookid_trans_ref FOREIGN KEY ("+DataContract.TransactionsTable.COL_BOOKID+") REFERENCES "+DataContract.BooksTable.TABLE_NAME+"("+DataContract.BooksTable.COL_ID+") ON DELETE CASCADE)";
 
-	public final static String INSERT_TRANSACTION_STMT = "INSERT INTO " + DataContract.TransactionsTable.TABLE_NAME + " VALUES(?,?,?,?,?,?,?,?)";
+	public final static String INSERT_TRANSACTION_STMT = "INSERT INTO " + DataContract.TransactionsTable.TABLE_NAME + " VALUES(DEFAULT,?,?,?,?,?,?,?,?)";
 	public final static String SELECT_ALL_TRANSACTIONS = "SELECT * FROM " + DataContract.TransactionsTable.TABLE_NAME;
 	public final static String SELECT_TRANSACTION_BY_USERNAME_AND_BOOKID_STMT = "SELECT * FROM " + DataContract.TransactionsTable.TABLE_NAME + " WHERE " + DataContract.TransactionsTable.COL_USERNAME + " = ? AND " + DataContract.TransactionsTable.COL_BOOKID + " = ?";
 	
