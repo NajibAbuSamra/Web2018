@@ -132,7 +132,8 @@ public class ManageDB implements ServletContextListener {
 			// if no database exist in the past - further populate its records in the table
 			if (!created) {
 				logger.log(Level.INFO, "contextInitialized: Tables created, populating with books...");
-				if(conn!=null) {
+				//TODO: for debugging, remove when done
+				if(conn==null) {
 					logger.log(Level.INFO, "contextInitialized:EXITING*********************");
 					return;
 				}
@@ -167,7 +168,7 @@ public class ManageDB implements ServletContextListener {
 				pstmt2.setString(7, admin.getNickname());
 				pstmt2.setString(8, admin.getDescription());
 				pstmt2.setString(9, admin.getPicture());
-				pstmt.executeUpdate();
+				pstmt2.executeUpdate();
 				
 				// commit update
 				conn.commit();
@@ -176,6 +177,8 @@ public class ManageDB implements ServletContextListener {
 				
 				//TODO: at this time no further pre-configuration is needed
 			}
+			
+			logger.log(Level.INFO, "contextInitialized: PRE-CONFIGURATION COMPLETED SUCCESFULLY");
 
 			// close connection
 			conn.close();

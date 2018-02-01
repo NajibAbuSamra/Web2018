@@ -14,7 +14,7 @@ public final class SQLstatements {
 			+ DataContract.BooksTable.COL_LINK + " varchar(255) NOT NULL,"
 			+ "PRIMARY KEY ("+DataContract.BooksTable.COL_ID+"))";
 
-	public final static String INSERT_BOOK_STMT = "INSERT INTO " + DataContract.BooksTable.TABLE_NAME + " VALUES(?,?,?,?,?)";
+	public final static String INSERT_BOOK_STMT = "INSERT INTO " + DataContract.BooksTable.TABLE_NAME + " VALUES(DEFAULT,?,?,?,?,?)";
 	public final static String SELECT_ALL_BOOKS_STMT = "SELECT * FROM " + DataContract.BooksTable.TABLE_NAME;
 	public final static String SELECT_BOOKS_BY_ID_STMT = "SELECT * FROM " + DataContract.BooksTable.TABLE_NAME + "WHERE " + DataContract.BooksTable.COL_ID + "=?";
 
