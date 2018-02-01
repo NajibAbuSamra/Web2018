@@ -1,5 +1,8 @@
 @charset "UTF-8";
 
+.container {
+	margin-top: 20px;  /* Page starts 20px from top. */
+}
 .login-page {
   width: 360px;
   padding: 8% 0 0;

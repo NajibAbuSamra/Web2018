@@ -4,10 +4,9 @@
 <!-- Order might be important, in case of errors, try to shuffle -->
 <script src="lib/jquery-3.2.1.js"></script>
 <script src="lib/angular.min.js" ></script>
+<script src="JS/login.js"></script>
 <link rel="stylesheet" href="lib/bootstrap-3.3.7-dist/css/bootstrap.min.css">
 <script src="lib/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
-
-
 <!-- Login CSS -->
 <link rel="stylesheet" href="CSS/login.css">
 <meta charset="ISO-8859-1">
@@ -19,17 +18,33 @@
     <h1>Welcome to BookStop!</h1>
   </div>
 </div>
-
-<div class="login-page">
-		<div class="form">
-			<h3>Log in to your account</h3>
-			<form class="login-form" action="Login" method="post">
-				<input name="uName" type="text" placeholder="Username " /> 
-				<input name="uPass"  type="password" placeholder="Password" />
-				<input id="inputButton"  type="submit" value="Log in" />
+<div class="container">
+	<div class="row">
+		<!-- Using bootstrap grid system. -->
+		<div class="col-lg-8">
+			<form>	
+				<!-- Username input. -->
+				<div class="form-group">
+					<label for="userName">Username</label>
+					<div class="input-group">
+						<input type="text" id="userName" class="form-control" placeholder="Username" required>
+					</div>
+				</div>
+			
+				<div class="form-group">
+					<!-- Password input. -->
+					<label for="password">Password</label>
+					<div class="input-group">
+						<input type="password" id="password" class="form-control" placeholder="Password" required>
+					</div>
+				</div>
+				<!-- Login button. -->
+				<input type="button" id="butt" value="login">
 			</form>
-		</div>
+	    </div>
 	</div>
+</div>
 
 </body>
 </html>
+
