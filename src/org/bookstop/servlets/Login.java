@@ -20,6 +20,7 @@ import org.apache.tomcat.dbcp.dbcp2.BasicDataSource;
 import org.bookstop.constants.AppConstants;
 import org.bookstop.dataAccess.DA;
 import org.bookstop.model.User;
+import org.bookstop.model.UserLogin;
 
 import com.google.gson.Gson;
 
@@ -81,10 +82,52 @@ public class Login extends HttpServlet {
 			throws ServletException, IOException {
 		System.out.println("Login Servlet");
 
-		String uName = request.getParameter("uName");
-		String uPass = request.getParameter("uPass");
-		response.getWriter().append("POST servlet, use GET instead. uName: ").append(uName).append(", uPass: ")
-				.append(uPass);
+		Logger logger = Logger.getLogger("LoginServlet");
+		logger.log(Level.INFO, "doPost: Start...");
+		
+		Gson gson = new Gson();
+		UserLogin user = null;
+		try {
+			StringBuilder sb = new StringBuilder();
+			String s;
+			while((s = request.getReader().readLine()) != null) {
+				sb.append(s);
+			}
+			
+			user = (UserLogin) gson.fromJson(sb.toString(), UserLogin.class);
+			logger.log(Level.INFO, "doGet: user info: uName:"+user.getuName()+" uPass:"+user.getuPass());
+			
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		if(user == null) {
+			//TODO: check and handle error
+			return;
+		}
+		try {
+
+			// obtain CustomerDB data source from Tomcat's context
+			Context context = new InitialContext();
+			BasicDataSource ds = (BasicDataSource) context
+					.lookup(getServletContext().getInitParameter(AppConstants.DB_DATASOURCE) + AppConstants.OPEN);
+			Connection conn = ds.getConnection();
+			logger.log(Level.INFO, "doGet: connection opened...");
+			DA da = new DA(conn);
+			User u = da.getUserByUsername(user.getuName());
+			if (u.getPassword().matches(user.getuPass())) {
+				logger.log(Level.INFO, "doGet: user found, password matched...");
+				String json = new Gson().toJson(user);
+			    response.setContentType("application/json");
+			    response.setCharacterEncoding("UTF-8");
+			    response.getWriter().write(json);
+			}
+			
+		} catch (SQLException | NamingException e) {
+			// log error
+			logger.log(Level.SEVERE, "doGet: FAILED");
+
+		}
+		
 	}
 
 }
