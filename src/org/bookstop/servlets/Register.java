@@ -52,11 +52,22 @@ public class Register extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		Logger logger = Logger.getLogger("RegisterServlet");
 		logger.log(Level.INFO, "doPost: attempting connection to DB...");
-		
-		BufferedReader reader = request.getReader();
-		Gson gson = new Gson();
-
-		User user = gson.fromJson(reader, User.class);
+	     
+	    Gson gson = new Gson(); 
+	    User user = null; 
+	    try { 
+	      StringBuilder sb = new StringBuilder(); 
+	      String s; 
+	      while((s = request.getReader().readLine()) != null) { 
+	        sb.append(s); 
+	      } 
+	       
+	      user = (User) gson.fromJson(sb.toString(), User.class); 
+	      logger.log(Level.INFO, "doPost: user info: username:"+user.getUsername()+" type:"+user.getType()); 
+	       
+	    }catch(Exception e) { 
+	      e.printStackTrace(); 
+	    } 
 		
 		try {
 
@@ -67,21 +78,26 @@ public class Register extends HttpServlet {
 			Connection conn = ds.getConnection();
 			logger.log(Level.INFO, "doPost: connection opened...");
 			DA da = new DA(conn);
-			User temp = da.selectUserByUsername(user.getUsername());
+			
+			User temp = null;
+			temp = da.selectUserByUsername(user.getUsername());
+			
 			if(temp != null) {
-				//TODO: return error already exist
-				
-				da.closeConnection();
+				response.setStatus(HttpServletResponse.SC_BAD_REQUEST); //user exists with that username
 				return;
 			}
-			//TODO: continue work
+			
+			da.insertUser(user);
 			
 		} catch (SQLException | NamingException e) {
 			// log error
 			logger.log(Level.SEVERE, "doPost: FAILED");
+			e.printStackTrace();
+			//TODO: handle errors
+			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 
 		}
-		
+		return; //By default the response will be 200 "OK"
 	}
 
 }
