@@ -18,12 +18,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.tomcat.dbcp.dbcp2.BasicDataSource;
 import org.bookstop.constants.AppConstants;
-import org.bookstop.constants.SQLstatements;
-import org.bookstop.dataAccess.DA;
 import org.bookstop.dataAccess.DataContract;
-import org.bookstop.model.User;
-
-import com.google.gson.Gson;
 
 /**
  * Servlet implementation class Drop

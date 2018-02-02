@@ -9,7 +9,6 @@ import java.util.logging.Logger;
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
-import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -57,7 +56,7 @@ public class Login extends HttpServlet {
 			Connection conn = ds.getConnection();
 			logger.log(Level.INFO, "doGet: connection opened...");
 			DA da = new DA(conn);
-			User user = da.getUserByUsername(uName);
+			User user = da.selectUserByUsername(uName);
 			if (user.getPassword().matches(uPass)) {
 				logger.log(Level.INFO, "doGet: user found, password matched...");
 				String json = new Gson().toJson(user);
