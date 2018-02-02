@@ -1,33 +1,20 @@
 package org.bookstop.dataAccess;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import javax.naming.Context;
-import javax.naming.InitialContext;
-import javax.naming.NamingException;
-import org.apache.tomcat.dbcp.dbcp2.BasicDataSource;
+import org.bookstop.constants.SQLstatements;
+import org.bookstop.model.User;
 
 public class DA implements DataInterface{
 
 	Connection conn = null;
 
-	public DA() {
-		// obtain CustomerDB data source from Tomcat's context
-		Context context;
-		try {
-			context = new InitialContext();
-			BasicDataSource ds;
-			ds = (BasicDataSource) context.lookup("java:comp/env/jdbc/BookStopDatasource");
-			conn = ds.getConnection();
-		} catch (NamingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		// use connection as you wishÅcbut close after usage! (this
+	public DA(Connection conn) {
+		this.conn = conn;
+		// use connection as you wish but close after usage! (this
 		// is important for correct connection pool management
 		// within Tomcat
 	}
@@ -39,6 +26,30 @@ public class DA implements DataInterface{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+
+	public User getUserByUsername(String username) {
+		User user = null;
+		try {
+			PreparedStatement pstmt = conn.prepareStatement(SQLstatements.SELECT_USER_BY_USERNAME_STMT);
+			pstmt.setString(1, username);
+			ResultSet rs = pstmt.executeQuery();
+			if(rs.next()) {
+				user = new User(rs.getString(DataContract.UsersTable.COL_USERNAME),
+						rs.getString(DataContract.UsersTable.COL_EMAIL),
+						rs.getString(DataContract.UsersTable.COL_ADDRESS),
+						rs.getString(DataContract.UsersTable.COL_PHONE),
+						rs.getString(DataContract.UsersTable.COL_PASSWORD),
+						rs.getString(DataContract.UsersTable.COL_NICKNAME),
+						rs.getString(DataContract.UsersTable.COL_DESCRIPTION),
+						rs.getString(DataContract.UsersTable.COL_PICTURE),
+						rs.getInt(DataContract.UsersTable.COL_TYPE));
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return user;
 	}
 
 }
