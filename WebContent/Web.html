@@ -3,9 +3,9 @@
 <head>
 <!-- Order might be important, in case of errors, try to shuffle -->
 <script src="lib/jquery-3.2.1.js"></script>
-<script src="lib/angular.min.js" ></script>
-<script src="JS/login.js"></script>
-<link rel="stylesheet" href="lib/bootstrap-3.3.7-dist/css/bootstrap.min.css">
+<script src="lib/angular.min.js"></script>
+<link rel="stylesheet"
+	href="lib/bootstrap-3.3.7-dist/css/bootstrap.min.css">
 <script src="lib/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
 <!-- Login CSS -->
 <link rel="stylesheet" href="CSS/login.css">
@@ -13,37 +13,47 @@
 <title>BookStop</title>
 </head>
 <body>
-<div class="jumbotron">
-  <div class="container">
-    <h1>Welcome to BookStop!</h1>
-  </div>
-</div>
-<div class="container">
-	<div class="row">
-		<!-- Using bootstrap grid system. -->
-		<div class="col-lg-8">
-			<form>	
-				<!-- Username input. -->
-				<div class="form-group">
-					<label for="userName">Username</label>
-					<div class="input-group">
-						<input type="text" id="userName" class="form-control" placeholder="Username" required>
+	<div ng-app="loginApp" ng-controller="loginCtr">
+
+		<div class="jumbotron">
+			<div class="container">
+				<h1>Welcome to BookStop!</h1>
+			</div>
+		</div>
+
+
+
+		<div class="row">
+			<!-- Using bootstrap grid system. -->
+			<div class="col-lg-4"></div>
+			<div ng-show="!loggedIn" class="col-lg-8">
+				<form>
+					<!-- Username input. -->
+					<div class="form-group">
+						<label for="userName">Username</label>
+						<div class="input-group">
+							<input type="text" id="userName" ng-model="uName"
+								class="form-control" placeholder="Username" required>
+						</div>
 					</div>
-				</div>
-			
-				<div class="form-group">
-					<!-- Password input. -->
-					<label for="password">Password</label>
-					<div class="input-group">
-						<input type="password" id="password" class="form-control" placeholder="Password" required>
+
+					<div class="form-group">
+						<!-- Password input. -->
+						<label for="password">Password</label>
+						<div class="input-group">
+							<input type="password" id="password" ng-model="uPass"
+								class="form-control" placeholder="Password" required>
+						</div>
 					</div>
-				</div>
+				</form>
 				<!-- Login button. -->
-				<input type="button" id="butt" value="login">
-			</form>
-	    </div>
+				<button ng-click="loginFunc()">Login</button>
+			</div>
+			<p ng-model="errorBox"></p>
+		</div>
 	</div>
-</div>
+
+	<script src="JS/login.js"></script>
 
 </body>
 </html>
