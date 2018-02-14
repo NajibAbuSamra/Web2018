@@ -31,7 +31,7 @@ public final class SQLstatements {
 			+ DataContract.UsersTable.COL_PICTURE + " varchar(255))";
 	
 	public final static String INSERT_USER_STMT = "INSERT INTO " + DataContract.UsersTable.TABLE_NAME + " VALUES(?,?,?,?,?,?,?,?,?)";
-	public final static String SELECT_ALL_USERS_STMT = "SELECT * FROM " + DataContract.UsersTable.TABLE_NAME;
+	public final static String SELECT_ALL_USERS_STMT = "SELECT * FROM " + DataContract.UsersTable.TABLE_NAME + " WHERE " + DataContract.UsersTable.COL_TYPE + " = 0";
 	public final static String SELECT_USER_BY_USERNAME_STMT = "SELECT * FROM " + DataContract.UsersTable.TABLE_NAME + " WHERE " + DataContract.UsersTable.COL_USERNAME + "=?";
 	
 	//Reviews
@@ -46,6 +46,8 @@ public final class SQLstatements {
 			+ "CONSTRAINT bookid_reviews_ref FOREIGN KEY ("+DataContract.ReviewsTable.COL_BOOKID+") REFERENCES "+DataContract.BooksTable.TABLE_NAME+"("+DataContract.BooksTable.COL_ID+") ON DELETE CASCADE)";
 	
 	public final static String INSERT_REVIEW_STMT = "INSERT INTO " + DataContract.ReviewsTable.TABLE_NAME + " VALUES(DEFAULT,?,?,?,?)";
+	//TODO: add select reviews for book
+	//TODO: add select unverified reviews
 	public final static String UPDATE_REVIEW_VERIFIED_STM = "UPDATE " + DataContract.ReviewsTable.TABLE_NAME + " SET " + DataContract.ReviewsTable.COL_VERIFIED + " = ?";
 	public final static String DELETE_REVIEW_BY_USERNAME_AND_BOOKID_STMT = "DELETE FROM " + DataContract.ReviewsTable.TABLE_NAME + " WHERE " + DataContract.ReviewsTable.COL_USERNAME + " = ? AND " + DataContract.ReviewsTable.COL_BOOKID + " = ?";
 	
@@ -69,7 +71,7 @@ public final class SQLstatements {
 			+DataContract.TransactionsTable.COL_CARDNUMBER + " VARCHAR(19) NOT NULL," //19 is the max number of credit card digits
 			+DataContract.TransactionsTable.COL_EXPIRYMONTH + " INTEGER NOT NULL,"
 			+DataContract.TransactionsTable.COL_EXPIRYYEAR + " INTEGER NOT NULL,"
-			+DataContract.TransactionsTable.COL_CVV + " INTEGER NOT NULL," //max length of cvv is 4
+			+DataContract.TransactionsTable.COL_CVV + " VARCHAR(4) NOT NULL," //max length of cvv is 4
 			+DataContract.TransactionsTable.COL_FULLNAME + " VARCHAR(255) NOT NULL,"
 			+ "PRIMARY KEY ("+DataContract.TransactionsTable.COL_ID+"),"
 			+ "CONSTRAINT username_trans_ref FOREIGN KEY ("+DataContract.TransactionsTable.COL_USERNAME+") REFERENCES "+DataContract.UsersTable.TABLE_NAME+"("+DataContract.UsersTable.COL_USERNAME+") ON DELETE CASCADE,"
@@ -77,6 +79,8 @@ public final class SQLstatements {
 
 	public final static String INSERT_TRANSACTION_STMT = "INSERT INTO " + DataContract.TransactionsTable.TABLE_NAME + " VALUES(DEFAULT,?,?,?,?,?,?,?,?)";
 	public final static String SELECT_ALL_TRANSACTIONS = "SELECT * FROM " + DataContract.TransactionsTable.TABLE_NAME;
+	public final static String SELECT_TRANSACTIONS_BY_USERNAME = "SELECT * FROM " + DataContract.TransactionsTable.TABLE_NAME + " WHERE " + DataContract.TransactionsTable.COL_USERNAME + " = ?";
+	//TODO: not sure if needed
 	public final static String SELECT_TRANSACTION_BY_USERNAME_AND_BOOKID_STMT = "SELECT * FROM " + DataContract.TransactionsTable.TABLE_NAME + " WHERE " + DataContract.TransactionsTable.COL_USERNAME + " = ? AND " + DataContract.TransactionsTable.COL_BOOKID + " = ?";
 	
 }

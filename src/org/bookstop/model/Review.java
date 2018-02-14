@@ -26,10 +26,10 @@ public class Review {
 	public void setBookID(int bookID) {
 		this.bookID = bookID;
 	}
-	public int isApproved() {
+	public int getVerified() {
 		return verified;
 	}
-	public void setApproved(int verified) {
+	public void setVerified(int verified) {
 		this.verified = verified;
 	}
 	public String getText() {
