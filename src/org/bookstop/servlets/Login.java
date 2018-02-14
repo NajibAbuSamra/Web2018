@@ -112,7 +112,7 @@ public class Login extends HttpServlet {
 			Connection conn = ds.getConnection();
 			logger.log(Level.INFO, "doGet: connection opened...");
 			DA da = new DA(conn);
-			User u = da.getUserByUsername(user.getuName());
+			User u = da.selectUserByUsername(user.getuName());
 			if (u.getPassword().matches(user.getuPass())) {
 				logger.log(Level.INFO, "doGet: user found, password matched...");
 				String json = new Gson().toJson(user);
