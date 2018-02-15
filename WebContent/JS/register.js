@@ -16,7 +16,7 @@ angular.module('registerUser', []).factory(
 							uPass : pass
 							/*FILL REST*/
 						});
-						$http.post("/WebProject2018/Register", val).success(
+						$http.post("/Web2018/Register", val).success(
 								function(data, status, headers, config) {
 									$scope.loggedIn = true;
 								}).error(

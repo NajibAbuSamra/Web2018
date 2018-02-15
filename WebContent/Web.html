@@ -53,15 +53,75 @@
 				</div>
 				<!-- REGISTER DIV  -->
 				<div ng-show="!registered" class="col-lg-8">
-				
+					<form>		
+						<div class="form-group">
+							<label for="user">Username</label>
+							<div class="input-group">
+								<input type="text" class="form-control" id="user" ng-model="regUname" placeholder="Username" maxlength="10" required>
+							</div>
+						</div>
+						
+						<div class="form-group">
+							<label for="em">Email</label>
+							<div class="input-group">
+								<input type="text" class="form-control" id="em" ng-model="regEmail" placeholder="Email">
+							</div>
+						</div>
+						
+						<div class="form-group">
+							<label for="add">Address</label>
+							<div class="input-group">
+								<input type="text" class="form-control" id="add" ng-model="regAddress" placeholder="Address">
+							</div>
+						</div>
+					
+					
+						<div class="form-group">
+							<label for="tele">Telephone number</label>
+							<div class="input-group">
+								<input type="text" class="form-control" id="tele" ng-model="regTelephone" placeholder="Telephone number">
+							</div>
+						</div>
+					
+					
+						<div class="form-group">
+							<label for="pass">Password</label>
+							<div class="input-group">
+								<input type="password" class="form-control" id="pass" ng-model="regPass" placeholder="Password" maxlength="8" required>
+							</div>
+						</div>
+					
+						<div class="form-group">
+							<label for="nick">Nickname</label>
+							<div class="input-group">
+								<input type="text" class="form-control" id="nick" ng-model="regNick" placeholder="Nickname" maxlength="20" required>
+							</div>
+						</div>
+					
+						<div class="form-group">
+							<label for="desc">About me</label>
+							<div class="input-group">
+								<textarea class="form-control" id="desc" ng-model="regDesc" rows="5" placeholder="About me" maxlength="50"></textarea>
+							</div>
+						</div>
+					
+						<div class="form-group">
+							<label for="pic">Photo URL</label>
+							<div class="input-group">
+								<input type="text" class="form-control" id="pic" ng-model="regPic" placeholder="Please enter a link to your photo">
+							</div>
+						</div>
+						<!-- Login button. -->
+						<button data-ng-click="registerFunc()">register</button>
+					</form>
 				</div>
 			</div>
+			<button data-ng-click="toggleRegister()">toggle</button>
 			<p ng-model="errorBox"></p>
 		</div>
 	</div>
 
-	<script src="JS/login.js"></script>
-
+	<script src="JS/myApp.js"></script>
 </body>
 </html>
 
