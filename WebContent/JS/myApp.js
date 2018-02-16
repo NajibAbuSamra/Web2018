@@ -12,7 +12,7 @@ angular.module('myApp',[])
 		success(function(data,status,headers,config){
 			$scope.loggedIn=true;
 			$scope.errorBox = "loged-in";
-			$scope.answer = data[0].username;
+			$scope.answer = data.username;
 			}).
 		error(function(data,status,headers,config){
 			$scope.errorBox="Error";
