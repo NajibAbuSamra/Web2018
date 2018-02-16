@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <html>
 <head>
+<link href="//netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js"></script>
+<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
 <!-- Order might be important, in case of errors, try to shuffle -->
 <script src="lib/jquery-3.2.1.js"></script>
 <script src="lib/angular.min.js"></script>
@@ -10,13 +13,22 @@
 <!-- Login CSS -->
 <link rel="stylesheet" href="CSS/login.css">
 <meta charset="ISO-8859-1">
+<style>
+body {
+	background-image: url("teal.jpg");
+}
+
+.jumbotron {
+    background-image: url("teal.jpg");
+}
+</style>
 <title>BookStop</title>
 </head>
 <body>
 	<div ng-app="myApp" ng-controller="myAppCrtl">
 		<div class="jumbotron">
 			<div class="container">
-				<h1>Welcome to BookStop!</h1>
+				<h1 class="text-center">Welcome to BookStop!</h1>
 			</div>
 		</div>
 
@@ -24,15 +36,15 @@
 
 		<div class="row">
 			<!-- Using bootstrap grid system. -->
-			<div class="col-lg-4"></div>
+        	<div class="col-xs-12 col-sm-8 col-md-4 col-sm-offset-2 col-md-offset-4">
 			<div ng-show="!loggedIn" class="col-lg-8">
 				<!-- LOGIN DIV -->
 				<div ng-show="registered" class="col-lg-8">
 					<form>
 						<!-- Username input. -->
 						<div class="form-group">
-							<label for="userName">Username</label>
 							<div class="input-group">
+								<span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
 								<input type="text" id="userName" ng-model="uName"
 									class="form-control" placeholder="Username" required>
 							</div>
@@ -40,82 +52,78 @@
 
 						<div class="form-group">
 							<!-- Password input. -->
-							<label for="password">Password</label>
 							<div class="input-group">
-								<input type="password" id="password" ng-model="uPass"
+								<span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
+								<input type="password" id="Pass" ng-model="uPass"
 									class="form-control" placeholder="Password" required>
 							</div>
 						</div>
 					</form>
-					<!-- Login button. -->
-					<button ng-click="loginFunc()">Login</button>
+					<!-- Login button. -->					
+					<button ng-click="loginFunc()" type="button" class="btn btn-primary">Login</button>
+					<button data-ng-click="toggleRegister()" type="button" class="btn btn-primary">Register</button>
 				</div>
-				<!-- REGISTER DIV  -->
-				<div ng-show="!registered" class="col-lg-8">
-					<form>		
+				<div ng-show="!registered" >
 						<div class="form-group">
-							<label for="user">Username</label>
 							<div class="input-group">
-								<input type="text" class="form-control" id="user" ng-model="regUname" placeholder="Username" maxlength="10" required>
+								<span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+								<input type="text" id="user" ng-model="regUname" class="form-control" placeholder="Username" maxlength="10" required>
 							</div>
 						</div>
 						
 						<div class="form-group">
-							<label for="em">Email</label>
 							<div class="input-group">
-								<input type="text" class="form-control" id="em" ng-model="regEmail" placeholder="Email">
+								<span class="input-group-addon"><i class="glyphicon glyphicon-envelope"></i></span>
+								<input type="text" id="email" ng-model="regEmail" class="form-control" placeholder="Email">
 							</div>
 						</div>
 						
 						<div class="form-group">
-							<label for="add">Address</label>
 							<div class="input-group">
-								<input type="text" class="form-control" id="add" ng-model="regAddress" placeholder="Address">
+								<span class="input-group-addon"><i class="glyphicon glyphicon-home"></i></span>
+								<input type="text" id="address" ng-model="regAddress" class="form-control" placeholder="Address">
 							</div>
 						</div>
-					
-					
+						
 						<div class="form-group">
-							<label for="tele">Telephone number</label>
 							<div class="input-group">
-								<input type="text" class="form-control" id="tele" ng-model="regTelephone" placeholder="Telephone number">
-							</div>
-						</div>
-					
-					
-						<div class="form-group">
-							<label for="pass">Password</label>
-							<div class="input-group">
-								<input type="password" class="form-control" id="pass" ng-model="regPass" placeholder="Password" maxlength="8" required>
+								<span class="input-group-addon"><i class="glyphicon glyphicon-phone-alt"></i></span>
+								<input type="text" id="telephone" ng-model="regTelephone" class="form-control" placeholder="Telephone number">
 							</div>
 						</div>
 					
 						<div class="form-group">
-							<label for="nick">Nickname</label>
 							<div class="input-group">
-								<input type="text" class="form-control" id="nick" ng-model="regNick" placeholder="Nickname" maxlength="20" required>
+								<span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
+								<input type="password" id="password" ng-model="regPass" class="form-control" placeholder="Password" maxlength="8" required>
 							</div>
 						</div>
 					
 						<div class="form-group">
-							<label for="desc">About me</label>
 							<div class="input-group">
-								<textarea class="form-control" id="desc" ng-model="regDesc" rows="5" placeholder="About me" maxlength="50"></textarea>
+								<span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+								<input type="text" id="nickname" ng-model="regNick" class="form-control" placeholder="Nickname" maxlength="20" required>
 							</div>
 						</div>
 					
 						<div class="form-group">
-							<label for="pic">Photo URL</label>
 							<div class="input-group">
-								<input type="text" class="form-control" id="pic" ng-model="regPic" placeholder="Please enter a link to your photo">
+								<span class="input-group-addon"><i class="glyphicon glyphicon-pencil"></i></span>
+								<textarea id="about" ng-model="regDesc" rows="5" class="form-control" placeholder="About me" maxlength="50"></textarea>
 							</div>
 						</div>
-						<!-- Login button. -->
-						<button data-ng-click="registerFunc()">register</button>
-					</form>
+					
+						<div class="form-group">
+							<div class="input-group">
+								<span class="input-group-addon"><i class="glyphicon glyphicon-camera"></i></span>
+								<input type="text" id="photo" ng-model="regPic" class="form-control" placeholder="URL to your photo">
+							</div>
+						</div>
+						<button data-ng-click="toggleRegister()" type="button" class="btn btn-primary">Login</button>
+						<button ng-click="loginFunc()" id="register" type="button" class="btn btn-primary">Register</button>
+					</form>	
 				</div>
 			</div>
-			<button data-ng-click="toggleRegister()">toggle</button>
 			<p ng-model="errorBox"></p>
 		</div>
 	</div>

@@ -30,8 +30,9 @@ angular.module('myApp',[])
 				}).error(
 				function(data, status, headers, config) {
 					$scope.errorBox = "Error";
+				}).done(function(data) {
+					var retVal = data[0].statusMessage;
 				});
-
 	};
 	
 	$scope.toggleRegister = function(){
