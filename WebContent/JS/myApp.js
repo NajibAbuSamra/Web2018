@@ -12,6 +12,7 @@ angular.module('myApp',[])
 		success(function(data,status,headers,config){
 			$scope.loggedIn=true;
 			$scope.errorBox = "loged-in";
+			$scope.answer = data[0].username;
 			}).
 		error(function(data,status,headers,config){
 			$scope.errorBox="Error";
@@ -30,8 +31,10 @@ angular.module('myApp',[])
 				}).error(
 				function(data, status, headers, config) {
 					$scope.errorBox = "Error";
+					if (status == 400)
+						$scope.errorBox = "User already exists";
 				}).done(function(data) {
-					var retVal = data[0].statusMessage;
+					 $scope.answer = data[0].username;
 				});
 	};
 	

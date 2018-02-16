@@ -32,8 +32,6 @@ body {
 			</div>
 		</div>
 
-
-
 		<div class="row">
 			<!-- Using bootstrap grid system. -->
         	<div class="col-xs-12 col-sm-8 col-md-4 col-sm-offset-2 col-md-offset-4">
@@ -120,12 +118,13 @@ body {
 							</div>
 						</div>
 						<button data-ng-click="toggleRegister()" type="button" class="btn btn-primary">Login</button>
-						<button ng-click="loginFunc()" id="register" type="button" class="btn btn-primary">Register</button>
+						<button ng-click=registerFunc() id="register" type="button" class="btn btn-primary">Register</button>
 					</form>	
 				</div>
 			</div>
 			<p ng-model="errorBox"></p>
 		</div>
+		<div>Answer: {{answer}}</div>
 	</div>
 
 	<script src="JS/myApp.js"></script>
