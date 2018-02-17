@@ -6,13 +6,17 @@ angular.module('myApp',[])
 	$scope.loggedIn=false;
 	$scope.registered = true;
 	$scope.errorBox="";
+	
+	var loggedUser = "";
+	
+	
 	$scope.loginFunc = function(){
 		var val = JSON.stringify({uName:$scope.uName , uPass:$scope.uPass});
 		$http.post("/Web2018/Login",val).
 		success(function(data,status,headers,config){
 			$scope.loggedIn=true;
-			$scope.errorBox = "loged-in";
-			$scope.answer = data.username;
+			loggedUser = data.username;
+			 $scope.answer = loggedUser;
 			}).
 		error(function(data,status,headers,config){
 			$scope.errorBox="Error";
@@ -27,15 +31,14 @@ angular.module('myApp',[])
 		$http.post("/Web2018/Register", val).success(
 				function(data, status, headers, config) {
 					$scope.loggedIn = true;
-					$scope.errorBox = "registered";
+					loggedUser = data.username;
+					 $scope.answer = loggedUser;
 				}).error(
 				function(data, status, headers, config) {
 					$scope.errorBox = "Error";
 					if (status == 400)
 						$scope.errorBox = "User already exists";
-				}).done(function(data) {
-					 $scope.answer = data[0].username;
-				});
+				}).done(function(data) {});
 	};
 	
 	$scope.toggleRegister = function(){
