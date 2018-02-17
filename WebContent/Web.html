@@ -1,35 +1,172 @@
 <!DOCTYPE html>
 <html>
 <head>
+<link href="//netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js"></script>
+<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
 <!-- Order might be important, in case of errors, try to shuffle -->
 <script src="lib/jquery-3.2.1.js"></script>
-<script src="lib/angular.min.js" ></script>
-<link rel="stylesheet" href="lib/bootstrap-3.3.7-dist/css/bootstrap.min.css">
+<script src="lib/angular.min.js"></script>
+<link rel="stylesheet"
+	href="lib/bootstrap-3.3.7-dist/css/bootstrap.min.css">
 <script src="lib/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
-
-
 <!-- Login CSS -->
 <link rel="stylesheet" href="CSS/login.css">
 <meta charset="ISO-8859-1">
+
 <title>BookStop</title>
 </head>
 <body>
-<div class="jumbotron">
-  <div class="container">
-    <h1>Welcome to BookStop!</h1>
-  </div>
-</div>
+	<div ng-app="myApp" ng-controller="myAppCrtl">
+		<div class="jumbotron" ng-show="!loggedIn">
+			<div class="container">
+				<h1 class="text-center">Welcome to BookStop!</h1>
+			</div>
+		</div>
 
-<div class="login-page">
-		<div class="form">
-			<h3>Log in to your account</h3>
-			<form class="login-form" action="Login" method="post">
-				<input name="uName" type="text" placeholder="Username " /> 
-				<input name="uPass"  type="password" placeholder="Password" />
-				<input id="inputButton"  type="submit" value="Log in" />
-			</form>
+		<div class="row">
+			<!-- Using bootstrap grid system. -->
+        	<div class="col-xs-12 col-sm-8 col-md-4 col-sm-offset-2 col-md-offset-4">
+			<div ng-show="!loggedIn" class="col-lg-8">
+				<!-- LOGIN DIV -->
+				<div ng-show="registered" class="col-lg-8">
+					<form>
+						<!-- Username input. -->
+						<div class="form-group">
+							<div class="input-group">
+								<span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+								<input type="text" id="userName" ng-model="uName"
+									class="form-control" placeholder="Username" required>
+							</div>
+						</div>
+
+						<div class="form-group">
+							<!-- Password input. -->
+							<div class="input-group">
+								<span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
+								<input type="password" id="Pass" ng-model="uPass"
+									class="form-control" placeholder="Password" required>
+							</div>
+						</div>
+					</form>
+					<!-- Login button. -->					
+					<button ng-click="loginFunc()" type="button" class="btn btn-primary">Login</button>
+					<button data-ng-click="toggleRegister()" type="button" class="btn btn-primary">Register</button>
+				</div>
+				<div ng-show="!registered" >
+						<div class="form-group">
+							<div class="input-group">
+								<span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+								<input type="text" id="user" ng-model="regUname" class="form-control" placeholder="Username" maxlength="10" required>
+							</div>
+						</div>
+						
+						<div class="form-group">
+							<div class="input-group">
+								<span class="input-group-addon"><i class="glyphicon glyphicon-envelope"></i></span>
+								<input type="text" id="email" ng-model="regEmail" class="form-control" placeholder="Email">
+							</div>
+						</div>
+						
+						<div class="form-group">
+							<div class="input-group">
+								<span class="input-group-addon"><i class="glyphicon glyphicon-home"></i></span>
+								<input type="text" id="address" ng-model="regAddress" class="form-control" placeholder="Address">
+							</div>
+						</div>
+						
+						<div class="form-group">
+							<div class="input-group">
+								<span class="input-group-addon"><i class="glyphicon glyphicon-phone-alt"></i></span>
+								<input type="text" id="telephone" ng-model="regTelephone" class="form-control" placeholder="Telephone number">
+							</div>
+						</div>
+					
+						<div class="form-group">
+							<div class="input-group">
+								<span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
+								<input type="password" id="password" ng-model="regPass" class="form-control" placeholder="Password" maxlength="8" required>
+							</div>
+						</div>
+					
+						<div class="form-group">
+							<div class="input-group">
+								<span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+								<input type="text" id="nickname" ng-model="regNick" class="form-control" placeholder="Nickname" maxlength="20" required>
+							</div>
+						</div>
+					
+						<div class="form-group">
+							<div class="input-group">
+								<span class="input-group-addon"><i class="glyphicon glyphicon-pencil"></i></span>
+								<textarea id="about" ng-model="regDesc" rows="5" class="form-control" placeholder="About me" maxlength="50"></textarea>
+							</div>
+						</div>
+					
+						<div class="form-group">
+							<div class="input-group">
+								<span class="input-group-addon"><i class="glyphicon glyphicon-camera"></i></span>
+								<input type="text" id="photo" ng-model="regPic" class="form-control" placeholder="URL to your photo">
+							</div>
+						</div>
+						<button data-ng-click="toggleRegister()" type="button" class="btn btn-primary">Login</button>
+						<button ng-click=registerFunc() id="register" type="button" class="btn btn-primary">Register</button>
+					</form>	
+				</div>
+			</div>
+			<p ng-model="errorBox"></p>
 		</div>
 	</div>
-
+	<div ng-show="loggedIn">
+		<nav class="navbar navbar-inverse">
+			<div class="container-fluid">
+				<div class="collapse navbar-collapse" id="myNavbar">
+					<ul class="nav navbar-nav">
+						<li><a href="#">Option 1</a></li>
+						<li><a href="#">Option 2</a></li>
+					</ul>
+					<ul class="nav navbar-nav navbar-right">
+						<li><button ng-click=logout() type="button" class="btn btn-danger">Log out</button></li>
+			        </ul>
+				</div>
+			</div>
+		</nav>
+		<div class="container-fluid">
+			<div class="row content">
+				<div class="col-sm-2">
+					<div class="row">
+						<p>zibfik-left</p>
+				    </div>
+				</div>
+					
+				<div class="col-sm-8">
+					<div class="centralWindow">
+						<div class="row">
+							<div class="col-sm-3">
+								<div class="row">
+									<p>zibfik3</p>
+							    </div>
+							</div>
+						
+							<div class="col-sm-9">
+								<div class="row">
+									<p>zibfik9</p>
+						    	</div>
+							</div>
+						</div>
+				    </div>
+				</div>
+				
+				<div class="col-sm-2">
+					<div class="row">
+						<p>zibfik-right</p>
+				    </div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+	<script src="JS/myApp.js"></script>
 </body>
 </html>
+

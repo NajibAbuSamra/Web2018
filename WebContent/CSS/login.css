@@ -15,18 +15,6 @@
   text-align: center;
   box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
 }
-#inputButton {
-  text-transform: uppercase;
-  outline: 0;
-  background: #4CAF50;
-  width: 100%;
-  border: 0;
-  padding: 15px;
-  color: #FFFFFF;
-  font-size: 14px;
-  cursor: pointer;
-	
-}
 .form input {
   outline: 0;
   background: #f2f2f2;
@@ -37,23 +25,21 @@
   box-sizing: border-box;
   font-size: 14px;
 }
-.form button {
-  text-transform: uppercase;
-  outline: 0;
-  background: #4CAF50;
-  width: 100%;
-  border: 0;
-  padding: 15px;
-  color: #FFFFFF;
-  font-size: 14px;
-  -webkit-transition: all 0.3 ease;
-  transition: all 0.3 ease;
-  cursor: pointer;
-}
 .container {
   position: relative;
   z-index: 1;
   max-width: 300px;
   margin: 0 auto;
+  margin-top: 20px;
 }
 
+.container-fluid {
+    padding-right: 15px;
+    padding-left: 15px;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+.centralWindow {
+	border-style: solid;
+}
