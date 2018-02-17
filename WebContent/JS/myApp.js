@@ -41,4 +41,7 @@ angular.module('myApp',[])
 	$scope.toggleRegister = function(){
 		$scope.registered = !($scope.registered);
 	}
+	$scope.logout = function(){
+		$scope.loggedIn = !($scope.loggedIn);
+	}
 }]);

@@ -13,20 +13,12 @@
 <!-- Login CSS -->
 <link rel="stylesheet" href="CSS/login.css">
 <meta charset="ISO-8859-1">
-<style>
-body {
-	background-image: url("teal.jpg");
-}
 
-.jumbotron {
-    background-image: url("teal.jpg");
-}
-</style>
 <title>BookStop</title>
 </head>
 <body>
 	<div ng-app="myApp" ng-controller="myAppCrtl">
-		<div class="jumbotron">
+		<div class="jumbotron" ng-show="!loggedIn">
 			<div class="container">
 				<h1 class="text-center">Welcome to BookStop!</h1>
 			</div>
@@ -124,9 +116,56 @@ body {
 			</div>
 			<p ng-model="errorBox"></p>
 		</div>
-		<div>Answer: {{answer}}</div>
 	</div>
-
+	<div ng-show="loggedIn">
+		<nav class="navbar navbar-inverse">
+			<div class="container-fluid">
+				<div class="collapse navbar-collapse" id="myNavbar">
+					<ul class="nav navbar-nav">
+						<li><a href="#">Option 1</a></li>
+						<li><a href="#">Option 2</a></li>
+					</ul>
+					<ul class="nav navbar-nav navbar-right">
+						<li><button ng-click=logout() type="button" class="btn btn-danger">Log out</button></li>
+			        </ul>
+				</div>
+			</div>
+		</nav>
+		<div class="container-fluid">
+			<div class="row content">
+				<div class="col-sm-2">
+					<div class="row">
+						<p>zibfik-left</p>
+				    </div>
+				</div>
+					
+				<div class="col-sm-8">
+					<div class="centralWindow">
+						<div class="row">
+							<div class="col-sm-3">
+								<div class="row">
+									<p>zibfik3</p>
+							    </div>
+							</div>
+						
+							<div class="col-sm-9">
+								<div class="row">
+									<p>zibfik9</p>
+						    	</div>
+							</div>
+						</div>
+				    </div>
+				</div>
+				
+				<div class="col-sm-2">
+					<div class="row">
+						<p>zibfik-right</p>
+				    </div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
 	<script src="JS/myApp.js"></script>
 </body>
 </html>
