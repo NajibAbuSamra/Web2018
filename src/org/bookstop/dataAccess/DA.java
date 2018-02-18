@@ -182,7 +182,7 @@ public class DA implements DataInterface {
 	@Override
 	public void updateVerifiedReview(int verified) {
 		try {
-			PreparedStatement pstmt = conn.prepareStatement(SQLstatements.UPDATE_REVIEW_VERIFIED_STM);
+			PreparedStatement pstmt = conn.prepareStatement(SQLstatements.UPDATE_REVIEW_VERIFIED_STMT);
 			pstmt.setInt(1, verified);
 			pstmt.executeUpdate();
 
@@ -332,7 +332,7 @@ public class DA implements DataInterface {
 	@Override
 	public ArrayList<Integer> getOwnedBookIds(String username) {
 		ArrayList<Integer> arr = new ArrayList<Integer>();
-		
+
 		try {
 			PreparedStatement pstmt = conn.prepareStatement(SQLstatements.SELECT_BOOKID_TRANSACTIONS_BY_USERNAME);
 			pstmt.setString(1, username);
@@ -346,8 +346,53 @@ public class DA implements DataInterface {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 		return arr;
+	}
+
+	@Override
+	public int countLikesByBookId(int bookid) {
+		int likes = -1; // default error
+		try {
+			PreparedStatement pstmt = conn.prepareStatement(SQLstatements.COUNT_LIKES_BY_BOOKID_STMT);
+			pstmt.setInt(1, bookid);
+			ResultSet rs = pstmt.executeQuery();
+			if (rs.next()) {
+				likes = rs.getInt(1);
+			}
+			rs.close();
+			pstmt.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		return likes;
+	}
+
+	@Override
+	public ArrayList<Review> selectReviewsByBookId(int bookid) {
+		ArrayList<Review> reviews = new ArrayList<Review>();
+
+		try {
+			PreparedStatement pstmt = conn.prepareStatement(SQLstatements.SELECT_REVIEWS_BY_BOOKID_STMT);
+			pstmt.setInt(1, bookid);
+			ResultSet rs = pstmt.executeQuery();
+			while (rs.next()) {
+				reviews.add(new Review(rs.getInt(DataContract.ReviewsTable.COL_ID),
+						rs.getString(DataContract.ReviewsTable.COL_USERNAME),
+						rs.getInt(DataContract.ReviewsTable.COL_BOOKID),
+						rs.getInt(DataContract.ReviewsTable.COL_VERIFIED),
+						rs.getString(DataContract.ReviewsTable.COL_TEXT)));
+			}
+			rs.close();
+			pstmt.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		return reviews;
 	}
 
 }

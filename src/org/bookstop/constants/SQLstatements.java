@@ -50,9 +50,10 @@ public final class SQLstatements {
 
 	public final static String INSERT_REVIEW_STMT = "INSERT INTO " + DataContract.ReviewsTable.TABLE_NAME
 			+ " VALUES(DEFAULT,?,?,?,?)";
-	// TODO: add select reviews for book
+	public final static String SELECT_REVIEWS_BY_BOOKID_STMT = "SELECT * FROM " + DataContract.ReviewsTable.TABLE_NAME
+			+ " WHERE " + DataContract.ReviewsTable.COL_BOOKID + " = ?";
 	// TODO: add select unverified reviews
-	public final static String UPDATE_REVIEW_VERIFIED_STM = "UPDATE " + DataContract.ReviewsTable.TABLE_NAME + " SET "
+	public final static String UPDATE_REVIEW_VERIFIED_STMT = "UPDATE " + DataContract.ReviewsTable.TABLE_NAME + " SET "
 			+ DataContract.ReviewsTable.COL_VERIFIED + " = ?";
 	public final static String DELETE_REVIEW_BY_USERNAME_AND_BOOKID_STMT = "DELETE FROM "
 			+ DataContract.ReviewsTable.TABLE_NAME + " WHERE " + DataContract.ReviewsTable.COL_USERNAME + " = ? AND "
@@ -72,6 +73,8 @@ public final class SQLstatements {
 	public final static String DELETE_LIKE_BY_USERNAME_AND_BOOKID_STMT = "DELETE FROM "
 			+ DataContract.LikesTable.TABLE_NAME + " WHERE " + DataContract.LikesTable.COL_USERNAME + " = ? AND "
 			+ DataContract.LikesTable.COL_BOOKID + " = ?";
+	public final static String COUNT_LIKES_BY_BOOKID_STMT = "SELECT COUNT(*) FROM " + DataContract.LikesTable.TABLE_NAME
+			+ " WHERE " + DataContract.LikesTable.COL_BOOKID + " = ?";
 
 	// Transactions
 	public final static String CREATE_TRANSACTIONS_TABLE = "CREATE TABLE " + DataContract.TransactionsTable.TABLE_NAME

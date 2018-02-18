@@ -18,6 +18,17 @@ public class BookInfo extends Book{
 		
 	}
 
+	public BookInfo(Book b, int likes, ArrayList<Review> reviews) {
+		super(b);
+		this.likes = likes;
+		this.reviews = new ArrayList<Review>();
+		if(reviews != null) {
+			for(Review r : reviews) {
+				this.reviews.add(r);
+			}
+		}
+	}
+
 	public int getLikes() {
 		return likes;
 	}

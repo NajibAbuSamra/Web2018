@@ -20,6 +20,8 @@ import org.apache.tomcat.dbcp.dbcp2.BasicDataSource;
 import org.bookstop.constants.AppConstants;
 import org.bookstop.dataAccess.DA;
 import org.bookstop.model.Book;
+import org.bookstop.model.BookInfo;
+import org.bookstop.model.Review;
 import org.bookstop.model.User;
 import org.bookstop.model.UserLogin;
 
@@ -100,7 +102,13 @@ public class GetAvailableBooks extends HttpServlet {
 						}
 					}
 				}
-				String json = new Gson().toJson(books);
+				ArrayList<BookInfo> booksInfo = new ArrayList<BookInfo>();
+				for(Book b : books) {
+					int likes = da.countLikesByBookId(b.getBookId());
+					ArrayList<Review> reviews = da.selectReviewsByBookId(b.getBookId());
+					booksInfo.add(new BookInfo(b,likes,reviews));
+				}
+				String json = new Gson().toJson(booksInfo);
 			    response.setContentType("application/json");
 			    response.setCharacterEncoding("UTF-8");
 			    response.getWriter().write(json);

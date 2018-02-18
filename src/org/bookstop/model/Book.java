@@ -20,6 +20,16 @@ public class Book {
 		this.link = link;
 	}
 
+	public Book(Book b) {
+		super();
+		this.bookId = b.getBookId();
+		this.name = b.getName();
+		this.img = b.getImg();
+		this.price = b.getPrice();
+		this.description = b.getDescription();
+		this.link = b.getLink();
+	}
+
 	public int getBookId() {
 		return bookId;
 	}

@@ -24,10 +24,12 @@ public interface DataInterface {
 	public void insertReview(Review review);
 	public void updateVerifiedReview(int verified);
 	public void deleteReviewByUsernameAndBookId(String username, int bookId);
+	public ArrayList<Review> selectReviewsByBookId(int bookid);
 	
 	//Likes
 	public void insertLike(Like like);
 	public void deleteLike(Like like);
+	public int countLikesByBookId(int bookid);
 	
 	//Transactions
 	public void insertTransaction(Transaction transaction);
