@@ -34,6 +34,7 @@ angular.module('myApp',[])
 				function(data, status, headers, config) {
 					$scope.loggedIn = true;
 					loggedUser = data.username;
+					loggedPass = $scope.regPass;
 					 $scope.answer = loggedUser;
 				}).error(
 				function(data, status, headers, config) {
