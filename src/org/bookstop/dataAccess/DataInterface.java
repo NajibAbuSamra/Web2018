@@ -13,6 +13,7 @@ public interface DataInterface {
 	//Book
 	public Book selectBookById(int id);
 	public ArrayList<Book> getAllBooks();
+	public ArrayList<Integer> getOwnedBookIds(String username);
 	
 	//User
 	public void insertUser(User user);

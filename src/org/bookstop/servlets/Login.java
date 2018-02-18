@@ -94,7 +94,7 @@ public class Login extends HttpServlet {
 			}
 			
 			user = (UserLogin) gson.fromJson(sb.toString(), UserLogin.class);
-			logger.log(Level.INFO, "doGet: user info: uName:"+user.getuName()+" uPass:"+user.getuPass());
+			logger.log(Level.INFO, "doPost: user info: uName:"+user.getuName()+" uPass:"+user.getuPass());
 			
 		}catch(Exception e) {
 			e.printStackTrace();
@@ -110,11 +110,11 @@ public class Login extends HttpServlet {
 			BasicDataSource ds = (BasicDataSource) context
 					.lookup(getServletContext().getInitParameter(AppConstants.DB_DATASOURCE) + AppConstants.OPEN);
 			Connection conn = ds.getConnection();
-			logger.log(Level.INFO, "doGet: connection opened...");
+			logger.log(Level.INFO, "doPost: connection opened...");
 			DA da = new DA(conn);
 			User fullUser = da.selectUserByUsername(user.getuName());
 			if (fullUser.getPassword().matches(user.getuPass())) {
-				logger.log(Level.INFO, "doGet: user found, password matched...");
+				logger.log(Level.INFO, "doPost: user found, password matched...");
 				String json = new Gson().toJson(fullUser);
 			    response.setContentType("application/json");
 			    response.setCharacterEncoding("UTF-8");

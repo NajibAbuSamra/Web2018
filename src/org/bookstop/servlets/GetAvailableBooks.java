@@ -3,6 +3,7 @@ package org.bookstop.servlets;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -18,21 +19,23 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.tomcat.dbcp.dbcp2.BasicDataSource;
 import org.bookstop.constants.AppConstants;
 import org.bookstop.dataAccess.DA;
+import org.bookstop.model.Book;
 import org.bookstop.model.User;
+import org.bookstop.model.UserLogin;
 
 import com.google.gson.Gson;
 
 /**
- * Servlet implementation class Register
+ * Servlet implementation class GetAvailableBooks
  */
-@WebServlet("/Register")
-public class Register extends HttpServlet {
+@WebServlet("/GetAvailableBooks")
+public class GetAvailableBooks extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public Register() {
+    public GetAvailableBooks() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -49,25 +52,31 @@ public class Register extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		Logger logger = Logger.getLogger("RegisterServlet");
-		logger.log(Level.INFO, "doPost: attempting connection to DB...");
-	     
-	    Gson gson = new Gson(); 
-	    User user = null; 
-	    try { 
-	      StringBuilder sb = new StringBuilder(); 
-	      String s; 
-	      while((s = request.getReader().readLine()) != null) { 
-	        sb.append(s); 
-	      } 
-	       
-	      user = (User) gson.fromJson(sb.toString(), User.class); 
-	      logger.log(Level.INFO, "doPost: user info: username:"+user.getUsername()+" type:"+user.getType()); 
-	       
-	    }catch(Exception e) { 
-	      e.printStackTrace(); 
-	    } 
+		// TODO Auto-generated method stub
+		System.out.println("GetAvailableBooks Servlet");
+
+		Logger logger = Logger.getLogger("GetAvailableBooksServlet");
+		logger.log(Level.INFO, "doPost: Start...");
 		
+		Gson gson = new Gson();
+		UserLogin user = null;
+		try {
+			StringBuilder sb = new StringBuilder();
+			String s;
+			while((s = request.getReader().readLine()) != null) {
+				sb.append(s);
+			}
+			
+			user = (UserLogin) gson.fromJson(sb.toString(), UserLogin.class);
+			logger.log(Level.INFO, "doPost: user info: uName:"+user.getuName()+" uPass:"+user.getuPass());
+			
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		if(user == null) {
+			//TODO: check and handle error
+			return;
+		}
 		try {
 
 			// obtain CustomerDB data source from Tomcat's context
@@ -77,26 +86,35 @@ public class Register extends HttpServlet {
 			Connection conn = ds.getConnection();
 			logger.log(Level.INFO, "doPost: connection opened...");
 			DA da = new DA(conn);
-			
-			User temp = null;
-			temp = da.selectUserByUsername(user.getUsername());
-			
-			if(temp != null) {
-				response.setStatus(HttpServletResponse.SC_BAD_REQUEST); //user exists with that username
-				return;
+			User fullUser = da.selectUserByUsername(user.getuName());
+			if (fullUser.getPassword().matches(user.getuPass())) {
+				logger.log(Level.INFO, "doPost: user found, password matched...");
+				
+				ArrayList<Book> books = da.getAllBooks();
+				ArrayList<Integer> ownedBooksId = da.getOwnedBookIds(user.getuName());
+				for(Book b : books) {
+					for(Integer id : ownedBooksId) {
+						if(b.getBookId() == id) {
+							books.remove(b);
+							break;
+						}
+					}
+				}
+				String json = new Gson().toJson(books);
+			    response.setContentType("application/json");
+			    response.setCharacterEncoding("UTF-8");
+			    response.getWriter().write(json);
 			}
-			
-			da.insertUser(user);
+			else {
+				logger.log(Level.SEVERE, "doPost: user found, PASSWORD MISMACHED!!!");
+				response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+			}
 			
 		} catch (SQLException | NamingException e) {
 			// log error
-			logger.log(Level.SEVERE, "doPost: FAILED");
-			e.printStackTrace();
-			//TODO: handle errors
-			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+			logger.log(Level.SEVERE, "doGet: FAILED");
 
 		}
-		return; //By default the response will be 200 "OK"
 	}
 
 }

@@ -13,7 +13,7 @@ import org.bookstop.model.Review;
 import org.bookstop.model.Transaction;
 import org.bookstop.model.User;
 
-public class DA implements DataInterface{
+public class DA implements DataInterface {
 
 	Connection conn = null;
 
@@ -40,7 +40,7 @@ public class DA implements DataInterface{
 			PreparedStatement pstmt = conn.prepareStatement(SQLstatements.SELECT_USER_BY_USERNAME_STMT);
 			pstmt.setString(1, username);
 			ResultSet rs = pstmt.executeQuery();
-			if(rs.next()) {
+			if (rs.next()) {
 				user = new User(rs.getString(DataContract.UsersTable.COL_USERNAME),
 						rs.getString(DataContract.UsersTable.COL_EMAIL),
 						rs.getString(DataContract.UsersTable.COL_ADDRESS),
@@ -48,8 +48,7 @@ public class DA implements DataInterface{
 						rs.getString(DataContract.UsersTable.COL_PASSWORD),
 						rs.getString(DataContract.UsersTable.COL_NICKNAME),
 						rs.getString(DataContract.UsersTable.COL_DESCRIPTION),
-						rs.getString(DataContract.UsersTable.COL_PICTURE),
-						rs.getInt(DataContract.UsersTable.COL_TYPE));
+						rs.getString(DataContract.UsersTable.COL_PICTURE), rs.getInt(DataContract.UsersTable.COL_TYPE));
 			}
 			rs.close();
 			pstmt.close();
@@ -74,7 +73,7 @@ public class DA implements DataInterface{
 			pstmt.setString(8, user.getPicture());
 			pstmt.setInt(9, user.getType());
 			pstmt.executeUpdate();
-			
+
 			conn.commit();
 			pstmt.close();
 		} catch (SQLException e) {
@@ -87,11 +86,11 @@ public class DA implements DataInterface{
 	@Override
 	public ArrayList<User> getAllUsers() {
 		ArrayList<User> users = new ArrayList<User>();
-		
+
 		try {
 			PreparedStatement pstmt = conn.prepareStatement(SQLstatements.SELECT_ALL_USERS_STMT);
 			ResultSet rs = pstmt.executeQuery();
-			while(rs.next()) {
+			while (rs.next()) {
 				users.add(new User(rs.getString(DataContract.UsersTable.COL_USERNAME),
 						rs.getString(DataContract.UsersTable.COL_EMAIL),
 						rs.getString(DataContract.UsersTable.COL_ADDRESS),
@@ -108,22 +107,21 @@ public class DA implements DataInterface{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 		return users;
 	}
 
 	@Override
 	public Book selectBookById(int id) {
 		Book book = null;
-		
+
 		try {
 			PreparedStatement pstmt = conn.prepareStatement(SQLstatements.SELECT_BOOKS_BY_ID_STMT);
 			pstmt.setInt(1, id);
 			ResultSet rs = pstmt.executeQuery();
-			if(rs.next()) {
+			if (rs.next()) {
 				book = new Book(rs.getInt(DataContract.BooksTable.COL_ID),
-						rs.getString(DataContract.BooksTable.COL_NAME),
-						rs.getString(DataContract.BooksTable.COL_IMG),
+						rs.getString(DataContract.BooksTable.COL_NAME), rs.getString(DataContract.BooksTable.COL_IMG),
 						rs.getDouble(DataContract.BooksTable.COL_PRICE),
 						rs.getString(DataContract.BooksTable.COL_DESCRIPTION),
 						rs.getString(DataContract.BooksTable.COL_LINK));
@@ -134,21 +132,20 @@ public class DA implements DataInterface{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 		return book;
 	}
 
 	@Override
 	public ArrayList<Book> getAllBooks() {
 		ArrayList<Book> books = new ArrayList<Book>();
-		
+
 		try {
 			PreparedStatement pstmt = conn.prepareStatement(SQLstatements.SELECT_ALL_BOOKS_STMT);
 			ResultSet rs = pstmt.executeQuery();
-			while(rs.next()) {
+			while (rs.next()) {
 				books.add(new Book(rs.getInt(DataContract.BooksTable.COL_ID),
-						rs.getString(DataContract.BooksTable.COL_NAME),
-						rs.getString(DataContract.BooksTable.COL_IMG),
+						rs.getString(DataContract.BooksTable.COL_NAME), rs.getString(DataContract.BooksTable.COL_IMG),
 						rs.getDouble(DataContract.BooksTable.COL_PRICE),
 						rs.getString(DataContract.BooksTable.COL_DESCRIPTION),
 						rs.getString(DataContract.BooksTable.COL_LINK)));
@@ -159,7 +156,7 @@ public class DA implements DataInterface{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 		return books;
 	}
 
@@ -172,7 +169,7 @@ public class DA implements DataInterface{
 			pstmt.setInt(3, review.getVerified());
 			pstmt.setString(4, review.getText());
 			pstmt.executeUpdate();
-			
+
 			conn.commit();
 			pstmt.close();
 		} catch (SQLException e) {
@@ -188,7 +185,7 @@ public class DA implements DataInterface{
 			PreparedStatement pstmt = conn.prepareStatement(SQLstatements.UPDATE_REVIEW_VERIFIED_STM);
 			pstmt.setInt(1, verified);
 			pstmt.executeUpdate();
-			
+
 			conn.commit();
 			pstmt.close();
 		} catch (SQLException e) {
@@ -205,7 +202,7 @@ public class DA implements DataInterface{
 			pstmt.setString(1, username);
 			pstmt.setInt(2, bookId);
 			pstmt.executeUpdate();
-			
+
 			conn.commit();
 			pstmt.close();
 		} catch (SQLException e) {
@@ -213,7 +210,7 @@ public class DA implements DataInterface{
 			e.printStackTrace();
 		}
 		return;
-		
+
 	}
 
 	@Override
@@ -223,7 +220,7 @@ public class DA implements DataInterface{
 			pstmt.setString(1, like.getUsername());
 			pstmt.setInt(2, like.getBookId());
 			pstmt.executeUpdate();
-			
+
 			conn.commit();
 			pstmt.close();
 		} catch (SQLException e) {
@@ -231,7 +228,7 @@ public class DA implements DataInterface{
 			e.printStackTrace();
 		}
 		return;
-		
+
 	}
 
 	@Override
@@ -241,7 +238,7 @@ public class DA implements DataInterface{
 			pstmt.setString(1, like.getUsername());
 			pstmt.setInt(2, like.getBookId());
 			pstmt.executeUpdate();
-			
+
 			conn.commit();
 			pstmt.close();
 		} catch (SQLException e) {
@@ -249,7 +246,7 @@ public class DA implements DataInterface{
 			e.printStackTrace();
 		}
 		return;
-		
+
 	}
 
 	@Override
@@ -264,9 +261,9 @@ public class DA implements DataInterface{
 			pstmt.setInt(6, transaction.getExpiryYear());
 			pstmt.setString(7, transaction.getCvv());
 			pstmt.setString(8, transaction.getFullName());
-			
+
 			pstmt.executeUpdate();
-			
+
 			conn.commit();
 			pstmt.close();
 		} catch (SQLException e) {
@@ -274,17 +271,17 @@ public class DA implements DataInterface{
 			e.printStackTrace();
 		}
 		return;
-		
+
 	}
 
 	@Override
 	public ArrayList<Transaction> selectAllTransactions() {
 		ArrayList<Transaction> transactions = new ArrayList<Transaction>();
-		
+
 		try {
 			PreparedStatement pstmt = conn.prepareStatement(SQLstatements.SELECT_ALL_TRANSACTIONS);
 			ResultSet rs = pstmt.executeQuery();
-			while(rs.next()) {
+			while (rs.next()) {
 				transactions.add(new Transaction(rs.getString(DataContract.TransactionsTable.COL_USERNAME),
 						rs.getInt(DataContract.TransactionsTable.COL_BOOKID),
 						rs.getString(DataContract.TransactionsTable.COL_CARDCOMPANY),
@@ -300,19 +297,19 @@ public class DA implements DataInterface{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 		return transactions;
 	}
 
 	@Override
 	public ArrayList<Transaction> selectTransactionsByUsername(String username) {
-ArrayList<Transaction> transactions = new ArrayList<Transaction>();
-		
+		ArrayList<Transaction> transactions = new ArrayList<Transaction>();
+
 		try {
 			PreparedStatement pstmt = conn.prepareStatement(SQLstatements.SELECT_TRANSACTIONS_BY_USERNAME);
 			pstmt.setString(1, username);
 			ResultSet rs = pstmt.executeQuery();
-			while(rs.next()) {
+			while (rs.next()) {
 				transactions.add(new Transaction(rs.getString(DataContract.TransactionsTable.COL_USERNAME),
 						rs.getInt(DataContract.TransactionsTable.COL_BOOKID),
 						rs.getString(DataContract.TransactionsTable.COL_CARDCOMPANY),
@@ -328,12 +325,29 @@ ArrayList<Transaction> transactions = new ArrayList<Transaction>();
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 		return transactions;
 	}
 
-	
-	
-	
+	@Override
+	public ArrayList<Integer> getOwnedBookIds(String username) {
+		ArrayList<Integer> arr = new ArrayList<Integer>();
+		
+		try {
+			PreparedStatement pstmt = conn.prepareStatement(SQLstatements.SELECT_BOOKID_TRANSACTIONS_BY_USERNAME);
+			pstmt.setString(1, username);
+			ResultSet rs = pstmt.executeQuery();
+			while (rs.next()) {
+				arr.add(rs.getInt(DataContract.TransactionsTable.COL_BOOKID));
+			}
+			rs.close();
+			pstmt.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return arr;
+	}
 
 }
