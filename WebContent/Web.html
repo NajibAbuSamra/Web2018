@@ -127,8 +127,8 @@
 			    </div>
 				<div class="collapse navbar-collapse" id="myNavbar">
 					<ul class="nav navbar-nav">
-						<li><a href="#">Browse</a></li>
-						<li><a href="#">Option 2</a></li>
+						<li><button ng-click=browse() type="button" class="btn btn-default">Browse</button></li>
+						<li><button ng-click=logout() type="button" class="btn btn-danger">Option2</button></li>
 					</ul>
 					<ul class="nav navbar-nav navbar-right">
 						<li><button ng-click=logout() type="button" class="btn btn-danger">Log out</button></li>
@@ -140,22 +140,31 @@
 			<div class="row content">
 				<div class="col-sm-2">
 					<div class="row">
-						<p>zibfik-left</p>
 				    </div>
 				</div>
 					
 				<div class="col-sm-8">
-					<div class="centralWindow">
+					<div class="centralWindow" ng-show="isBrowsed">
 						<div class="row">
 							<div class="col-sm-3">
-								<div class="row">
-									<p>zibfik3</p>
-							    </div>
+								<div ng-app="myApp" ng-controller="myAppCrtl"> 
+									<ul ng-repeat="x in browseBooks">
+										<div id="{{x.bookId}}">
+									  		<li>
+												<img style="max-width:100px;" ng-src="{{x.img}}">
+												<p>{{x.name}}</p>
+												<p>{{x.price}}</p>
+												<p>{{x.description}}</p>
+												<p>{{x.likes}}</p>
+												<br>
+											</li>	
+								  		</div>
+									</ul>
+								</div>
 							</div>
 						
 							<div class="col-sm-9">
 								<div class="row">
-									<p>zibfik9</p>
 						    	</div>
 							</div>
 						</div>
@@ -164,7 +173,6 @@
 				
 				<div class="col-sm-2">
 					<div class="row">
-						<p>zibfik-right</p>
 				    </div>
 				</div>
 			</div>

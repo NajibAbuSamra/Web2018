@@ -5,6 +5,7 @@ angular.module('myApp',[])
 .controller('myAppCrtl', ['$scope','$http', function($scope,$http) {
 	$scope.loggedIn=false;
 	$scope.registered = true;
+	$scope.isBrowsed = false;
 	$scope.errorBox="";
 	
 	var loggedUser = "";
@@ -51,21 +52,46 @@ angular.module('myApp',[])
 	$scope.logout = function(){
 		$scope.loggedIn = false;
 	}
+	
+	
 	/*BROWSE*/
 	$scope.browse = function(){
-		$window.alert(greeting);
 		var val = JSON.stringify({uName:loggedUser , uPass:loggedPass})
 		$http.post("/Web2018/GetAvailableBooks",val).success(
 				function(data, status, headers, config) {
 					/*PUT BOOKS IN PROPER DIV*/
-					$scopse.browseBooks
+					console.log(data);
+					$scope.isBrowsed = true;
+					$scope.browseBooks = data;
 				}).error(
 				function(data, status, headers, config) {
 					/*SHOW ERROR*/
 					if(status == 401){
 						/*wrong password, log user out and display error*/
 					}
-				}).done(function(data) {});
-	}
-	
+				})
+	}	
 }]);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
