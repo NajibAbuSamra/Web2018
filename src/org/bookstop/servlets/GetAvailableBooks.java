@@ -117,10 +117,11 @@ public class GetAvailableBooks extends HttpServlet {
 				logger.log(Level.SEVERE, "doPost: user found, PASSWORD MISMACHED!!!");
 				response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
 			}
+			da.closeConnection();
 			
 		} catch (SQLException | NamingException e) {
 			// log error
-			logger.log(Level.SEVERE, "doGet: FAILED");
+			logger.log(Level.SEVERE, "doPost: FAILED");
 
 		}
 	}

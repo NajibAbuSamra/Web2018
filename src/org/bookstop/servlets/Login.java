@@ -65,6 +65,11 @@ public class Login extends HttpServlet {
 			    response.setCharacterEncoding("UTF-8");
 			    response.getWriter().write(json);
 			}
+			else {
+				logger.log(Level.INFO, "doGet: user found, password MISMATCHED!!!");
+				response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+			}
+			da.closeConnection();
 			
 		} catch (SQLException | NamingException e) {
 			// log error

@@ -87,6 +87,7 @@ public class Register extends HttpServlet {
 			}
 			
 			da.insertUser(user);
+			da.closeConnection();
 			
 		} catch (SQLException | NamingException e) {
 			// log error

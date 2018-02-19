@@ -75,6 +75,8 @@ public final class SQLstatements {
 			+ DataContract.LikesTable.COL_BOOKID + " = ?";
 	public final static String COUNT_LIKES_BY_BOOKID_STMT = "SELECT COUNT(*) FROM " + DataContract.LikesTable.TABLE_NAME
 			+ " WHERE " + DataContract.LikesTable.COL_BOOKID + " = ?";
+	public final static String SELECT_LIKE_USERNAMES_BY_BOOKID_STMT = "SELECT " + DataContract.LikesTable.COL_USERNAME
+			+ " FROM " + DataContract.LikesTable.TABLE_NAME + " WHERE " + DataContract.LikesTable.COL_BOOKID + " = ?";
 
 	// Transactions
 	public final static String CREATE_TRANSACTIONS_TABLE = "CREATE TABLE " + DataContract.TransactionsTable.TABLE_NAME
@@ -101,7 +103,7 @@ public final class SQLstatements {
 	public final static String SELECT_TRANSACTIONS_BY_USERNAME = "SELECT * FROM "
 			+ DataContract.TransactionsTable.TABLE_NAME + " WHERE " + DataContract.TransactionsTable.COL_USERNAME
 			+ " = ?";
-	public final static String SELECT_BOOKID_TRANSACTIONS_BY_USERNAME = "SELECT "
+	public final static String SELECT_TRANSACTIONS_BOOKID_BY_USERNAME = "SELECT "
 			+ DataContract.TransactionsTable.COL_BOOKID + " FROM " + DataContract.TransactionsTable.TABLE_NAME
 			+ " WHERE " + DataContract.TransactionsTable.COL_USERNAME + " = ?";
 	// TODO: not sure if needed

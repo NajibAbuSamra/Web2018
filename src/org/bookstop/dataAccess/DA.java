@@ -334,7 +334,7 @@ public class DA implements DataInterface {
 		ArrayList<Integer> arr = new ArrayList<Integer>();
 
 		try {
-			PreparedStatement pstmt = conn.prepareStatement(SQLstatements.SELECT_BOOKID_TRANSACTIONS_BY_USERNAME);
+			PreparedStatement pstmt = conn.prepareStatement(SQLstatements.SELECT_TRANSACTIONS_BOOKID_BY_USERNAME);
 			pstmt.setString(1, username);
 			ResultSet rs = pstmt.executeQuery();
 			while (rs.next()) {
@@ -393,6 +393,27 @@ public class DA implements DataInterface {
 		}
 
 		return reviews;
+	}
+
+	@Override
+	public ArrayList<String> selectUsernameFromLikesByBookId(int bookid) {
+		ArrayList<String> likers = new ArrayList<String>(); 
+		
+		try {
+			PreparedStatement pstmt = conn.prepareStatement(SQLstatements.SELECT_LIKE_USERNAMES_BY_BOOKID_STMT);
+			pstmt.setInt(1, bookid);
+			ResultSet rs = pstmt.executeQuery();
+			while (rs.next()) {
+				likers.add(rs.getString(1));
+			}
+			rs.close();
+			pstmt.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return likers;
 	}
 
 }

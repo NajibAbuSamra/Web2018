@@ -30,6 +30,7 @@ public interface DataInterface {
 	public void insertLike(Like like);
 	public void deleteLike(Like like);
 	public int countLikesByBookId(int bookid);
+	public ArrayList<String> selectUsernameFromLikesByBookId(int bookid);
 	
 	//Transactions
 	public void insertTransaction(Transaction transaction);
