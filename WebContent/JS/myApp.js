@@ -10,6 +10,7 @@ angular.module('myApp',[])
 	$scope.registered = true;
 	$scope.isBrowsed = false;
 	$scope.showDetails = false;
+	$scope.optBuy = false;
 	$scope.errorBox="";
 	
 	var loggedUser = "";
@@ -93,6 +94,14 @@ angular.module('myApp',[])
 		console.log(clicked_id);
 		$scope.showDetails = true;
 		$scope.currBook = clicked_id;
+	}	
+	$scope.buyBook = function() {
+		$scope.optBuy = true;
+		$scope.showDetails = false;
+	}
+	$scope.retToBrowseBooks = function() {
+		$scope.optBuy = false;
+		$scope.showDetails = true;
 	}
 }]);
 

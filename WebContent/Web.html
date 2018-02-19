@@ -167,8 +167,8 @@
 									</ul>
 								</div>
 							</div>
-							<div class="leftWindow" ng-show="showDetails">
-								<div class="col-sm-9">
+							<div class="col-sm-9">
+								<div class="leftWindow" ng-show="showDetails">
 									<div class="row">
 										<ul ng-value="currBook">
 									  		<img style="max-width:300px;" ng-src="{{currBook.img}}">
@@ -181,8 +181,49 @@
 											<p>Short description:</p>
 											<p> {{currBook.description}}</p>
 											<span><i ng-mouseover="displayLikes(currBook.bookId)" class="glyphicon glyphicon-thumbs-up"></i></span> {{currBook.likes}}	
+											<!-- <ul ng-repeat="r in currBooks.reviews"> -->
+												
+											<!-- </ul>  -->
+											<button ng-click="buyBook()" type="button" class="btn btn-success"><i class="glyphicon glyphicon-shopping-cart"></i> Buy</button>
 										</ul>
 							    	</div>
+								</div>
+								<div class="col-xs-12 col-sm-8 col-md-4 col-sm-offset-2 col-md-offset-4">
+									<div class="buyingBook" ng-show="optBuy">
+										<form>
+											<div class="form-group">
+												<div class="input-group">
+													<span class="input-group-addon"><i class="glyphicon glyphicon-credit-card"></i></span>
+													<input type="text" id="cardNum" ng-model="buyCardNum" class="form-control" placeholder="Card number">
+												</div>
+											</div>
+											
+											<div class="form-group">
+												<div class="input-group">
+													<span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+													<input type="text" id="month" ng-model="regMonth" class="form-control" placeholder="MM">
+    												<span class="input-group-addon">/</span>
+													<input type="text" id="year" ng-model="regYear" class="form-control" placeholder="YY">
+												</div>
+											</div>										
+											
+										
+											<div class="form-group">
+												<div class="input-group">
+													<span class="input-group-addon"><i class="glyphicon glyphicon-option-horizontal"></i></span>
+													<input type="text" id="cvv" ng-model="regCVV" class="form-control" placeholder="CVV">
+												</div>
+											</div>
+											
+											<div class="form-group">
+												<div class="input-group">
+													<span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+													<input type="text" id="name" ng-model="regFullName" class="form-control" placeholder="full name">
+												</div>
+											</div>
+										</form>
+										<button ng-click=retToBrowseBooks() id="register" type="button" class="btn btn-success"><i class="glyphicon glyphicon-triangle-right"></i> return</button>	
+									</div>
 								</div>
 							</div>
 						</div>
@@ -201,3 +242,7 @@
 </body>
 </html>
 
+
+
+
+        	
