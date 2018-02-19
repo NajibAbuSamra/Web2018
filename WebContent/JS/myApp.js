@@ -70,6 +70,18 @@ angular.module('myApp',[])
 						/*wrong password, log user out and display error*/
 					}
 				})
+	}
+	
+	/*Show Likes*/
+	$scope.displayLikes = function(clicked_id){
+		var val = JSON.stringify({bookName:clicked_id})
+		$http.post("/Web2018/GetLikesByBook",val).success(
+				function(data, status, headers, config) {
+					/*Display Likes*/
+				}).error(
+				function(data, status, headers, config) {
+					/*SHOW ERROR*/
+				})
 	}	
 }]);
 

@@ -155,7 +155,10 @@
 												<p>{{x.name}}</p>
 												<p>{{x.price}}</p>
 												<p>{{x.description}}</p>
-												<p>{{x.likes}}</p>
+												<button ng-click="displayLikes(x.name)" type="button" class="btn btn-info">
+												      <span><i class="glyphicon glyphicon-thumbs-up"></i></span> {{x.likes}}
+    											</button>
+												<br>
 												<br>
 											</li>	
 								  		</div>
