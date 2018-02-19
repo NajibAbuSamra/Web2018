@@ -74,7 +74,7 @@ angular.module('myApp',[])
 	
 	/*Show Likes*/
 	$scope.displayLikes = function(clicked_id){
-		var val = JSON.stringify({clicked_id})
+		var val = JSON.stringify({bookid:clicked_id})
 		$http.post("/Web2018/GetLikersByBook",val).success(
 				function(data, status, headers, config) {
 					/*Display Likes*/

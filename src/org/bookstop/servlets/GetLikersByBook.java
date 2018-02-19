@@ -20,6 +20,7 @@ import org.apache.tomcat.dbcp.dbcp2.BasicDataSource;
 import org.bookstop.constants.AppConstants;
 import org.bookstop.dataAccess.DA;
 import org.bookstop.model.Book;
+import org.bookstop.model.BookId;
 import org.bookstop.model.BookInfo;
 import org.bookstop.model.Review;
 import org.bookstop.model.User;
@@ -64,21 +65,20 @@ public class GetLikersByBook extends HttpServlet {
 		logger.log(Level.INFO, "doPost: Start...");
 
 		Gson gson = new Gson();
-		int bookid = 0;
+		BookId bookid = null;
 		try {
 			StringBuilder sb = new StringBuilder();
 			String s;
 			while ((s = request.getReader().readLine()) != null) {
 				sb.append(s);
 			}
-
-			bookid = (int) gson.fromJson(sb.toString(), int.class);
+			bookid = (BookId) gson.fromJson(sb.toString(), BookId.class);
 			logger.log(Level.INFO, "doPost: bookId: " + bookid);
 
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		if (bookid == 0) {
+		if (bookid == null || bookid.getBookid() == 0) {
 			// TODO: check and handle error
 			return;
 		}
@@ -94,7 +94,7 @@ public class GetLikersByBook extends HttpServlet {
 			DA da = new DA(conn);
 
 
-			ArrayList<String> likers = da.selectUsernameFromLikesByBookId(bookid);
+			ArrayList<String> likers = da.selectUsernameFromLikesByBookId(bookid.getBookid());
 
 			String json = new Gson().toJson(likers);
 			response.setContentType("application/json");
