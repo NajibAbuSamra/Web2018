@@ -154,8 +154,12 @@
 												<img style="max-width:100px;" ng-src="{{x.img}}">
 												<p>{{x.name}}</p>
 												<p>{{x.price}}</p>
-												<p>{{x.description}}</p>
 												<span><i ng-mouseover="displayLikes(x.bookId)" class="glyphicon glyphicon-thumbs-up"></i></span> {{x.likes}}
+												<ul ng-repeat="y in browseLikes">
+													<li>
+														<p>y</p>
+													</li>
+												</ul>
 												<br>
 												<br>
 											</li>	
