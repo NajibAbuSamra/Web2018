@@ -43,3 +43,7 @@
 .centralWindow {
 	border-style: solid;
 }
+
+#showAllBooks{ 
+	overflow-y: auto;
+}
