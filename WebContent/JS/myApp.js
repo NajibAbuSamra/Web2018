@@ -3,9 +3,13 @@
  */
 angular.module('myApp',[])
 .controller('myAppCrtl', ['$scope','$http', function($scope,$http) {
+    $scope.getMyCtrlScope = function() {
+        return $scope;   
+    }
 	$scope.loggedIn=false;
 	$scope.registered = true;
 	$scope.isBrowsed = false;
+	$scope.showDetails = false;
 	$scope.errorBox="";
 	
 	var loggedUser = "";
@@ -50,6 +54,7 @@ angular.module('myApp',[])
 	}
 	/*LOGOUT*/
 	$scope.logout = function(){
+		console.log("allah zbali");
 		$scope.loggedIn = false;
 	}
 	
@@ -84,6 +89,11 @@ angular.module('myApp',[])
 					/*SHOW ERROR*/
 				})
 	}	
+	$scope.showBook = function(clicked_id){
+		console.log(clicked_id);
+		$scope.showDetails = true;
+		$scope.currBook = clicked_id;
+	}
 }]);
 
 
