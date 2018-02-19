@@ -155,9 +155,7 @@
 												<p>{{x.name}}</p>
 												<p>{{x.price}}</p>
 												<p>{{x.description}}</p>
-												<button ng-click="displayLikes(x.name)" type="button" class="btn btn-info">
-												      <span><i class="glyphicon glyphicon-thumbs-up"></i></span> {{x.likes}}
-    											</button>
+												<span><i ng-mouseover="displayLikes(x.bookId)" class="glyphicon glyphicon-thumbs-up"></i></span> {{x.likes}}
 												<br>
 												<br>
 											</li>	
