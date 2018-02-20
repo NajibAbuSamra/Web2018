@@ -12,6 +12,7 @@ angular.module('myApp',[])
 	$scope.isReading = false;
 	$scope.showDetails = false;
 	$scope.optBuy = false;
+	$scope.inputValidity = true;
 	$scope.errorBox="";
 	
 	var loggedUser = "";
@@ -127,70 +128,120 @@ angular.module('myApp',[])
 		$scope.optBuy = false;
 		$scope.showDetails = true;
 	}
+
 	$scope.finishBuy = function() {
 		/* INPUT VALIDITY CHECK! */
 		/* Check card number contains only digits and size is 16 */
 		var isnum = /^\d+$/.test($scope.regCardNum);
 		if (!(isnum))
 		{
-			console.log("zibfik");
+			$scope.inputValidity = false;
+			$scope.regCVV = "";
+			$scope.regYear = "";
+			$scope.regMonth = "";
+			$scope.regCardNum = "";
 		}
 		if($scope.regCardNum.length != 16)
 		{
-			console.log("zibfik");
+			$scope.inputValidity = false;
+			$scope.regCVV = "";
+			$scope.regYear = "";
+			$scope.regMonth = "";
+			$scope.regCardNum = "";
 		}
 		
 		/* Check Month consists of 2 digits */
 		var isnum = /^\d+$/.test($scope.regMonth);
 		if (!(isnum))
 		{
-			console.log("zibfik");
+			$scope.inputValidity = false;
+			$scope.regCVV = "";
+			$scope.regYear = "";
+			$scope.regMonth = "";
+			$scope.regCardNum = "";
 		}
 		if($scope.regMonth.length != 2 && $scope.regMonth.length != 1)
 		{
-			console.log("zibfik");
+			$scope.inputValidity = false;
+			$scope.regCVV = "";
+			$scope.regYear = "";
+			$scope.regMonth = "";
+			$scope.regCardNum = "";
 		}
 		if(parseInt($scope.regMonth) > 12)
 		{
-			console.log("zibfik");
+			$scope.inputValidity = false;
+			$scope.regCVV = "";
+			$scope.regYear = "";
+			$scope.regMonth = "";
+			$scope.regCardNum = "";
 		}
 		/* Check Year consists of 2 digits */
 		var isnum = /^\d+$/.test($scope.regYear);
 		if (!(isnum))
 		{
-			console.log("zibfik");
+			$scope.inputValidity = false;
+			$scope.regCVV = "";
+			$scope.regYear = "";
+			$scope.regMonth = "";
+			$scope.regCardNum = "";
 		}
 		if($scope.regYear.length != 2)
 		{
-			console.log("zibfik");
+			$scope.inputValidity = false;
+			$scope.regCVV = "";
+			$scope.regYear = "";
+			$scope.regMonth = "";
+			$scope.regCardNum = "";
 		}
 		if(parseInt($scope.regYear) < 18)
 		{
-			console.log("zibfik");
+			$scope.inputValidity = false;
+			$scope.regCVV = "";
+			$scope.regYear = "";
+			$scope.regMonth = "";
+			$scope.regCardNum = "";
 		}
 		
 		/* Check CVV consists of 3 digits */
 		var isnum = /^\d+$/.test($scope.regCVV);
 		if (!(isnum))
 		{
-			console.log("zibfik");
+			$scope.inputValidity = false;
+			$scope.regCVV = "";
+			$scope.regYear = "";
+			$scope.regMonth = "";
+			$scope.regCardNum = "";
 		}
 		if($scope.regCVV.length != 3)
 		{
-			console.log("zibfik");
+			$scope.inputValidity = false;
+			$scope.regCVV = "";
+			$scope.regYear = "";
+			$scope.regMonth = "";
+			$scope.regCardNum = "";
 		}
 
 		var val = JSON.stringify({username:loggedUser, bookId:desiredBook, cardCompany:$scope.regCardCompany, cardNumber:$scope.regCardNum, expiryMonth:$scope.regMonth, expiryYear:$scope.regYear, cvv:$scope.regCVV, fullName:$scope.regFullName});
 		console.log(val);
-		$http.post("/Web2018/BuyBook", val).success(
-				function(data, status, headers, config) {
-					$scope.optBuy = false;
-					$scope.showDetails = true;
-				}).error(
-				function(data, status, headers, config) {
-					$scope.errorBox = "Error";
-						
-				})
+		if ($scope.inputValidity)
+			{
+				$http.post("/Web2018/BuyBook", val).success(
+						function(data, status, headers, config) {
+							$scope.optBuy = false;
+							$scope.showDetails = true;
+						}).error(
+						function(data, status, headers, config) {
+							$scope.errorBox = "Error";
+								
+						})
+			}
+		if(	$scope.inputValidity == false)
+			{
+				/* Print Error Message */
+				alert("Please try again!");
+				$scope.inputValidity = true;
+			}
 	}
 }]);
 
