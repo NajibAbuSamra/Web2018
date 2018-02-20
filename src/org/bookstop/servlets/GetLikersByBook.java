@@ -94,8 +94,13 @@ public class GetLikersByBook extends HttpServlet {
 			DA da = new DA(conn);
 
 
-			ArrayList<String> likers = da.selectUsernameFromLikesByBookId(bookid.getBookid());
+			ArrayList<String> usernames = da.selectUsernameFromLikesByBookId(bookid.getBookid());
 
+			ArrayList<User> likers = new ArrayList<User>();
+			
+			for(String username : usernames) {
+				likers.add(da.selectUserByUsername(username));
+			}
 			String json = new Gson().toJson(likers);
 			response.setContentType("application/json");
 			response.setCharacterEncoding("UTF-8");
