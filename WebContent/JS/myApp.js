@@ -105,6 +105,58 @@ angular.module('myApp',[])
 		$scope.showDetails = true;
 	}
 	$scope.finishBuy = function() {
+		/* INPUT VALIDITY CHECK! */
+		/* Check card number contains only digits and size is 16 */
+		var isnum = /^\d+$/.test($scope.regCardNum);
+		if (!(isnum))
+		{
+			console.log("zibfik");
+		}
+		if($scope.regCardNum.length != 16)
+		{
+			console.log("zibfik");
+		}
+		
+		/* Check Month consists of 2 digits */
+		var isnum = /^\d+$/.test($scope.regMonth);
+		if (!(isnum))
+		{
+			console.log("zibfik");
+		}
+		if($scope.regMonth.length != 2 && $scope.regMonth.length != 1)
+		{
+			console.log("zibfik");
+		}
+		if(parseInt($scope.regMonth) > 12)
+		{
+			console.log("zibfik");
+		}
+		/* Check Year consists of 2 digits */
+		var isnum = /^\d+$/.test($scope.regYear);
+		if (!(isnum))
+		{
+			console.log("zibfik");
+		}
+		if($scope.regYear.length != 2)
+		{
+			console.log("zibfik");
+		}
+		if(parseInt($scope.regYear) < 18)
+		{
+			console.log("zibfik");
+		}
+		
+		/* Check CVV consists of 3 digits */
+		var isnum = /^\d+$/.test($scope.regCVV);
+		if (!(isnum))
+		{
+			console.log("zibfik");
+		}
+		if($scope.regCVV.length != 3)
+		{
+			console.log("zibfik");
+		}
+
 		var val = JSON.stringify({username:loggedUser, bookId:desiredBook, cardCompany:$scope.regCardCompany, cardNumber:$scope.regCardNum, expiryMonth:$scope.regMonth, expiryYear:$scope.regYear, cvv:$scope.regCVV, fullName:$scope.regFullName});
 		console.log(val);
 		$http.post("/Web2018/BuyBook", val).success(
