@@ -59,9 +59,9 @@ public class GetLikersByBook extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		System.out.println("GetAvailableBooks Servlet");
+		System.out.println("GetLikersByBook Servlet");
 
-		Logger logger = Logger.getLogger("GetAvailableBooksServlet");
+		Logger logger = Logger.getLogger("GetLikersByBookServlet");
 		logger.log(Level.INFO, "doPost: Start...");
 
 		Gson gson = new Gson();
