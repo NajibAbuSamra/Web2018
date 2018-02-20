@@ -125,10 +125,11 @@
 			      </button>
 			        <a class="navbar-brand"  href="#"><img style="max-width:48px; margin-top: -7px;" src="books.jpg"></a>
 			    </div>
-				<div class="collapse navbar-collapse" id="myNavbar">
+				<div class="collapse navbar-collapse" id="myNavbar" ng-value="user">
 					<ul class="nav navbar-nav">
 						<li><a href="javascript:void(0)" ng-click=browse()>Browse</a></li>
 						<li><a href="javascript:void(0)" ng-click=readBook()>Read book</a></li>
+						<li><a href="javascript:void(0)" >Welcome {{user}}</a></li>
 					</ul>
 					<ul class="nav navbar-nav navbar-right">
 						<li><a href="javascript:void(0)" ng-click=logout()><i class="glyphicon glyphicon-log-out"></i> Log out</a></li>
@@ -167,24 +168,28 @@
 									</ul>
 								</div>
 							</div>
-							<div class="col-sm-9">
+							<div class="col-sm-9" style="overflow-y:scroll; height: 900px;">
 								<div class="leftWindow" ng-show="showDetails">
 									<div class="row">
 										<ul ng-value="currBook">
 									  		<img style="max-width:300px;" ng-src="{{currBook.img}}">
-											<p>Book name:</p>
-											<p> {{currBook.name}}</p>
+											<h5 id="sstHeading">Book name:</h5>
+											<p>{{currBook.name}}</p>
 											<br>
-											<p>Book price:</p>
+											<h5 id="sstHeading">Book price:</h5>
 											<p> {{currBook.price}}</p>
 											<br>
-											<p>Short description:</p>
+											<h5 id="sstHeading">Short description:</h5>
 											<p> {{currBook.description}}</p>
+											<br>
 											<span><i ng-mouseover="displayLikes(currBook.bookId)" class="glyphicon glyphicon-thumbs-up"></i></span> {{currBook.likes}}	
-											<!-- <ul ng-repeat="r in currBooks.reviews"> -->
-												
-											<!-- </ul>  -->
 											<button ng-click="buyBook(currBook.bookId)" type="button" class="btn btn-success"><i class="glyphicon glyphicon-shopping-cart"></i> Buy</button>
+											<br>
+											<h3 id="FirstHeading">Read reviews:</h3>
+											<div ng-repeat="r in currBook.reviews"> 
+												<p> {{r.text}}</p>
+												<br>
+											</div>
 										</ul>
 							    	</div>
 								</div>
@@ -284,17 +289,6 @@
 									  		<img style="max-width:300px;" ng-src="{{currBook.img}}">
 											<p>Book name:</p>
 											<p> {{currBook.name}}</p>
-											<br>
-											<p>Book price:</p>
-											<p> {{currBook.price}}</p>
-											<br>
-											<p>Short description:</p>
-											<p> {{currBook.description}}</p>
-											<span><i ng-mouseover="displayLikes(currBook.bookId)" class="glyphicon glyphicon-thumbs-up"></i></span> {{currBook.likes}}	
-											<!-- <ul ng-repeat="r in currBooks.reviews"> -->
-												
-											<!-- </ul>  -->
-											<button ng-click="buyBook(currBook.bookId)" type="button" class="btn btn-success"><i class="glyphicon glyphicon-shopping-cart"></i> Buy</button>
 										</ul>
 							    	</div>
 								</div>

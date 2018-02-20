@@ -24,6 +24,7 @@ angular.module('myApp',[])
 		$http.post("/Web2018/Login",val).
 		success(function(data,status,headers,config){
 			$scope.loggedIn=true;
+			$scope.user = data.nickname;
 			loggedUser = data.username;
 			loggedPass = data.password;
 			 $scope.answer = loggedUser;
@@ -85,7 +86,7 @@ angular.module('myApp',[])
 	$scope.readBook =function() {
 		var val = JSON.stringify({uName:loggedUser , uPass:loggedPass})
 		/* Change getAvailableBooks with GetMyBooks*/
-		$http.post("/Web2018/GetAvailableBooks",val).success(
+		$http.post("/Web2018/GetMyBooks",val).success(
 				function(data, status, headers, config) {
 					/*PUT BOOKS IN PROPER DIV*/
 					console.log(data);
@@ -109,15 +110,17 @@ angular.module('myApp',[])
 				function(data, status, headers, config) {
 					/*Display Likes*/
 					$scope.browseLikers = data;
+					console.log(data);
 				}).error(
 				function(data, status, headers, config) {
 					/*SHOW ERROR*/
 				})
 	}	
 	$scope.showBook = function(clicked_id){
-		console.log(clicked_id);
+		$scope.booksReviews = clicked_id.reviews;
 		$scope.showDetails = true;
 		$scope.currBook = clicked_id;
+		$scope.counter = 1;
 	}	
 	$scope.buyBook = function(bookId) {
 		$scope.optBuy = true;
