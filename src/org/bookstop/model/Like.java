@@ -2,12 +2,12 @@ package org.bookstop.model;
 
 public class Like {
 	String username;
-	int bookId;
+	int bookid;
 	
-	public Like(String username, int bookId) {
+	public Like(String username, int bookid) {
 		super();
 		this.username = username;
-		this.bookId = bookId;
+		this.bookid = bookid;
 	}
 
 	public String getUsername() {
@@ -18,12 +18,12 @@ public class Like {
 		this.username = username;
 	}
 
-	public int getBookId() {
-		return bookId;
+	public int getBookid() {
+		return bookid;
 	}
 
-	public void setBookId(int bookId) {
-		this.bookId = bookId;
+	public void setBookid(int bookid) {
+		this.bookid = bookid;
 	}
 
 	

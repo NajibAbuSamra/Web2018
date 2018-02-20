@@ -218,7 +218,7 @@ public class DA implements DataInterface {
 		try {
 			PreparedStatement pstmt = conn.prepareStatement(SQLstatements.INSERT_LIKE_STMT);
 			pstmt.setString(1, like.getUsername());
-			pstmt.setInt(2, like.getBookId());
+			pstmt.setInt(2, like.getBookid());
 			pstmt.executeUpdate();
 
 			conn.commit();
@@ -236,7 +236,7 @@ public class DA implements DataInterface {
 		try {
 			PreparedStatement pstmt = conn.prepareStatement(SQLstatements.DELETE_LIKE_BY_USERNAME_AND_BOOKID_STMT);
 			pstmt.setString(1, like.getUsername());
-			pstmt.setInt(2, like.getBookId());
+			pstmt.setInt(2, like.getBookid());
 			pstmt.executeUpdate();
 
 			conn.commit();
