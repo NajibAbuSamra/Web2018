@@ -9,6 +9,7 @@ angular.module('myApp',[])
 	$scope.loggedIn=false;
 	$scope.registered = true;
 	$scope.isBrowsed = false;
+	$scope.isReading = false;
 	$scope.showDetails = false;
 	$scope.optBuy = false;
 	$scope.errorBox="";
@@ -68,6 +69,7 @@ angular.module('myApp',[])
 					/*PUT BOOKS IN PROPER DIV*/
 					console.log(data);
 					$scope.isBrowsed = true;
+					$scope.isReading = false;
 					$scope.browseBooks = data;
 				}).error(
 				function(data, status, headers, config) {
@@ -76,6 +78,27 @@ angular.module('myApp',[])
 						/*wrong password, log user out and display error*/
 					}
 				})
+	}
+	
+	/* Read book */
+	$scope.readBook =function() {
+		var val = JSON.stringify({uName:loggedUser , uPass:loggedPass})
+		/* Change getAvailableBooks with GetMyBooks*/
+		$http.post("/Web2018/GetAvailableBooks",val).success(
+				function(data, status, headers, config) {
+					/*PUT BOOKS IN PROPER DIV*/
+					console.log(data);
+					$scope.isReading = true;
+					$scope.isBrowsed = false;
+					$scope.myBooks = data;
+				}).error(
+				function(data, status, headers, config) {
+					/*SHOW ERROR*/
+					if(status == 401){
+						/*wrong password, log user out and display error*/
+					}
+				})
+
 	}
 	
 	/*Show Likes*/

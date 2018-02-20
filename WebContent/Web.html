@@ -128,7 +128,7 @@
 				<div class="collapse navbar-collapse" id="myNavbar">
 					<ul class="nav navbar-nav">
 						<li><a href="javascript:void(0)" ng-click=browse()>Browse</a></li>
-						<li><a href="javascript:void(0)" ng-click=logout()>Option2</a></li>
+						<li><a href="javascript:void(0)" ng-click=readBook()>Read book</a></li>
 					</ul>
 					<ul class="nav navbar-nav navbar-right">
 						<li><a href="javascript:void(0)" ng-click=logout()><i class="glyphicon glyphicon-log-out"></i> Log out</a></li>
@@ -260,6 +260,47 @@
 							</div>
 						</div>
 				    </div>
+					<div class="centralReadWindow" ng-show="isReading">
+						<div class="row">
+							<div class="col-sm-3" style="overflow-y:scroll; height: 900px;">
+								<div ng-app="myApp" ng-controller="myAppCrtl"> 
+									<ul ng-repeat="x in myBooks">
+										<div id="{{x.bookId}}">
+									  		<li> 		
+												<h4>{{x.name}}</h4>
+									  			<a href="javascript:void(0)" ng-click=getMyCtrlScope().$parent.showBook(x)><img style="max-width:100px;" ng-src="{{x.img}}"></a>
+												<br>
+												<br>
+												<br>
+											</li>	
+								  		</div>
+									</ul>
+								</div>
+							</div>
+							<div class="col-sm-9">
+								<div class="leftReadWindow" ng-show="showDetails">
+									<div class="row">
+										<ul ng-value="currBook">
+									  		<img style="max-width:300px;" ng-src="{{currBook.img}}">
+											<p>Book name:</p>
+											<p> {{currBook.name}}</p>
+											<br>
+											<p>Book price:</p>
+											<p> {{currBook.price}}</p>
+											<br>
+											<p>Short description:</p>
+											<p> {{currBook.description}}</p>
+											<span><i ng-mouseover="displayLikes(currBook.bookId)" class="glyphicon glyphicon-thumbs-up"></i></span> {{currBook.likes}}	
+											<!-- <ul ng-repeat="r in currBooks.reviews"> -->
+												
+											<!-- </ul>  -->
+											<button ng-click="buyBook(currBook.bookId)" type="button" class="btn btn-success"><i class="glyphicon glyphicon-shopping-cart"></i> Buy</button>
+										</ul>
+							    	</div>
+								</div>
+							</div>
+						</div>
+					</div>
 				</div>
 				
 				<div class="col-sm-2">
