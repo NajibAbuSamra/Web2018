@@ -208,7 +208,7 @@ public class ManageDB implements ServletContextListener {
 
 				// populate with several likes
 				Collection<Like> likes = loadLikes(
-						cntx.getResourceAsStream(File.separator + AppConstants.REVIEWS_FILE));
+						cntx.getResourceAsStream(File.separator + AppConstants.LIKES_FILE));
 				PreparedStatement pstmt5 = conn.prepareStatement(SQLstatements.INSERT_LIKE_STMT);
 				for (Like like : likes) {
 					pstmt5.setString(1, like.getUsername());
