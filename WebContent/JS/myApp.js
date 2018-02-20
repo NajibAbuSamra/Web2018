@@ -14,7 +14,8 @@ angular.module('myApp',[])
 	$scope.errorBox="";
 	
 	var loggedUser = "";
-	var loggedPass = ""
+	var loggedPass = "";
+	var desiredBook ="";
 	/*LOGIN*/
 	$scope.loginFunc = function(){
 		var val = JSON.stringify({uName:$scope.uName , uPass:$scope.uPass});
@@ -55,7 +56,6 @@ angular.module('myApp',[])
 	}
 	/*LOGOUT*/
 	$scope.logout = function(){
-		console.log("allah zbali");
 		$scope.loggedIn = false;
 	}
 	
@@ -95,13 +95,27 @@ angular.module('myApp',[])
 		$scope.showDetails = true;
 		$scope.currBook = clicked_id;
 	}	
-	$scope.buyBook = function() {
+	$scope.buyBook = function(bookId) {
 		$scope.optBuy = true;
 		$scope.showDetails = false;
+		desiredBook = bookId;
 	}
 	$scope.retToBrowseBooks = function() {
 		$scope.optBuy = false;
 		$scope.showDetails = true;
+	}
+	$scope.finishBuy = function() {
+		var val = JSON.stringify({username:loggedUser, bookId:desiredBook, cardCompany:$scope.regCardCompany, cardNumber:$scope.regCardNum, expiryMonth:$scope.regMonth, expiryYear:$scope.regYear, cvv:$scope.regCVV, fullName:$scope.regFullName});
+		console.log(val);
+		$http.post("/Web2018/BuyBook", val).success(
+				function(data, status, headers, config) {
+					$scope.optBuy = false;
+					$scope.showDetails = true;
+				}).error(
+				function(data, status, headers, config) {
+					$scope.errorBox = "Error";
+						
+				})
 	}
 }]);
 

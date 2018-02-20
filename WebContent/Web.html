@@ -184,45 +184,77 @@
 											<!-- <ul ng-repeat="r in currBooks.reviews"> -->
 												
 											<!-- </ul>  -->
-											<button ng-click="buyBook()" type="button" class="btn btn-success"><i class="glyphicon glyphicon-shopping-cart"></i> Buy</button>
+											<button ng-click="buyBook(currBook.bookId)" type="button" class="btn btn-success"><i class="glyphicon glyphicon-shopping-cart"></i> Buy</button>
 										</ul>
 							    	</div>
 								</div>
 								<div class="col-xs-12 col-sm-8 col-md-4 col-sm-offset-2 col-md-offset-4">
 									<div class="buyingBook" ng-show="optBuy">
-										<form>
-											<div class="form-group">
-												<div class="input-group">
-													<span class="input-group-addon"><i class="glyphicon glyphicon-credit-card"></i></span>
-													<input type="text" id="cardNum" ng-model="buyCardNum" class="form-control" placeholder="Card number">
+											<form class="modal-content animate">
+												<div class="container">										
+													<h3>Payment information</h3>
+													<div class="form-group">
+														<div class="input-group">
+															<span class="input-group-addon"><i class="glyphicon glyphicon-credit-card"></i></span>
+															<input type="text" id="cardNum" ng-model="regCardNum" class="form-control" placeholder="Card number">
+														</div>
+													</div>
+													
+													<div class="form-group">
+														<div class="input-group">
+															<span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+															<input type="text" id="month" ng-model="regMonth" class="form-control" placeholder="MM">
+		    												<span class="input-group-addon">/</span>
+															<input type="text" id="year" ng-model="regYear" class="form-control" placeholder="YY">
+														</div>
+													</div>										
+													
+												
+													<div class="form-group">
+														<div class="input-group">
+															<span class="input-group-addon"><i class="glyphicon glyphicon-option-horizontal"></i></span>
+															<input type="text" id="cvv" ng-model="regCVV" class="form-control" placeholder="CVV">
+														</div>
+													</div>
+													
+													<div class="form-group">
+														<div class="input-group">
+															<span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+															<input type="text" id="name" ng-model="regFullName" class="form-control" placeholder="full name">
+														</div>
+													</div>
+													
+													<div class="form-group">
+														<div class="input-group">
+														  	<select name="Card company" ng-model="regCardCompany">
+														  		<option value="" disabled selected>Card company</option>
+													    		<option value="masterCard">Mastercard</option>
+													    		<option value="visa">Visa</option>
+													  		</select>
+												  		</div>
+													</div>
+													<div class="center">
+														<h3>Billing address</h3>
+													 </div>
+													
+													<div class="form-group">
+														<div class="input-group">
+															<span class="input-group-addon"><i class="glyphicon glyphicon-home"></i></span>
+															<input type="text" id="addc" ng-model="regAddressCity" class="form-control" placeholder="Address, City">
+														</div>
+													</div>
+													
+													<div class="form-group">
+														<div class="input-group">
+															<span class="input-group-addon"><i class="glyphicon glyphicon-certificate"></i></span>
+															<input type="text" id="zipp" ng-model="regZIP" class="form-control" placeholder="ZIP code">
+														</div>
+													</div>													 
+													
+													<button ng-click=retToBrowseBooks() type="button" class="btn btn-success"><i class="glyphicon glyphicon-triangle-right"></i> return</button>	
+													<button ng-click=finishBuy() id="confirmBuy" type="button" class="btn btn-success"><i class="glyphicon glyphicon-usd"></i> pay</button>	
 												</div>
-											</div>
-											
-											<div class="form-group">
-												<div class="input-group">
-													<span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
-													<input type="text" id="month" ng-model="regMonth" class="form-control" placeholder="MM">
-    												<span class="input-group-addon">/</span>
-													<input type="text" id="year" ng-model="regYear" class="form-control" placeholder="YY">
-												</div>
-											</div>										
-											
-										
-											<div class="form-group">
-												<div class="input-group">
-													<span class="input-group-addon"><i class="glyphicon glyphicon-option-horizontal"></i></span>
-													<input type="text" id="cvv" ng-model="regCVV" class="form-control" placeholder="CVV">
-												</div>
-											</div>
-											
-											<div class="form-group">
-												<div class="input-group">
-													<span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
-													<input type="text" id="name" ng-model="regFullName" class="form-control" placeholder="full name">
-												</div>
-											</div>
-										</form>
-										<button ng-click=retToBrowseBooks() id="register" type="button" class="btn btn-success"><i class="glyphicon glyphicon-triangle-right"></i> return</button>	
+											</form>
 									</div>
 								</div>
 							</div>
