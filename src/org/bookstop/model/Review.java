@@ -3,14 +3,16 @@ package org.bookstop.model;
 public class Review {
 	private int id;
 	private String username;
+	private String nickname;
 	private int bookID;
 	private String text;
 	private int verified;
 
-	public Review(int id, String username, int bookID, int verified, String text) {
+	public Review(int id, String username, String nickname,int bookID, int verified, String text) {
 		super();
 		this.id = id;
 		this.username = username;
+		this.nickname = nickname;
 		this.bookID = bookID;
 		this.verified = verified;
 		this.text = text;
@@ -54,6 +56,14 @@ public class Review {
 
 	public void setId(int id) {
 		this.id = id;
+	}
+
+	public String getNickname() {
+		return nickname;
+	}
+
+	public void setNickname(String nickname) {
+		this.nickname = nickname;
 	}
 
 }

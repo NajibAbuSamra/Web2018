@@ -39,8 +39,9 @@ public final class SQLstatements {
 	public final static String CREATE_REVIEWS_TABLE = "CREATE TABLE " + DataContract.ReviewsTable.TABLE_NAME + "("
 			+ DataContract.ReviewsTable.COL_ID
 			+ " INTEGER NOT NULL GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1),"
-			+ DataContract.ReviewsTable.COL_USERNAME + " varchar(10) NOT NULL," + DataContract.ReviewsTable.COL_BOOKID
-			+ " INTEGER NOT NULL," + DataContract.ReviewsTable.COL_TEXT + " varchar(255) NOT NULL,"
+			+ DataContract.ReviewsTable.COL_USERNAME + " varchar(10) NOT NULL," 
+			+ DataContract.ReviewsTable.COL_NICKNAME + " varchar(20) NOT NULL"
+			+ DataContract.ReviewsTable.COL_BOOKID + " INTEGER NOT NULL," + DataContract.ReviewsTable.COL_TEXT + " varchar(255) NOT NULL,"
 			+ DataContract.ReviewsTable.COL_VERIFIED + " INTEGER NOT NULL," + "PRIMARY KEY ("
 			+ DataContract.ReviewsTable.COL_ID + ")," + "CONSTRAINT username_reviews_ref FOREIGN KEY ("
 			+ DataContract.ReviewsTable.COL_USERNAME + ") REFERENCES " + DataContract.UsersTable.TABLE_NAME + "("
@@ -49,7 +50,7 @@ public final class SQLstatements {
 			+ DataContract.BooksTable.TABLE_NAME + "(" + DataContract.BooksTable.COL_ID + ") ON DELETE CASCADE)";
 
 	public final static String INSERT_REVIEW_STMT = "INSERT INTO " + DataContract.ReviewsTable.TABLE_NAME
-			+ " VALUES(DEFAULT,?,?,?,?)";
+			+ " VALUES(DEFAULT,?,?,?,?,?)";
 	public final static String SELECT_REVIEWS_BY_BOOKID_STMT = "SELECT * FROM " + DataContract.ReviewsTable.TABLE_NAME
 			+ " WHERE " + DataContract.ReviewsTable.COL_BOOKID + " = ?";
 	// TODO: add select unverified reviews

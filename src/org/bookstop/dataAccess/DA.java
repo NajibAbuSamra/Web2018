@@ -381,6 +381,7 @@ public class DA implements DataInterface {
 			while (rs.next()) {
 				reviews.add(new Review(rs.getInt(DataContract.ReviewsTable.COL_ID),
 						rs.getString(DataContract.ReviewsTable.COL_USERNAME),
+						rs.getString(DataContract.ReviewsTable.COL_NICKNAME),
 						rs.getInt(DataContract.ReviewsTable.COL_BOOKID),
 						rs.getInt(DataContract.ReviewsTable.COL_VERIFIED),
 						rs.getString(DataContract.ReviewsTable.COL_TEXT)));

@@ -200,9 +200,10 @@ public class ManageDB implements ServletContextListener {
 				PreparedStatement pstmt4 = conn.prepareStatement(SQLstatements.INSERT_REVIEW_STMT);
 				for (Review review : reviews) {
 					pstmt4.setString(1, review.getUsername());
-					pstmt4.setInt(2, review.getBookID());
-					pstmt4.setString(3, review.getText());
-					pstmt4.setInt(4, review.getVerified());
+					pstmt4.setString(2, review.getNickname());
+					pstmt4.setInt(3, review.getBookID());
+					pstmt4.setString(4, review.getText());
+					pstmt4.setInt(5, review.getVerified());
 					pstmt4.executeUpdate();
 				}
 
