@@ -40,7 +40,7 @@ public final class SQLstatements {
 			+ DataContract.ReviewsTable.COL_ID
 			+ " INTEGER NOT NULL GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1),"
 			+ DataContract.ReviewsTable.COL_USERNAME + " varchar(10) NOT NULL," 
-			+ DataContract.ReviewsTable.COL_NICKNAME + " varchar(20) NOT NULL"
+			+ DataContract.ReviewsTable.COL_NICKNAME + " varchar(20) NOT NULL,"
 			+ DataContract.ReviewsTable.COL_BOOKID + " INTEGER NOT NULL," + DataContract.ReviewsTable.COL_TEXT + " varchar(255) NOT NULL,"
 			+ DataContract.ReviewsTable.COL_VERIFIED + " INTEGER NOT NULL," + "PRIMARY KEY ("
 			+ DataContract.ReviewsTable.COL_ID + ")," + "CONSTRAINT username_reviews_ref FOREIGN KEY ("
