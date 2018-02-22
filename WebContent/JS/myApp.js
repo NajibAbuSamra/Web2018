@@ -11,6 +11,7 @@ angular.module('myApp',[])
 	$scope.isBrowsed = false;
 	$scope.isReading = false;
 	$scope.showDetails = false;
+	$scope.isisHovering = false;
 	$scope.optBuy = false;
 	$scope.inputValidity = true;
 	$scope.errorBox="";
@@ -110,12 +111,17 @@ angular.module('myApp',[])
 				function(data, status, headers, config) {
 					/*Display Likes*/
 					$scope.browseLikers = data;
-					console.log(data);
+					$scope.isHovering = true;
+					console.log("zib");
 				}).error(
 				function(data, status, headers, config) {
 					/*SHOW ERROR*/
 				})
 	}	
+	$scope.dontDispLikes = function(){
+		$scope.isHovering = false;
+		console.log("zibfik");
+	}
 	$scope.showBook = function(clicked_id){
 		$scope.booksReviews = clicked_id.reviews;
 		$scope.showDetails = true;

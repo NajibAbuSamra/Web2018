@@ -182,7 +182,10 @@
 											<h5 id="sstHeading">Short description:</h5>
 											<p> {{currBook.description}}</p>
 											<br>
-											<span><i ng-mouseover="displayLikes(currBook.bookId)" class="glyphicon glyphicon-thumbs-up"></i></span> {{currBook.likes}}	
+											<span><i ng-mouseover="displayLikes(currBook.bookId)" ng-mouseleave="dontDispLikes()" class="glyphicon glyphicon-thumbs-up"></i></span> {{currBook.likes}}	
+											<div class="likes" ng-show="isHovering">
+												<p> all </p>
+											</div>
 											<button ng-click="buyBook(currBook.bookId)" type="button" class="btn btn-success"><i class="glyphicon glyphicon-shopping-cart"></i> Buy</button>
 											<br>
 											<h3 id="FirstHeading">Read reviews:</h3>
