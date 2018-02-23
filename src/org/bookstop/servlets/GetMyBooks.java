@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -94,10 +95,11 @@ public class GetMyBooks extends HttpServlet {
 				
 				ArrayList<Book> books = da.getAllBooks();
 				ArrayList<Integer> ownedBooksId = da.getOwnedBookIds(user.getuName());
-				for(Book b : books) {
+				for(Iterator<Book> iterator = books.iterator();iterator.hasNext();) {
+					Book b = iterator.next();
 					for(Integer id : ownedBooksId) {
 						if(b.getBookId() != id) {
-							books.remove(b);
+							iterator.remove();
 							break;
 						}
 					}
