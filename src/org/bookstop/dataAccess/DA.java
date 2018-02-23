@@ -398,8 +398,8 @@ public class DA implements DataInterface {
 
 	@Override
 	public ArrayList<String> selectUsernameFromLikesByBookId(int bookid) {
-		ArrayList<String> likers = new ArrayList<String>(); 
-		
+		ArrayList<String> likers = new ArrayList<String>();
+
 		try {
 			PreparedStatement pstmt = conn.prepareStatement(SQLstatements.SELECT_LIKE_USERNAMES_BY_BOOKID_STMT);
 			pstmt.setInt(1, bookid);
@@ -413,8 +413,38 @@ public class DA implements DataInterface {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 		return likers;
+	}
+
+	@Override
+	public Transaction selectTransactionByUsernameAndBookid(String username, int bookid) {
+		Transaction t = null;
+
+		try {
+			PreparedStatement pstmt = conn
+					.prepareStatement(SQLstatements.SELECT_TRANSACTION_BY_USERNAME_AND_BOOKID_STMT);
+			pstmt.setString(1, username);
+			pstmt.setInt(2, bookid);
+			ResultSet rs = pstmt.executeQuery();
+			if (rs.next()) {
+				t =  new Transaction(rs.getString(DataContract.TransactionsTable.COL_USERNAME),
+						rs.getInt(DataContract.TransactionsTable.COL_BOOKID),
+						rs.getString(DataContract.TransactionsTable.COL_CARDCOMPANY),
+						rs.getString(DataContract.TransactionsTable.COL_CARDNUMBER),
+						rs.getInt(DataContract.TransactionsTable.COL_EXPIRYMONTH),
+						rs.getInt(DataContract.TransactionsTable.COL_EXPIRYYEAR),
+						rs.getString(DataContract.TransactionsTable.COL_CVV),
+						rs.getString(DataContract.TransactionsTable.COL_FULLNAME));
+			}
+			rs.close();
+			pstmt.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		return t;
 	}
 
 }
