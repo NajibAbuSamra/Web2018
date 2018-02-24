@@ -277,6 +277,7 @@
 							</div>
 						</div>
 				    </div>
+
 					<div class="centralReadWindow" ng-show="isReading">
 						<div class="row">
 							<div class="col-sm-3" style="overflow-y:auto; height: 900px;">
@@ -294,20 +295,37 @@
 									</ul>
 								</div>
 							</div>
-							<div class="col-sm-9">
+							
+							<div class="col-sm-9" style="overflow-y:auto; height: 900px;">
 								<div class="leftReadWindow" ng-show="showRDetails">
 									<div class="row">
 										<ul ng-value="currRBook">
 											<div class="form-group">
 										  		<img style="max-width:300px;" ng-src="{{currRBook.img}}">
 											</div>
+
+											<br>
+											<div ng-show="!showRReviews">
+												<button ng-click=collapseRReviews() type="button" class="btn btn-success"><i class="glyphicon glyphicon-triangle-right"></i> Show reviews</button>	
+											</div>
+											<div ng-show="showRReviews">
+												<button ng-click=hideRReviews() type="button" class="btn btn-sucess"><i class="glyphicon glyphicon-chevron-up"></i> Hide reviews</button>													
+											</div>
+											<br>
+											<div class="disRRevs" ng-show="showRReviews">
+												<br>
+												<div ng-repeat="t in currRBook.reviews"> 
+													<h4 id="FirstHeading">{{$index + 1}}. {{t.nickname}}'s review:</h4>
+													<p> {{t.text}}</p>
+													<br>
+												</div>
+											</div>
 											<button ng-click="openBookForReading(currRBook)" type="button" class="btn btn-danger">Read Book</button>
 											<button ng-click=addReview(currRBook) id="register" type="button" class="btn btn-danger">Add Review</button>
 										</ul>
 							    	</div>
 								</div>
-							</div>
-							<div class="col-sm-9">
+								
 								<div ng-show="popUpAddReview" class="col-lg-8">
 									<div class="row">
 										<form>

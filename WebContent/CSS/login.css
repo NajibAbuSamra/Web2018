@@ -51,6 +51,10 @@ body {
 	border-style: solid;
 }
 
+.centralReadWindow{
+	border-style: solid;
+}
+
 #showAllBooks{ 
 	overflow-y: auto;
 }

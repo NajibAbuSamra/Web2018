@@ -18,6 +18,8 @@ angular.module('myApp',[])
 	$scope.errorBox="";
 	$scope.popUpAddReview = false;
 	$scope.showReviews = false;
+	$scope.showRReviews = false;
+
 	
 	var loggedUser = "";
 	var loggedPass = "";
@@ -285,8 +287,14 @@ angular.module('myApp',[])
 	$scope.collapseReviews = function(){
 		$scope.showReviews = true;
 	}
+	$scope.collapseRReviews = function(){
+		$scope.showRReviews = true;
+	}
 	$scope.hideReviews = function(){
 		$scope.showReviews = false;
+	}
+	$scope.hideRReviews = function(){
+		$scope.showRReviews = false;
 	}
 }]);
 
