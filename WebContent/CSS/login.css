@@ -1,5 +1,9 @@
 @charset "UTF-8";
 
+body {
+	height = 100%;
+}
+
 .login-page {
   width: 360px;
   padding: 8% 0 0;
@@ -70,3 +74,20 @@
     font-size: 16px;
     line-height: 28px;
 }
+
+.disRevs {
+	height:auto;
+	overflow:auto;
+}
+
+.buyingBook {
+	max-width: 100%;
+}
+
+form {
+	width: 100%;
+}
+
+input {
+	max-width: 90%;
+} 

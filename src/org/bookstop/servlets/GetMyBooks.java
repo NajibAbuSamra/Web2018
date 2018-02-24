@@ -95,6 +95,10 @@ public class GetMyBooks extends HttpServlet {
 				
 				ArrayList<Book> books = da.getAllBooks();
 				ArrayList<Integer> ownedBooksId = da.getOwnedBookIds(user.getuName());
+				if (ownedBooksId.isEmpty())
+				{
+					ownedBooksId.add(0); // ids start with 1, so 0 means no book
+				}
 				for(Iterator<Book> iterator = books.iterator();iterator.hasNext();) {
 					Book b = iterator.next();
 					for(Integer id : ownedBooksId) {

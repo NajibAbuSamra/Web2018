@@ -13,12 +13,16 @@ angular.module('myApp',[])
 	$scope.showDetails = false;
 	$scope.isisHovering = false;
 	$scope.optBuy = false;
+	$scope.showRDetails = false;
 	$scope.inputValidity = true;
 	$scope.errorBox="";
+	$scope.popUpAddReview = false;
+	$scope.showReviews = false;
 	
 	var loggedUser = "";
 	var loggedPass = "";
 	var desiredBook ="";
+	var loggedNick = "";
 	/*LOGIN*/
 	$scope.loginFunc = function(){
 		var val = JSON.stringify({uName:$scope.uName , uPass:$scope.uPass});
@@ -28,7 +32,10 @@ angular.module('myApp',[])
 			$scope.user = data.nickname;
 			loggedUser = data.username;
 			loggedPass = data.password;
-			 $scope.answer = loggedUser;
+			loggedNick = data.nickname;
+			$scope.isBrowsed = false;
+			$scope.isReading = false;
+			$scope.showDetails = false;
 			}).
 		error(function(data,status,headers,config){
 			$scope.errorBox="Error";
@@ -74,6 +81,7 @@ angular.module('myApp',[])
 					$scope.isBrowsed = true;
 					$scope.isReading = false;
 					$scope.browseBooks = data;
+					$scope.showRDetails = false;
 				}).error(
 				function(data, status, headers, config) {
 					/*SHOW ERROR*/
@@ -90,7 +98,6 @@ angular.module('myApp',[])
 		$http.post("/Web2018/GetMyBooks",val).success(
 				function(data, status, headers, config) {
 					/*PUT BOOKS IN PROPER DIV*/
-					console.log(data);
 					$scope.isReading = true;
 					$scope.isBrowsed = false;
 					$scope.myBooks = data;
@@ -112,7 +119,6 @@ angular.module('myApp',[])
 					/*Display Likes*/
 					$scope.browseLikers = data;
 					$scope.isHovering = true;
-					console.log("zib");
 				}).error(
 				function(data, status, headers, config) {
 					/*SHOW ERROR*/
@@ -120,7 +126,6 @@ angular.module('myApp',[])
 	}	
 	$scope.dontDispLikes = function(){
 		$scope.isHovering = false;
-		console.log("zibfik");
 	}
 	$scope.showBook = function(clicked_id){
 		$scope.booksReviews = clicked_id.reviews;
@@ -128,6 +133,11 @@ angular.module('myApp',[])
 		$scope.currBook = clicked_id;
 		$scope.counter = 1;
 	}	
+	$scope.showReadingBook = function(book_being_read){
+		$scope.showRDetails = true;
+		$scope.popUpAddReview = false;
+		$scope.currRBook = book_being_read;
+	}
 	$scope.buyBook = function(bookId) {
 		$scope.optBuy = true;
 		$scope.showDetails = false;
@@ -251,6 +261,27 @@ angular.module('myApp',[])
 				alert("Please try again!");
 				$scope.inputValidity = true;
 			}
+	}
+	$scope.addReview = function(currRBook){
+		$scope.showRDetails = false;
+		$scope.popUpAddReview = true;
+	}
+	$scope.submitReview = function(bookId){
+		var val = JSON.stringify({username:loggedUser, nickname:loggedNick, bookID:bookId, review:$scope.regRev});
+		$http.post("/Web2018/AddReview",val).success(
+				function(data, status, headers, config) {
+					$scope.showRDetails = true;
+					$scope.popUpAddReview = false;
+				}).error(
+				function(data, status, headers, config) {
+					/*SHOW ERROR*/
+				})
+	}
+	$scope.collapseReviews = function(){
+		$scope.showReviews = true;
+	}
+	$scope.hideReviews = function(){
+		$scope.showReviews = false;
 	}
 }]);
 
