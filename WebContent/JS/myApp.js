@@ -274,7 +274,7 @@ angular.module('myApp',[])
 		$scope.popUpAddReview = true;
 	}
 	$scope.submitReview = function(bookId){
-		var val = JSON.stringify({username:loggedUser, nickname:loggedNick, bookID:bookId, review:$scope.regRev});
+		var val = JSON.stringify({username:loggedUser, nickname:loggedNick, bookID:bookId, text:$scope.regRev});
 		$http.post("/Web2018/AddReview",val).success(
 				function(data, status, headers, config) {
 					$scope.showRDetails = true;

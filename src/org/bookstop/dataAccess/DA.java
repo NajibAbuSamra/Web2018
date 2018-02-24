@@ -165,9 +165,10 @@ public class DA implements DataInterface {
 		try {
 			PreparedStatement pstmt = conn.prepareStatement(SQLstatements.INSERT_REVIEW_STMT);
 			pstmt.setString(1, review.getUsername());
-			pstmt.setInt(2, review.getBookID());
-			pstmt.setInt(3, review.getVerified());
+			pstmt.setString(2, review.getNickname());
+			pstmt.setInt(3, review.getBookID());
 			pstmt.setString(4, review.getText());
+			pstmt.setInt(5, Review.UNVERIFIED);
 			pstmt.executeUpdate();
 
 			conn.commit();

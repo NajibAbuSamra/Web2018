@@ -7,6 +7,9 @@ public class Review {
 	private int bookID;
 	private String text;
 	private int verified;
+	
+	public static final int UNVERIFIED = 0;
+	public static final int VERIFIED = 1;
 
 	public Review(int id, String username, String nickname,int bookID, int verified, String text) {
 		super();
