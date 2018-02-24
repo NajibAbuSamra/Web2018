@@ -106,7 +106,7 @@
 								<input type="text" id="photo" ng-model="regPic" class="form-control" placeholder="URL to your photo">
 							</div>
 						</div>
-						<button data-ng-click="toggleRegister()" type="button" class="btn btn-primary">Login</button>
+						<button ng-click="toggleRegister()" type="button" class="btn btn-primary">Login</button>
 						<button ng-click=registerFunc() id="register" type="button" class="btn btn-primary">Register</button>
 					</form>	
 				</div>
@@ -156,11 +156,6 @@
 												<p>{{x.name}}</p>
 												<p>{{x.price}}</p>
 												<span><i ng-mouseover="displayLikes(x.bookId)" class="glyphicon glyphicon-thumbs-up"></i></span> {{x.likes}}
-												<ul ng-repeat="y in browseLikes">
-													<li>
-														<p>y</p>
-													</li>
-												</ul>
 												<br>
 												<br>
 											</li>	
@@ -184,7 +179,9 @@
 												<div>
 													<span><i ng-mouseover="displayLikes(currBook.bookId)" ng-mouseleave="dontDispLikes()" class="glyphicon glyphicon-thumbs-up"></i></span> {{currBook.likes}}	
 													<div class="likes" ng-show="isHovering">
-														<p> all </p>
+														<div ng-repeat="likers in browseLikers">
+															<span class="tooltiptext">{{likers.nickname}}</span>
+														</div>
 													</div>
 												</div>
 												<br>

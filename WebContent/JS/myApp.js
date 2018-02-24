@@ -51,9 +51,13 @@ angular.module('myApp',[])
 		$http.post("/Web2018/Register", val).success(
 				function(data, status, headers, config) {
 					$scope.loggedIn = true;
-					loggedUser = data.username;
+					loggedUser = $scope.regUname;
 					loggedPass = $scope.regPass;
-					 $scope.answer = loggedUser;
+					$scope.user = $scope.regNick;
+					$scope.isBrowsed = false;
+					$scope.isReading = false;
+					$scope.showDetails = false;
+					$scope.answer = loggedUser;
 				}).error(
 				function(data, status, headers, config) {
 					$scope.errorBox = "Error";
@@ -117,6 +121,7 @@ angular.module('myApp',[])
 		$http.post("/Web2018/GetLikersByBook",val).success(
 				function(data, status, headers, config) {
 					/*Display Likes*/
+					console.log(data);
 					$scope.browseLikers = data;
 					$scope.isHovering = true;
 				}).error(
