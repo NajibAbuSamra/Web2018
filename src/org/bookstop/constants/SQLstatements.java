@@ -50,8 +50,8 @@ public final class SQLstatements {
 
 	public final static String INSERT_REVIEW_STMT = "INSERT INTO " + DataContract.ReviewsTable.TABLE_NAME
 			+ " VALUES(DEFAULT,?,?,?,?,?)";
-	public final static String SELECT_REVIEWS_BY_BOOKID_STMT = "SELECT * FROM " + DataContract.ReviewsTable.TABLE_NAME
-			+ " WHERE " + DataContract.ReviewsTable.COL_BOOKID + " = ?";
+	public final static String SELECT_REVIEWS_VERIFIED_BY_BOOKID_STMT = "SELECT * FROM " + DataContract.ReviewsTable.TABLE_NAME
+			+ " WHERE " + DataContract.ReviewsTable.COL_BOOKID + " = ? AND " + DataContract.ReviewsTable.COL_VERIFIED + " = 1";
 	// TODO: add select unverified reviews
 	public final static String UPDATE_REVIEW_VERIFIED_STMT = "UPDATE " + DataContract.ReviewsTable.TABLE_NAME + " SET "
 			+ DataContract.ReviewsTable.COL_VERIFIED + " = ?";
