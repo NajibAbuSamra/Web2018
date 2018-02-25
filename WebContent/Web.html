@@ -303,15 +303,16 @@
 											<div class="form-group">
 										  		<img style="max-width:300px;" ng-src="{{currRBook.img}}">
 											</div>
-											<div ng-show="did_not_liked_yet">
-												<a href="javascript:void(0)" ng-click=updateLikers(currRBook)><span><i ng-mouseover="displayLikes(currRBook.bookId)" ng-mouseleave="dontDispLikes()" class="glyphicon glyphicon-thumbs-up"></i></span></a> {{currRBook.likes}}	
+											<div ng-show="!liked">
+												<a href="javascript:void(0)" ng-click=updateLikers(currRBook)><span><i ng-mouseover="displayLikes(currRBook.bookId)" ng-mouseleave="dontDispLikes()" class="glyphicon glyphicon-thumbs-up"></i></span></a> 
+												{{currRBook.likes}}	
 												<div class="likes" ng-show="isHovering">
 													<div ng-repeat="likers in browseLikers">
 														<span class="tooltiptext">{{likers.nickname}}</span>
 													</div>
 												</div>
 											</div>
-											<div ng-show="liked_yet">
+											<div ng-show="liked">
 												<a href="javascript:void(0)" ng-click=removeLike(currRBook)><span><i ng-mouseover="displayLikes(currRBook.bookId)" ng-mouseleave="dontDispLikes()" class="glyphicon glyphicon-thumbs-down"></i></span></a> {{currRBook.likes}}	
 												<div class="likes" ng-show="isHovering">
 													<div ng-repeat="likers in browseLikers">
@@ -350,7 +351,7 @@
 												</div>
 											</div>
 										</form>
-										<button ng-click=submitReview(currRBook.bookId) id="submitRev" type="button" class="btn btn-danger">Submit</button>
+										<button ng-click=submitReview(currRBook) id="submitRev" type="button" class="btn btn-danger">Submit</button>
 							    	</div>
 								</div>
 							</div>

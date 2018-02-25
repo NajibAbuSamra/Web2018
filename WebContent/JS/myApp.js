@@ -7,11 +7,10 @@ angular.module('myApp',[])
         return $scope;   
     }
 	$scope.loggedIn=false;
-	$scope.did_not_liked_yet = true;
+	$scope.liked = false;
 	$scope.registered = true;
 	$scope.isBrowsed = false;
 	$scope.isReading = false;
-	$scope.liked_yet = false;
 	$scope.showDetails = false;
 	$scope.isisHovering = false;
 	$scope.optBuy = false;
@@ -85,7 +84,6 @@ angular.module('myApp',[])
 		$http.post("/Web2018/GetAvailableBooks",val).success(
 				function(data, status, headers, config) {
 					/*PUT BOOKS IN PROPER DIV*/
-					console.log(data);
 					$scope.isBrowsed = true;
 					$scope.isReading = false;
 					$scope.browseBooks = data;
@@ -120,12 +118,11 @@ angular.module('myApp',[])
 	}
 	
 	/*Show Likes*/
-	$scope.displayLikes = function(clicked_id){
-		var val = JSON.stringify({bookid:clicked_id})
+	$scope.displayLikes = function(bookID){
+		var val = JSON.stringify({bookid:bookID})
 		$http.post("/Web2018/GetLikersByBook",val).success(
 				function(data, status, headers, config) {
 					/*Display Likes*/
-					console.log(data);
 					$scope.browseLikers = data;
 					$scope.isHovering = true;
 				}).error(
@@ -133,27 +130,27 @@ angular.module('myApp',[])
 					/*SHOW ERROR*/
 				})
 	}	
-	$scope.updateLikers = function(clicked_id) {
-		var val = JSON.stringify({bookid:clicked_id})
+	$scope.updateLikers = function(book) {
+		var val = JSON.stringify({username:loggedUser, bookid:book.bookId})
 		$http.post("/Web2018/AddLike",val).success(
 				function(data, status, headers, config) {
 					/*Display Likes*/
-					$scope.did_not_liked_yet = false;
-					$scope.liked_yet = true;
-					$scope.browseLikers = data;
+					$scope.liked = true;
+					$scope.displayLikes(book.bookId);
+					$scope.currRBook.likes = $scope.currRBook.likes + 1; 
 				}).error(
 				function(data, status, headers, config) {
 					/*SHOW ERROR*/
 				})
 	}
-	$scope.removeLike = function(clicked_id) {
-		var val = JSON.stringify({bookid:clicked_id})
+	$scope.removeLike = function(book) {
+		var val = JSON.stringify({username:loggedUser, bookid:book.bookId})
 		$http.post("/Web2018/RemoveLike",val).success(
 				function(data, status, headers, config) {
 					/*Display Likes*/
-					$scope.did_not_liked_yet = true;
-					$scope.liked_yet = false;
+					$scope.liked = false;
 					$scope.browseLikers = data;
+					$scope.currRBook.likes = $scope.currRBook.likes - 1; 
 				}).error(
 				function(data, status, headers, config) {
 					/*SHOW ERROR*/
@@ -174,7 +171,23 @@ angular.module('myApp',[])
 		$scope.popUpAddReview = false;
 		$scope.popUpAddReview = false;
 		$scope.currRBook = book_being_read;
+		
+		var val = JSON.stringify({bookid:book_being_read.bookId})
+		$http.post("/Web2018/GetLikersByBook",val).success(
+				function(data, status, headers, config) {
+					/*Display Likes*/
+					angular.forEach(data, function(value, key) {
+						if(angular.equals(value.username,loggedUser)) {
+							$scope.liked = true;
+						}
+					});
+				}).error(
+				function(data, status, headers, config) {
+					/*SHOW ERROR*/
+				})
+		
 	}
+
 	$scope.buyBook = function(bookId) {
 		$scope.optBuy = true;
 		$scope.showDetails = false;
@@ -279,13 +292,13 @@ angular.module('myApp',[])
 		}
 
 		var val = JSON.stringify({username:loggedUser, bookID:desiredBook, cardCompany:$scope.regCardCompany, cardNumber:$scope.regCardNum, expiryMonth:$scope.regMonth, expiryYear:$scope.regYear, cvv:$scope.regCVV, fullName:$scope.regFullName});
-		console.log(val);
 		if ($scope.inputValidity)
 			{
 				$http.post("/Web2018/BuyBook", val).success(
 						function(data, status, headers, config) {
 							$scope.optBuy = false;
-							$scope.showDetails = true;
+							$scope.showDetails = false;
+							
 						}).error(
 						function(data, status, headers, config) {
 							$scope.errorBox = "Error";
@@ -303,12 +316,14 @@ angular.module('myApp',[])
 		$scope.showRDetails = false;
 		$scope.popUpAddReview = true;
 	}
-	$scope.submitReview = function(bookId){
-		var val = JSON.stringify({username:loggedUser, nickname:loggedNick, bookID:bookId, text:$scope.regRev});
+	$scope.submitReview = function(currRBook){
+		var val = JSON.stringify({username:loggedUser, nickname:loggedNick, bookID:currRBook.bookId, text:$scope.regRev});
 		$http.post("/Web2018/AddReview",val).success(
 				function(data, status, headers, config) {
 					$scope.showRDetails = true;
 					$scope.popUpAddReview = false;
+					$scope.readBook();
+					$scope.showReadingBook(currRBook);
 				}).error(
 				function(data, status, headers, config) {
 					/*SHOW ERROR*/
