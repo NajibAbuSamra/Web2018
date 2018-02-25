@@ -39,14 +39,12 @@ public final class SQLstatements {
 	public final static String CREATE_REVIEWS_TABLE = "CREATE TABLE " + DataContract.ReviewsTable.TABLE_NAME + "("
 			+ DataContract.ReviewsTable.COL_ID
 			+ " INTEGER NOT NULL GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1),"
-			+ DataContract.ReviewsTable.COL_USERNAME + " varchar(10) NOT NULL," 
-			+ DataContract.ReviewsTable.COL_NICKNAME + " varchar(20) NOT NULL,"
-			+ DataContract.ReviewsTable.COL_BOOKID + " INTEGER NOT NULL," 
-			+ DataContract.ReviewsTable.COL_TEXT + " varchar(255) NOT NULL,"
-			+ DataContract.ReviewsTable.COL_VERIFIED + " INTEGER NOT NULL," + "PRIMARY KEY ("
-			+ DataContract.ReviewsTable.COL_ID + ")," + "CONSTRAINT username_reviews_ref FOREIGN KEY ("
-			+ DataContract.ReviewsTable.COL_USERNAME + ") REFERENCES " + DataContract.UsersTable.TABLE_NAME + "("
-			+ DataContract.UsersTable.COL_USERNAME + ") ON DELETE CASCADE,"
+			+ DataContract.ReviewsTable.COL_USERNAME + " varchar(10) NOT NULL," + DataContract.ReviewsTable.COL_NICKNAME
+			+ " varchar(20) NOT NULL," + DataContract.ReviewsTable.COL_BOOKID + " INTEGER NOT NULL,"
+			+ DataContract.ReviewsTable.COL_TEXT + " varchar(255) NOT NULL," + DataContract.ReviewsTable.COL_VERIFIED
+			+ " INTEGER NOT NULL," + "PRIMARY KEY (" + DataContract.ReviewsTable.COL_ID + "),"
+			+ "CONSTRAINT username_reviews_ref FOREIGN KEY (" + DataContract.ReviewsTable.COL_USERNAME + ") REFERENCES "
+			+ DataContract.UsersTable.TABLE_NAME + "(" + DataContract.UsersTable.COL_USERNAME + ") ON DELETE CASCADE,"
 			+ "CONSTRAINT bookid_reviews_ref FOREIGN KEY (" + DataContract.ReviewsTable.COL_BOOKID + ") REFERENCES "
 			+ DataContract.BooksTable.TABLE_NAME + "(" + DataContract.BooksTable.COL_ID + ") ON DELETE CASCADE)";
 
@@ -113,18 +111,22 @@ public final class SQLstatements {
 			+ DataContract.TransactionsTable.TABLE_NAME + " WHERE " + DataContract.TransactionsTable.COL_USERNAME
 			+ " = ? AND " + DataContract.TransactionsTable.COL_BOOKID + " = ?";
 
-	//ScrollPositions
-	public final static String CREATE_SCROLLPOSITIONS_TABLE = "CREATE TABLE " +DataContract.ScrollPositionsTable.TABLE_NAME
-			+ "(" + DataContract.ScrollPositionsTable.COL_USERNAME + " VARCHAR(10) NOT NULL,"
-			+ DataContract.ScrollPositionsTable.COL_BOOKID + " INTEGER NOT NULL,"
-			+ DataContract.ScrollPositionsTable.COL_YPOS + " INTEGER NOT NULL,"
-			+ "PRIMARY KEY (" + DataContract.ScrollPositionsTable.COL_USERNAME + ","+ DataContract.ScrollPositionsTable.COL_BOOKID + ")," 
-			+ "CONSTRAINT username_ypos_ref FOREIGN KEY ("
-			+ DataContract.ScrollPositionsTable.COL_USERNAME + ") REFERENCES " + DataContract.UsersTable.TABLE_NAME + "("
-			+ DataContract.UsersTable.COL_USERNAME + ") ON DELETE CASCADE,"
-			+ "CONSTRAINT bookid_ypos_ref FOREIGN KEY (" + DataContract.ScrollPositionsTable.COL_BOOKID + ") REFERENCES "
-			+ DataContract.BooksTable.TABLE_NAME + "(" + DataContract.BooksTable.COL_ID + ") ON DELETE CASCADE)";
-	public final static String INSERT_YPOS_STMT = "INSERT INTO " + DataContract.ScrollPositionsTable.TABLE_NAME
+	// ScrollPositions
+	public final static String CREATE_SCROLLPOSITIONS_TABLE = "CREATE TABLE "
+			+ DataContract.ScrollPositionsTable.TABLE_NAME + "(" + DataContract.ScrollPositionsTable.COL_USERNAME
+			+ " VARCHAR(10) NOT NULL," + DataContract.ScrollPositionsTable.COL_BOOKID + " INTEGER NOT NULL,"
+			+ DataContract.ScrollPositionsTable.COL_YPOS + " INTEGER NOT NULL," + "PRIMARY KEY ("
+			+ DataContract.ScrollPositionsTable.COL_USERNAME + "," + DataContract.ScrollPositionsTable.COL_BOOKID + "),"
+			+ "CONSTRAINT username_ypos_ref FOREIGN KEY (" + DataContract.ScrollPositionsTable.COL_USERNAME
+			+ ") REFERENCES " + DataContract.UsersTable.TABLE_NAME + "(" + DataContract.UsersTable.COL_USERNAME
+			+ ") ON DELETE CASCADE," + "CONSTRAINT bookid_ypos_ref FOREIGN KEY ("
+			+ DataContract.ScrollPositionsTable.COL_BOOKID + ") REFERENCES " + DataContract.BooksTable.TABLE_NAME + "("
+			+ DataContract.BooksTable.COL_ID + ") ON DELETE CASCADE)";
+	public final static String INSERT_SCROLLPOSITION_STMT = "INSERT INTO " + DataContract.ScrollPositionsTable.TABLE_NAME
 			+ " VALUES(?,?,?)";
-	
+	public final static String SELECT_YPOS_BY_USERNAME_AND_BOOKID_STMT = "SELECT "
+			+ DataContract.ScrollPositionsTable.COL_YPOS + " FROM " + DataContract.ScrollPositionsTable.TABLE_NAME
+			+ " WHERE " + DataContract.ScrollPositionsTable.COL_USERNAME + " = ? AND "
+			+ DataContract.ScrollPositionsTable.COL_BOOKID + " = ?";
+
 }

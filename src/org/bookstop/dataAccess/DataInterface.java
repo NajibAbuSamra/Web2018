@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import org.bookstop.model.Book;
 import org.bookstop.model.Like;
 import org.bookstop.model.Review;
+import org.bookstop.model.ScrollPosition;
 import org.bookstop.model.Transaction;
 import org.bookstop.model.User;
 
@@ -37,6 +38,10 @@ public interface DataInterface {
 	public ArrayList<Transaction> selectAllTransactions();
 	public ArrayList<Transaction> selectTransactionsByUsername(String username);
 	public Transaction selectTransactionByUsernameAndBookid(String username, int bookid);
+	
+	//ScrollPositions
+	public void insertScrollPosition(ScrollPosition pos);
+	public int selectYposByUsernameAndBookid(String username, int bookid);
 	
 	//Util
 	public void closeConnection();

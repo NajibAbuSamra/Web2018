@@ -93,12 +93,11 @@ public class GetLikersByBook extends HttpServlet {
 			logger.log(Level.INFO, "doPost: connection opened...");
 			DA da = new DA(conn);
 
-
 			ArrayList<String> usernames = da.selectUsernameFromLikesByBookId(bookid.getBookid());
 
 			ArrayList<User> likers = new ArrayList<User>();
-			
-			for(String username : usernames) {
+
+			for (String username : usernames) {
 				likers.add(da.selectUserByUsername(username));
 			}
 			String json = new Gson().toJson(likers);
@@ -106,6 +105,10 @@ public class GetLikersByBook extends HttpServlet {
 			response.setCharacterEncoding("UTF-8");
 			response.getWriter().write(json);
 			da.closeConnection();
+			if (conn.isClosed() == false) {
+				logger.log(Level.WARNING, "doPost: connection not closed after DA method, closing manually");
+				conn.close();
+			}
 
 		} catch (SQLException | NamingException e) {
 			// log error

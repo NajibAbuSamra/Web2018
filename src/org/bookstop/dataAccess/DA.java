@@ -10,6 +10,7 @@ import org.bookstop.constants.SQLstatements;
 import org.bookstop.model.Book;
 import org.bookstop.model.Like;
 import org.bookstop.model.Review;
+import org.bookstop.model.ScrollPosition;
 import org.bookstop.model.Transaction;
 import org.bookstop.model.User;
 
@@ -446,6 +447,46 @@ public class DA implements DataInterface {
 		}
 
 		return t;
+	}
+
+	@Override
+	public void insertScrollPosition(ScrollPosition pos) {
+		try {
+			PreparedStatement pstmt = conn
+					.prepareStatement(SQLstatements.INSERT_SCROLLPOSITION_STMT);
+			pstmt.setString(1, pos.getUsername());
+			pstmt.setInt(2, pos.getBookid());
+			pstmt.setInt(3, pos.getYpos());
+			ResultSet rs = pstmt.executeQuery();
+			rs.close();
+			pstmt.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	@Override
+	public int selectYposByUsernameAndBookid(String username, int bookid) {
+		int ypos = 0;
+
+		try {
+			PreparedStatement pstmt = conn
+					.prepareStatement(SQLstatements.SELECT_YPOS_BY_USERNAME_AND_BOOKID_STMT);
+			pstmt.setString(1, username);
+			pstmt.setInt(2, bookid);
+			ResultSet rs = pstmt.executeQuery();
+			if (rs.next()) {
+				ypos = rs.getInt(DataContract.ScrollPositionsTable.COL_YPOS);
+			}
+			rs.close();
+			pstmt.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		return ypos;
 	}
 
 }

@@ -29,27 +29,31 @@ import com.google.gson.Gson;
 @WebServlet("/RemoveLike")
 public class RemoveLike extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
-    public RemoveLike() {
-        super();
-        // TODO Auto-generated constructor stub
-    }
 
 	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 * @see HttpServlet#HttpServlet()
 	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	public RemoveLike() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+	/**
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
+	 *      response)
+	 */
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		response.getWriter().append("Served at: ").append(request.getContextPath());
 	}
 
 	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
+	 *      response)
 	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		System.out.println("RemoveLike Servlet");
 
 		Logger logger = Logger.getLogger("RemoveLikeServlet");
@@ -88,12 +92,14 @@ public class RemoveLike extends HttpServlet {
 			if (u == null) {
 				response.setStatus(HttpServletResponse.SC_FORBIDDEN);
 			} else {
-				//TODO: check if like exists, if not, can't remove, 404
+				// TODO: check if like exists, if not, can't remove, 404
 				da.deleteLike(l);
 			}
 
 			da.closeConnection();
-
+			if (conn.isClosed() == false) {
+				conn.close();
+			}
 		} catch (SQLException | NamingException e) {
 			// log error
 			logger.log(Level.SEVERE, "doPost: FAILED");

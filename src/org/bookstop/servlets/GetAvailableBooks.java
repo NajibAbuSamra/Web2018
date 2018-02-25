@@ -34,49 +34,53 @@ import com.google.gson.Gson;
 @WebServlet("/GetAvailableBooks")
 public class GetAvailableBooks extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
-    public GetAvailableBooks() {
-        super();
-        // TODO Auto-generated constructor stub
-    }
 
 	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 * @see HttpServlet#HttpServlet()
 	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	public GetAvailableBooks() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+	/**
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
+	 *      response)
+	 */
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		response.getWriter().append("Served at: ").append(request.getContextPath());
 	}
 
 	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
+	 *      response)
 	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		System.out.println("GetAvailableBooks Servlet");
 
 		Logger logger = Logger.getLogger("GetAvailableBooksServlet");
 		logger.log(Level.INFO, "doPost: Start...");
-		
+
 		Gson gson = new Gson();
 		UserLogin user = null;
 		try {
 			StringBuilder sb = new StringBuilder();
 			String s;
-			while((s = request.getReader().readLine()) != null) {
+			while ((s = request.getReader().readLine()) != null) {
 				sb.append(s);
 			}
-			
+
 			user = (UserLogin) gson.fromJson(sb.toString(), UserLogin.class);
-			logger.log(Level.INFO, "doPost: user info: uName:"+user.getuName()+" uPass:"+user.getuPass());
-			
-		}catch(Exception e) {
+			logger.log(Level.INFO, "doPost: user info: uName:" + user.getuName() + " uPass:" + user.getuPass());
+
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		if(user == null) {
-			//TODO: check and handle error
+		if (user == null) {
+			// TODO: check and handle error
 			return;
 		}
 		try {
@@ -91,35 +95,38 @@ public class GetAvailableBooks extends HttpServlet {
 			User fullUser = da.selectUserByUsername(user.getuName());
 			if (fullUser.getPassword().matches(user.getuPass())) {
 				logger.log(Level.INFO, "doPost: user found, password matched...");
-				
+
 				ArrayList<Book> books = da.getAllBooks();
 				ArrayList<Integer> ownedBooksId = da.getOwnedBookIds(user.getuName());
-				for(Iterator<Book> iterator = books.iterator();iterator.hasNext();) {
+				for (Iterator<Book> iterator = books.iterator(); iterator.hasNext();) {
 					Book b = iterator.next();
-					for(Integer id : ownedBooksId) {
-						if(b.getBookId() == id) {
+					for (Integer id : ownedBooksId) {
+						if (b.getBookId() == id) {
 							iterator.remove();
 							break;
 						}
 					}
 				}
 				ArrayList<BookInfo> booksInfo = new ArrayList<BookInfo>();
-				for(Book b : books) {
+				for (Book b : books) {
 					int likes = da.countLikesByBookId(b.getBookId());
 					ArrayList<Review> reviews = da.selectReviewsByBookId(b.getBookId());
-					booksInfo.add(new BookInfo(b,likes,reviews));
+					booksInfo.add(new BookInfo(b, likes, reviews));
 				}
 				String json = new Gson().toJson(booksInfo);
-			    response.setContentType("application/json");
-			    response.setCharacterEncoding("UTF-8");
-			    response.getWriter().write(json);
-			}
-			else {
-				logger.log(Level.SEVERE, "doPost: user found, PASSWORD MISMACHED!!!");
+				response.setContentType("application/json");
+				response.setCharacterEncoding("UTF-8");
+				response.getWriter().write(json);
+			} else {
+				logger.log(Level.WARNING, "doPost: user found, PASSWORD MISMACHED!!!");
 				response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
 			}
 			da.closeConnection();
-			
+			if (conn.isClosed() == false) {
+				logger.log(Level.WARNING, "doPost: connection not closed after DA method, closing manually");
+				conn.close();
+			}
+
 		} catch (SQLException | NamingException e) {
 			// log error
 			logger.log(Level.SEVERE, "doPost: FAILED");

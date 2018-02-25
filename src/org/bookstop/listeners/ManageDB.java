@@ -114,6 +114,8 @@ public class ManageDB implements ServletContextListener {
 				createTable(conn, SQLstatements.CREATE_LIKES_TABLE);
 				// create Transactions table
 				createTable(conn, SQLstatements.CREATE_TRANSACTIONS_TABLE);
+				// create ScrollPositions table
+				createTable(conn, SQLstatements.CREATE_SCROLLPOSITIONS_TABLE);
 
 			} catch (SQLException e) {
 				// check if exception thrown since table was already created (so we created the
@@ -152,7 +154,7 @@ public class ManageDB implements ServletContextListener {
 				conn.commit();
 				// close statements
 				pstmt.close();
-
+				logger.log(Level.INFO, "contextInitialized: ... admin ...");
 				// create admin user
 				User admin = new User("admin", "najib.as1990@gmail.com", "Address", "049813963", "Passw0rd", "Overlord",
 						"He who rules them all.", null, 1);
@@ -173,6 +175,7 @@ public class ManageDB implements ServletContextListener {
 				// close statements
 				pstmt2.close();
 
+				logger.log(Level.INFO, "contextInitialized: ... 20 users ...");
 				// populate with 20 users
 				Collection<User> users = loadUsers(cntx.getResourceAsStream(File.separator + AppConstants.USERS_FILE));
 				PreparedStatement pstmt3 = conn.prepareStatement(SQLstatements.INSERT_USER_STMT);
@@ -194,6 +197,7 @@ public class ManageDB implements ServletContextListener {
 				// close statements
 				pstmt3.close();
 
+				logger.log(Level.INFO, "contextInitialized: ... 10 reviews per user ...");
 				// populate with 10 reviews per user
 				Collection<Review> reviews = loadReviews(
 						cntx.getResourceAsStream(File.separator + AppConstants.REVIEWS_FILE));
@@ -207,6 +211,7 @@ public class ManageDB implements ServletContextListener {
 					pstmt4.executeUpdate();
 				}
 
+				logger.log(Level.INFO, "contextInitialized: ... several likes ...");
 				// populate with several likes
 				Collection<Like> likes = loadLikes(
 						cntx.getResourceAsStream(File.separator + AppConstants.LIKES_FILE));
