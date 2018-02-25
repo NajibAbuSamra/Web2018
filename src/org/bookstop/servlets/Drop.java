@@ -53,6 +53,16 @@ public class Drop extends HttpServlet {
 			logger.log(Level.INFO, "doGet: connection opened...");
 
 			try {
+				Statement stmt6 = conn.createStatement();
+				stmt6.executeUpdate("DROP TABLE " + DataContract.ScrollPositionsTable.TABLE_NAME);
+				// commit update
+				conn.commit();
+				stmt6.close();
+			} catch (SQLException e) {
+				logger.log(Level.SEVERE, "Something went wrong" + e);
+			}
+			
+			try {
 				Statement stmt5 = conn.createStatement();
 				stmt5.executeUpdate("DROP TABLE " + DataContract.TransactionsTable.TABLE_NAME);
 				// commit update
@@ -101,10 +111,12 @@ public class Drop extends HttpServlet {
 			} catch (SQLException e) {
 				logger.log(Level.SEVERE, "Something went wrong" + e);
 			}
+			conn.close();
 
 		} catch (SQLException | NamingException e) {
 			logger.log(Level.SEVERE, "Something went wrong");
 		}
+		
 		logger.log(Level.INFO, "DONE<<<<<<<<<<<<<<<<<<<<<<<");
 		response.getWriter().append("Served at: ").append(request.getContextPath());
 	}
