@@ -95,21 +95,21 @@ public class GetMyBooks extends HttpServlet {
 				
 				ArrayList<Book> books = da.getAllBooks();
 				ArrayList<Integer> ownedBooksId = da.getOwnedBookIds(user.getuName());
+				ArrayList<Book> ownedBooks = new ArrayList<Book>();
 				if (ownedBooksId.isEmpty())
 				{
 					ownedBooksId.add(0); // ids start with 1, so 0 means no book
 				}
-				for(Iterator<Book> iterator = books.iterator();iterator.hasNext();) {
-					Book b = iterator.next();
+				for(Book b : books) {
 					for(Integer id : ownedBooksId) {
-						if(b.getBookId() != id) {
-							iterator.remove();
+						if(b.getBookId() == id) {
+							ownedBooks.add(b);
 							break;
 						}
 					}
 				}
 				ArrayList<BookInfo> booksInfo = new ArrayList<BookInfo>();
-				for(Book b : books) {
+				for(Book b : ownedBooks) {
 					int likes = da.countLikesByBookId(b.getBookId());
 					ArrayList<Review> reviews = da.selectReviewsByBookId(b.getBookId());
 					booksInfo.add(new BookInfo(b,likes,reviews));
