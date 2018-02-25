@@ -113,4 +113,18 @@ public final class SQLstatements {
 			+ DataContract.TransactionsTable.TABLE_NAME + " WHERE " + DataContract.TransactionsTable.COL_USERNAME
 			+ " = ? AND " + DataContract.TransactionsTable.COL_BOOKID + " = ?";
 
+	//ScrollPositions
+	public final static String CREATE_SCROLLPOSITIONS_TABLE = "CREATE TABLE " +DataContract.ScrollPositionsTable.TABLE_NAME
+			+ "(" + DataContract.ScrollPositionsTable.COL_USERNAME + " VARCHAR(10) NOT NULL,"
+			+ DataContract.ScrollPositionsTable.COL_BOOKID + " INTEGER NOT NULL,"
+			+ DataContract.ScrollPositionsTable.COL_YPOS + " INTEGER NOT NULL,"
+			+ "PRIMARY KEY (" + DataContract.ScrollPositionsTable.COL_USERNAME + ","+ DataContract.ScrollPositionsTable.COL_BOOKID + ")," 
+			+ "CONSTRAINT username_ypos_ref FOREIGN KEY ("
+			+ DataContract.ScrollPositionsTable.COL_USERNAME + ") REFERENCES " + DataContract.UsersTable.TABLE_NAME + "("
+			+ DataContract.UsersTable.COL_USERNAME + ") ON DELETE CASCADE,"
+			+ "CONSTRAINT bookid_ypos_ref FOREIGN KEY (" + DataContract.ScrollPositionsTable.COL_BOOKID + ") REFERENCES "
+			+ DataContract.BooksTable.TABLE_NAME + "(" + DataContract.BooksTable.COL_ID + ") ON DELETE CASCADE)";
+	public final static String INSERT_YPOS_STMT = "INSERT INTO " + DataContract.ScrollPositionsTable.TABLE_NAME
+			+ " VALUES(?,?,?)";
+	
 }
