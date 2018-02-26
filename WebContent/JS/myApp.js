@@ -105,7 +105,7 @@ angular.module('myApp',[])
 						$scope.errorBox = "Error";
 						if (status == 400)
 							$scope.errorBox = "User already exists";
-					}).done(function(data) {});
+					});
 		}
 		regValidity = true;
 	};

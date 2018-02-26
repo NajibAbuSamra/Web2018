@@ -99,11 +99,10 @@ public class Register extends HttpServlet {
 
 		} catch (SQLException | NamingException e) {
 			// log error
+			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 			logger.log(Level.SEVERE, "doPost: FAILED");
 			e.printStackTrace();
 			// TODO: handle errors
-			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-
 		}
 		return; // By default the response will be 200 "OK"
 	}
