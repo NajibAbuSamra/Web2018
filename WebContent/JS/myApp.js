@@ -360,6 +360,7 @@ angular.module('myApp',[])
 					$scope.popUpAddReview = false;
 					$scope.readBook();
 					$scope.showReadingBook(currRBook);
+					$scope.regRev = "";
 				}).error(
 				function(data, status, headers, config) {
 					/*SHOW ERROR*/
