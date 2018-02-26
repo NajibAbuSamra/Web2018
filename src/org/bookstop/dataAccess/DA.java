@@ -64,15 +64,15 @@ public class DA implements DataInterface {
 	public void insertUser(User user) {
 		try {
 			PreparedStatement pstmt = conn.prepareStatement(SQLstatements.INSERT_USER_STMT);
-			pstmt.setString(1, user.getUsername());
-			pstmt.setString(2, user.getEmail());
-			pstmt.setString(3, user.getAddress());
-			pstmt.setString(4, user.getPhone());
-			pstmt.setString(5, user.getPassword());
-			pstmt.setString(6, user.getNickname());
-			pstmt.setString(7, user.getDescription());
-			pstmt.setString(8, user.getPicture());
-			pstmt.setInt(9, user.getType());
+			pstmt.setInt(1, user.getType());
+			pstmt.setString(2, user.getUsername());
+			pstmt.setString(3, user.getEmail());
+			pstmt.setString(4, user.getAddress());
+			pstmt.setString(5, user.getPhone());
+			pstmt.setString(6, user.getPassword());
+			pstmt.setString(7, user.getNickname());
+			pstmt.setString(8, user.getDescription());
+			pstmt.setString(9, user.getPicture());
 			pstmt.executeUpdate();
 
 			conn.commit();

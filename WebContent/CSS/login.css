@@ -1,7 +1,7 @@
 @charset "UTF-8";
 
 body {
-	height = 100%;
+	padding:0px; margin:0px;
 }
 
 .login-page {
@@ -41,8 +41,6 @@ body {
 }
 
 .container-fluid {
-    padding-right: 15px;
-    padding-left: 15px;
     margin-right: auto;
     margin-left: auto;
 }

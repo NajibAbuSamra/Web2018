@@ -16,6 +16,7 @@ angular.module('myApp',[])
 	$scope.optBuy = false;
 	$scope.showRDetails = false;
 	$scope.inputValidity = true;
+	$scope.regValidity = true;
 	$scope.errorBox="";
 	$scope.popUpAddReview = false;
 	$scope.showReviews = false;
@@ -50,23 +51,63 @@ angular.module('myApp',[])
 		
 		var val = JSON.stringify({username:$scope.regUname , email:$scope.regEmail ,  address:$scope.regAddress, phone:$scope.regTelephone, 
 			password:$scope.regPass, nickname:$scope.regNick, picture:$scope.regPic, description:$scope.regDesc, type:0});
-
-		$http.post("/Web2018/Register", val).success(
-				function(data, status, headers, config) {
-					$scope.loggedIn = true;
-					loggedUser = $scope.regUname;
-					loggedPass = $scope.regPass;
-					$scope.user = $scope.regNick;
-					$scope.isBrowsed = false;
-					$scope.isReading = false;
-					$scope.showDetails = false;
-					$scope.answer = loggedUser;
-				}).error(
-				function(data, status, headers, config) {
-					$scope.errorBox = "Error";
-					if (status == 400)
-						$scope.errorBox = "User already exists";
-				}).done(function(data) {});
+		var isnum;
+		
+		if ($scope.regTelephone) 
+		{
+			
+			isnum = /^\d+$/.test($scope.regTelephone);
+			if (!(isnum))
+			{
+				$scope.regtValidity = false;
+				alert("Please insert only digits in your telephone number!");
+				$scope.regTelephone = "";
+			}
+			if($scope.regTelephone.length != 10 && $scope.regTelephone.length != 9)
+			{
+				$scope.regtValidity = false;
+				alert("For land line enter 9 digits, for mobile 10 digits!");
+				$scope.regTelephone = "";
+			}
+		}
+		if ((!$scope.regUname))
+		{
+				alert("Please fill up username field");
+				$scope.regUname = "";
+				$scope.regValidity = false;
+		}
+		if ((!$scope.regPass))
+		{
+				alert("Please choose a password");
+				$scope.regPass = "";
+				$scope.regValidity = false;
+		}
+		if ((!$scope.regNick))
+		{
+				alert("Please fill up nickname field");
+				$scope.regNick = "";
+				$scope.regValidity = false;
+		}
+		if ($scope.regValidity)
+		{
+			$http.post("/Web2018/Register", val).success(
+					function(data, status, headers, config) {
+						$scope.loggedIn = true;
+						loggedUser = $scope.regUname;
+						loggedPass = $scope.regPass;
+						$scope.user = $scope.regNick;
+						$scope.isBrowsed = false;
+						$scope.isReading = false;
+						$scope.showDetails = false;
+						$scope.answer = loggedUser;
+					}).error(
+					function(data, status, headers, config) {
+						$scope.errorBox = "Error";
+						if (status == 400)
+							$scope.errorBox = "User already exists";
+					}).done(function(data) {});
+		}
+		regValidity = true;
 	};
 	/*TOGGLE*/
 	$scope.toggleRegister = function(){
@@ -205,17 +246,13 @@ angular.module('myApp',[])
 		if (!(isnum))
 		{
 			$scope.inputValidity = false;
-			$scope.regCVV = "";
-			$scope.regYear = "";
-			$scope.regMonth = "";
+			alert("Please fill Card Number again!");
 			$scope.regCardNum = "";
 		}
 		if($scope.regCardNum.length != 16)
 		{
 			$scope.inputValidity = false;
-			$scope.regCVV = "";
-			$scope.regYear = "";
-			$scope.regMonth = "";
+			alert("Please fill Card Number again!");
 			$scope.regCardNum = "";
 		}
 		
@@ -224,52 +261,41 @@ angular.module('myApp',[])
 		if (!(isnum))
 		{
 			$scope.inputValidity = false;
-			$scope.regCVV = "";
-			$scope.regYear = "";
 			$scope.regMonth = "";
-			$scope.regCardNum = "";
+			alert("Please fill Month again!");
 		}
 		if($scope.regMonth.length != 2 && $scope.regMonth.length != 1)
 		{
 			$scope.inputValidity = false;
-			$scope.regCVV = "";
-			$scope.regYear = "";
 			$scope.regMonth = "";
-			$scope.regCardNum = "";
+			alert("Please fill Month again!");
 		}
 		if(parseInt($scope.regMonth) > 12)
 		{
 			$scope.inputValidity = false;
-			$scope.regCVV = "";
-			$scope.regYear = "";
 			$scope.regMonth = "";
-			$scope.regCardNum = "";
+			alert("Please fill Month again!");
 		}
 		/* Check Year consists of 2 digits */
 		var isnum = /^\d+$/.test($scope.regYear);
 		if (!(isnum))
 		{
 			$scope.inputValidity = false;
-			$scope.regCVV = "";
 			$scope.regYear = "";
-			$scope.regMonth = "";
-			$scope.regCardNum = "";
+			alert("Please fill Year again!");
 		}
 		if($scope.regYear.length != 2)
 		{
 			$scope.inputValidity = false;
-			$scope.regCVV = "";
 			$scope.regYear = "";
-			$scope.regMonth = "";
-			$scope.regCardNum = "";
+			alert("Please fill Year again!");
+
 		}
 		if(parseInt($scope.regYear) < 18)
 		{
 			$scope.inputValidity = false;
-			$scope.regCVV = "";
 			$scope.regYear = "";
-			$scope.regMonth = "";
-			$scope.regCardNum = "";
+			alert("Please fill Year again!");
 		}
 		
 		/* Check CVV consists of 3 digits */
@@ -278,17 +304,19 @@ angular.module('myApp',[])
 		{
 			$scope.inputValidity = false;
 			$scope.regCVV = "";
-			$scope.regYear = "";
-			$scope.regMonth = "";
-			$scope.regCardNum = "";
+			alert("Please fill CVV again!");
+
 		}
 		if($scope.regCVV.length != 3)
 		{
 			$scope.inputValidity = false;
 			$scope.regCVV = "";
-			$scope.regYear = "";
-			$scope.regMonth = "";
-			$scope.regCardNum = "";
+			alert("Please fill CVV again!");
+		}		
+		if(!$scope.regCardCompany)
+		{
+			$scope.inputValidity = false;
+			alert("Please fill Card Company again!");
 		}
 
 		var val = JSON.stringify({username:loggedUser, bookID:desiredBook, cardCompany:$scope.regCardCompany, cardNumber:$scope.regCardNum, expiryMonth:$scope.regMonth, expiryYear:$scope.regYear, cvv:$scope.regCVV, fullName:$scope.regFullName});
@@ -298,11 +326,19 @@ angular.module('myApp',[])
 						function(data, status, headers, config) {
 							$scope.optBuy = false;
 							$scope.showDetails = false;
-							
+							$scope.regCVV = "";
+							$scope.regYear = "";
+							$scope.regMonth = "";
+							$scope.regCardNum = "";
+							$scope.regCardCompany = "";
 						}).error(
 						function(data, status, headers, config) {
 							$scope.errorBox = "Error";
-								
+							$scope.regCVV = "";
+							$scope.regYear = "";
+							$scope.regMonth = "";
+							$scope.regCardNum = "";
+							$scope.regCardCompany = "";
 						})
 			}
 		if(	$scope.inputValidity == false)
@@ -328,6 +364,10 @@ angular.module('myApp',[])
 				function(data, status, headers, config) {
 					/*SHOW ERROR*/
 				})
+	}
+	$scope.CancelReview = function(){
+		$scope.showRDetails = true;
+		$scope.popUpAddReview = false;
 	}
 	$scope.collapseReviews = function(){
 		$scope.showReviews = true;
