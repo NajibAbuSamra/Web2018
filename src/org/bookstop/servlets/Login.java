@@ -126,13 +126,18 @@ public class Login extends HttpServlet {
 			if (fullUser == null) {
 				response.setStatus(HttpServletResponse.SC_NOT_FOUND);
 			}
-			if (fullUser.getPassword().matches(user.getuPass())) {
+			else if (fullUser.getPassword().matches(user.getuPass())) {
 				logger.log(Level.INFO, "doPost: user found, password matched...");
 				String json = new Gson().toJson(fullUser);
 				response.setContentType("application/json");
 				response.setCharacterEncoding("UTF-8");
 				response.getWriter().write(json);
 			}
+			else {
+				logger.log(Level.WARNING, "doPost: user found, password MISMATCHED!!!");
+				response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+			}
+			da.closeConnection();
 
 		} catch (SQLException | NamingException e) {
 			// log error
