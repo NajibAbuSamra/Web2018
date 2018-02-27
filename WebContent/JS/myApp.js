@@ -38,6 +38,7 @@ angular.module('myApp',[])
 			loggedPass = data.password;
 			loggedNick = data.nickname;
 			$scope.isBrowsed = false;
+			$scope.showContent = false;
 			$scope.isReading = false;
 			$scope.showDetails = false;
 			}).
@@ -164,6 +165,7 @@ angular.module('myApp',[])
 					$scope.browseBooks = data;
 					$scope.optBuy = false;
 					$scope.showRDetails = false;
+					$scope.showContent = false;
 				}).error(
 				function(data, status, headers, config) {
 					/*SHOW ERROR*/
@@ -181,6 +183,7 @@ angular.module('myApp',[])
 					$scope.isReading = true;
 					$scope.isBrowsed = false;
 					$scope.optBuy = false;
+					$scope.showContent = false;
 					$scope.myBooks = data;
 				}).error(
 				function(data, status, headers, config) {
@@ -241,12 +244,14 @@ angular.module('myApp',[])
 		$scope.showReviews = false;
 		$scope.optBuy = false;
 		$scope.counter = 1;
+		$scope.showContent = false;
 	}	
 	$scope.showReadingBook = function(book_being_read){
 		$scope.showRDetails = true;
 		$scope.popUpAddReview = false;
 		$scope.popUpAddReview = false;
 		$scope.currRBook = book_being_read;
+		$scope.showContent = false;
 		
 		var val = JSON.stringify({bookid:book_being_read.bookId})
 		$http.post("/Web2018/GetLikersByBook",val).success(
@@ -386,6 +391,7 @@ angular.module('myApp',[])
 	$scope.addReview = function(currRBook){
 		$scope.showRDetails = false;
 		$scope.popUpAddReview = true;
+		$scope.showContent = false;
 	}
 	$scope.submitReview = function(currRBook){
 		var val = JSON.stringify({username:loggedUser, nickname:loggedNick, bookID:currRBook.bookId, text:$scope.regRev});
@@ -410,6 +416,7 @@ angular.module('myApp',[])
 	}
 	$scope.collapseRReviews = function(){
 		$scope.showRReviews = true;
+		$scope.showContent = false;
 	}
 	$scope.hideReviews = function(){
 		$scope.showReviews = false;
@@ -417,27 +424,9 @@ angular.module('myApp',[])
 	$scope.hideRReviews = function(){
 		$scope.showRReviews = false;
 	}
+	$scope.openBookForReading = function (currRBook) {
+		$scope.showContent = true;
+		$scope.showContentOfBook = currRBook.link;
+		$scope.showRDetails = false;
+	}
 }]);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
