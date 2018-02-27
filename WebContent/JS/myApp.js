@@ -11,6 +11,7 @@ angular.module('myApp',[])
 	$scope.registered = true;
 	$scope.isBrowsed = false;
 	$scope.isReading = false;
+	$scope.reading = false;
 	$scope.showDetails = false;
 	$scope.isisHovering = false;
 	$scope.optBuy = false;
@@ -252,6 +253,7 @@ angular.module('myApp',[])
 		$scope.popUpAddReview = false;
 		$scope.currRBook = book_being_read;
 		$scope.showContent = false;
+		$scope.isReading = true;
 		
 		var val = JSON.stringify({bookid:book_being_read.bookId})
 		$http.post("/Web2018/GetLikersByBook",val).success(
@@ -425,8 +427,9 @@ angular.module('myApp',[])
 		$scope.showRReviews = false;
 	}
 	$scope.openBookForReading = function (currRBook) {
-		$scope.showContent = true;
 		$scope.showContentOfBook = currRBook.link;
 		$scope.showRDetails = false;
+		$scope.isReading = false;
+		$scope.reading = true;
 	}
 }]);
