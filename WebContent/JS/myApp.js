@@ -42,8 +42,19 @@ angular.module('myApp',[])
 			$scope.showDetails = false;
 			}).
 		error(function(data,status,headers,config){
-			$scope.errorBox="Error";
-			});
+			if (status == 404)
+			{
+				alert("User does not exist, please register!");
+				$scope.uName = "";
+				$scope.uPass = "";
+			} 
+			if (status == 403)
+			{
+				alert("Incorrect password! please try again!");
+				$scope.uName = "";
+				$scope.uPass = "";
+			}
+		});
 	}
 	/*REGISTER*/
 	$scope.registerFunc = function() {
@@ -103,8 +114,21 @@ angular.module('myApp',[])
 					}).error(
 					function(data, status, headers, config) {
 						$scope.errorBox = "Error";
-						if (status == 400)
-							$scope.errorBox = "User already exists";
+						if (status == 400) {
+							alert("Username not available!");
+							$scope.regUname = "";
+						}
+						if (status == 500) {
+							alert("Unexpected error!");
+							$scope.regUname = "";
+							$scope.regNick = "";
+							$scope.regPass = "";
+							$scope.regEmail = "";
+							$scope.regAddress = "";
+							$scope.regTelephone = "";
+							$scope.regPic = "";
+							$scope.regDesc = "";
+						}
 					});
 		}
 		regValidity = true;
@@ -112,6 +136,16 @@ angular.module('myApp',[])
 	/*TOGGLE*/
 	$scope.toggleRegister = function(){
 		$scope.registered = !($scope.registered);
+		$scope.regUname = "";
+		$scope.regNick = "";
+		$scope.regPass = "";
+		$scope.regEmail = "";
+		$scope.regAddress = "";
+		$scope.regTelephone = "";
+		$scope.regPic = "";
+		$scope.regDesc = "";
+		$scope.uName = "";
+		$scope.uPass = "";
 	}
 	/*LOGOUT*/
 	$scope.logout = function(){
@@ -128,13 +162,12 @@ angular.module('myApp',[])
 					$scope.isBrowsed = true;
 					$scope.isReading = false;
 					$scope.browseBooks = data;
+					$scope.optBuy = false;
 					$scope.showRDetails = false;
 				}).error(
 				function(data, status, headers, config) {
 					/*SHOW ERROR*/
-					if(status == 401){
-						/*wrong password, log user out and display error*/
-					}
+
 				})
 	}
 	
@@ -147,6 +180,7 @@ angular.module('myApp',[])
 					/*PUT BOOKS IN PROPER DIV*/
 					$scope.isReading = true;
 					$scope.isBrowsed = false;
+					$scope.optBuy = false;
 					$scope.myBooks = data;
 				}).error(
 				function(data, status, headers, config) {
@@ -205,6 +239,7 @@ angular.module('myApp',[])
 		$scope.showDetails = true;
 		$scope.currBook = clicked_id;
 		$scope.showReviews = false;
+		$scope.optBuy = false;
 		$scope.counter = 1;
 	}	
 	$scope.showReadingBook = function(book_being_read){
