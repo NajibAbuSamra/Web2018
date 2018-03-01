@@ -50,8 +50,9 @@ public final class SQLstatements {
 
 	public final static String INSERT_REVIEW_STMT = "INSERT INTO " + DataContract.ReviewsTable.TABLE_NAME
 			+ " VALUES(DEFAULT,?,?,?,?,?)";
-	public final static String SELECT_REVIEWS_VERIFIED_BY_BOOKID_STMT = "SELECT * FROM " + DataContract.ReviewsTable.TABLE_NAME
-			+ " WHERE " + DataContract.ReviewsTable.COL_BOOKID + " = ? AND " + DataContract.ReviewsTable.COL_VERIFIED + " = 1";
+	public final static String SELECT_REVIEWS_VERIFIED_BY_BOOKID_STMT = "SELECT * FROM "
+			+ DataContract.ReviewsTable.TABLE_NAME + " WHERE " + DataContract.ReviewsTable.COL_BOOKID + " = ? AND "
+			+ DataContract.ReviewsTable.COL_VERIFIED + " = 1";
 	// TODO: add select unverified reviews
 	public final static String UPDATE_REVIEW_VERIFIED_STMT = "UPDATE " + DataContract.ReviewsTable.TABLE_NAME + " SET "
 			+ DataContract.ReviewsTable.COL_VERIFIED + " = ?";
@@ -122,11 +123,14 @@ public final class SQLstatements {
 			+ ") ON DELETE CASCADE," + "CONSTRAINT bookid_ypos_ref FOREIGN KEY ("
 			+ DataContract.ScrollPositionsTable.COL_BOOKID + ") REFERENCES " + DataContract.BooksTable.TABLE_NAME + "("
 			+ DataContract.BooksTable.COL_ID + ") ON DELETE CASCADE)";
-	public final static String INSERT_SCROLLPOSITION_STMT = "INSERT INTO " + DataContract.ScrollPositionsTable.TABLE_NAME
-			+ " VALUES(?,?,?)";
+	public final static String INSERT_SCROLLPOSITION_STMT = "INSERT INTO "
+			+ DataContract.ScrollPositionsTable.TABLE_NAME + " VALUES(?,?,?)";
 	public final static String SELECT_YPOS_BY_USERNAME_AND_BOOKID_STMT = "SELECT "
 			+ DataContract.ScrollPositionsTable.COL_YPOS + " FROM " + DataContract.ScrollPositionsTable.TABLE_NAME
 			+ " WHERE " + DataContract.ScrollPositionsTable.COL_USERNAME + " = ? AND "
 			+ DataContract.ScrollPositionsTable.COL_BOOKID + " = ?";
-
+	public final static String UPDATE_YPOS_BY_USERNAME_AND_BOOKID_STMT = "UPDATE "
+			+ DataContract.ScrollPositionsTable.TABLE_NAME + " SET " + DataContract.ScrollPositionsTable.COL_YPOS
+			+ " = ? WHERE " + DataContract.ScrollPositionsTable.COL_USERNAME + " = ? AND "
+			+ DataContract.ScrollPositionsTable.COL_BOOKID + " = ?";
 }

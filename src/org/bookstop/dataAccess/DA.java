@@ -430,7 +430,7 @@ public class DA implements DataInterface {
 			pstmt.setInt(2, bookid);
 			ResultSet rs = pstmt.executeQuery();
 			if (rs.next()) {
-				t =  new Transaction(rs.getString(DataContract.TransactionsTable.COL_USERNAME),
+				t = new Transaction(rs.getString(DataContract.TransactionsTable.COL_USERNAME),
 						rs.getInt(DataContract.TransactionsTable.COL_BOOKID),
 						rs.getString(DataContract.TransactionsTable.COL_CARDCOMPANY),
 						rs.getString(DataContract.TransactionsTable.COL_CARDNUMBER),
@@ -450,13 +450,20 @@ public class DA implements DataInterface {
 	}
 
 	@Override
-	public void insertScrollPosition(ScrollPosition pos) {
+	public void insertScrollPosition(ScrollPosition pos, boolean append) {
 		try {
-			PreparedStatement pstmt = conn
-					.prepareStatement(SQLstatements.INSERT_SCROLLPOSITION_STMT);
+			PreparedStatement pstmt = conn.prepareStatement(SQLstatements.INSERT_SCROLLPOSITION_STMT);
 			pstmt.setString(1, pos.getUsername());
 			pstmt.setInt(2, pos.getBookid());
 			pstmt.setInt(3, pos.getYpos());
+			if (append) {
+				pstmt = conn.prepareStatement(SQLstatements.UPDATE_YPOS_BY_USERNAME_AND_BOOKID_STMT);
+				pstmt.setInt(1, pos.getYpos());
+				pstmt.setString(2, pos.getUsername());
+				pstmt.setInt(3, pos.getBookid());
+	
+			}
+
 			ResultSet rs = pstmt.executeQuery();
 			rs.close();
 			pstmt.close();
@@ -468,11 +475,10 @@ public class DA implements DataInterface {
 
 	@Override
 	public int selectYposByUsernameAndBookid(String username, int bookid) {
-		int ypos = 0;
+		int ypos = -1;
 
 		try {
-			PreparedStatement pstmt = conn
-					.prepareStatement(SQLstatements.SELECT_YPOS_BY_USERNAME_AND_BOOKID_STMT);
+			PreparedStatement pstmt = conn.prepareStatement(SQLstatements.SELECT_YPOS_BY_USERNAME_AND_BOOKID_STMT);
 			pstmt.setString(1, username);
 			pstmt.setInt(2, bookid);
 			ResultSet rs = pstmt.executeQuery();

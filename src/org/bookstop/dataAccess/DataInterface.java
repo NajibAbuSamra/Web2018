@@ -40,7 +40,7 @@ public interface DataInterface {
 	public Transaction selectTransactionByUsernameAndBookid(String username, int bookid);
 	
 	//ScrollPositions
-	public void insertScrollPosition(ScrollPosition pos);
+	public void insertScrollPosition(ScrollPosition pos, boolean append);
 	public int selectYposByUsernameAndBookid(String username, int bookid);
 	
 	//Util
