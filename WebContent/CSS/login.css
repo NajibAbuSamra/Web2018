@@ -1,9 +1,5 @@
 @charset "UTF-8";
 
-body {
-	padding:0px; margin:0px;
-}
-
 .login-page {
   width: 360px;
   padding: 8% 0 0;
@@ -51,6 +47,31 @@ body {
 
 .centralReadWindow{
 	border-style: solid;
+}
+
+
+#Header
+{
+    width: 960px;
+    height: 150px;
+}
+#Content
+{
+	overflow-y:auto;
+    height: 100%;
+    width: 960px;
+}
+#loggedIn
+{
+    height:100%;
+}
+html { 
+    height:100%;
+}
+
+body { 
+	padding:0px; margin:0px;
+    min-height:100%;
 }
 
 #showAllBooks{ 

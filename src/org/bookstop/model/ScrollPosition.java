@@ -28,6 +28,4 @@ public class ScrollPosition {
 	public void setYpos(int ypos) {
 		this.ypos = ypos;
 	}
-	
-	
 }

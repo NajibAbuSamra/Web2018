@@ -2,7 +2,7 @@
  * 
  */
 angular.module('myApp',[])
-.controller('myAppCrtl', ['$scope','$http', function($scope,$http) {
+.controller('myAppCrtl', ['$scope','$http', '$window', function($scope,$http,$window) {
     $scope.getMyCtrlScope = function() {
         return $scope;   
     }
@@ -186,6 +186,7 @@ angular.module('myApp',[])
 					$scope.optBuy = false;
 					$scope.showContent = false;
 					$scope.myBooks = data;
+					console.log(data);
 				}).error(
 				function(data, status, headers, config) {
 					/*SHOW ERROR*/
@@ -432,4 +433,37 @@ angular.module('myApp',[])
 		$scope.isReading = false;
 		$scope.reading = true;
 	}
+	$scope.stopReading = function () {
+		$scope.showRDetails = true;
+		$scope.isReading = true;
+		$scope.reading = false;
+	}
+	$scope.saveSpot = function (currRBook) {
+		var pos = $(".ReadWrapper").scrollTop();
+		var val = JSON.stringify({username:loggedUser, bookid:currRBook.bookId, ypos:pos});
+		$http.post("/Web2018/SaveScrollPosition",val).success(
+				function(data, status, headers, config) {
+					$scope.showRDetails = true;
+					$scope.isReading = true;
+					$scope.reading = false;
+				}).error(
+				function(data, status, headers, config) {
+					/*SHOW ERROR*/
+				})
+	}
+	$scope.openBookForReadingFromLastPosi = function (currRBook) {
+		var val = JSON.stringify({username:loggedUser, bookid:currRBook.bookId, ypos:0});
+		$http.post("/Web2018/GetScrollPosition",val).success(
+				function(data, status, headers, config) {
+					$scope.showContentOfBook = currRBook.link;
+					$scope.showRDetails = false;
+					$scope.isReading = false;
+					$scope.reading = true;
+					 $(".ReadWrapper").scrollTop(data.ypos);
+				}).error(
+				function(data, status, headers, config) {
+					/*SHOW ERROR*/
+				})
+	}
 }]);
+

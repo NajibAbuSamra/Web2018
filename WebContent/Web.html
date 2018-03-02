@@ -114,7 +114,7 @@
 			<p ng-model="errorBox"></p>
 		</div>
 	</div>
-	<div ng-show="loggedIn">
+	<div ng-show="loggedIn" style="height: 100%;">
 		<nav class="navbar navbar-inverse" ng-show="!reading">
 			<div class="container-fluid">
 			    <div class="navbar-header">
@@ -337,8 +337,9 @@
 													<br>
 												</div>
 											</div>
-											<button ng-click="openBookForReading(currRBook)" type="button" class="btn btn-danger">Read Book</button>
-											<button ng-click=addReview(currRBook) id="register" type="button" class="btn btn-danger">Add Review</button>
+											<button ng-click="openBookForReading(currRBook)" type="button" class="btn btn-danger">Start reading</button>
+											<button ng-click="openBookForReadingFromLastPosi(currRBook)" type="button" class="btn btn-danger">Continue reading</button>											
+											<button ng-click=addReview(currRBook)  type="button" class="btn btn-danger">Add Review</button>
 										</ul>
 							    	</div>
 								</div>
@@ -367,21 +368,29 @@
 				</div>
 			</div>
 		</div>
-		
-		
-		<div ng-show="reading"  style="heigth:10%;">
-			<a href="javascript:void(0)" ng-click=stopReading()>Exit</a>
-			<a href="javascript:void(0)" ng-click=saveSpot()>Save</a>
-		</div>
-		<div ng-show="reading">
-			<div class="row" style="heigth:90%;">
-				<div style="overflow-y:auto;">
-					<div ng-include="showContentOfBook">
-					</div> 
+		<nav class="navbar navbar-inverse" ng-show="reading">
+			<div class="container-fluid">
+			    <div class="navbar-header">
+			      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+			        <span class="icon-bar"></span>
+			        <span class="icon-bar"></span>
+			        <span class="icon-bar"></span>                        
+			      </button>
+			    </div>
+				<div class="collapse navbar-collapse" id="myNavbarInsideReading">
+					<ul class="nav navbar-nav">
+						<a href="javascript:void(0)" ng-click=stopReading()>Exit</a>
+						<a href="javascript:void(0)" ng-click=saveSpot(currRBook)>Save</a>
+					</ul>
+				</div>
+			</div>
+		</nav>
+		<div class="container-fluid" ng-show = "reading">
+			<div class="row content">
+				<div ng-include="showContentOfBook" class="ReadWrapper" class="col-lg-12" style="overflow-y:auto; height: 900px;">
 				</div> 
-			</div> 
-		</div>
-		
+			</div>
+		</div>	
 	</div>
 </div>
 	<script src="JS/myApp.js"></script>
