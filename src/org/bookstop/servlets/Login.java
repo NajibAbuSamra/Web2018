@@ -58,14 +58,24 @@ public class Login extends HttpServlet {
 			logger.log(Level.INFO, "doGet: connection opened...");
 			DA da = new DA(conn);
 			User user = da.selectUserByUsername(uName);
-			if (user.getPassword().matches(uPass)) {
+			if (user == null) {
+				logger.log(Level.WARNING, "doGet: user NOT found");
+				response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+			} else if (user.getPassword().matches(uPass)) {
 				logger.log(Level.INFO, "doGet: user found, password matched...");
 				String json = new Gson().toJson(user);
-			    response.setContentType("application/json");
-			    response.setCharacterEncoding("UTF-8");
-			    response.getWriter().write(json);
+				response.setContentType("application/json");
+				response.setCharacterEncoding("UTF-8");
+				response.getWriter().write(json);
+			} else {
+				logger.log(Level.WARNING, "doGet: user found, password MISMATCHED!!!");
+				response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 			}
-			
+			da.closeConnection();
+			if (conn.isClosed() == false) {
+				logger.log(Level.WARNING, "doPost: connection not closed after DA method, closing manually");
+				conn.close();
+			}
 		} catch (SQLException | NamingException e) {
 			// log error
 			logger.log(Level.SEVERE, "doGet: FAILED");
@@ -83,24 +93,24 @@ public class Login extends HttpServlet {
 
 		Logger logger = Logger.getLogger("LoginServlet");
 		logger.log(Level.INFO, "doPost: Start...");
-		
+
 		Gson gson = new Gson();
 		UserLogin user = null;
 		try {
 			StringBuilder sb = new StringBuilder();
 			String s;
-			while((s = request.getReader().readLine()) != null) {
+			while ((s = request.getReader().readLine()) != null) {
 				sb.append(s);
 			}
-			
+
 			user = (UserLogin) gson.fromJson(sb.toString(), UserLogin.class);
-			logger.log(Level.INFO, "doGet: user info: uName:"+user.getuName()+" uPass:"+user.getuPass());
-			
-		}catch(Exception e) {
+			logger.log(Level.INFO, "doPost: user info: uName:" + user.getuName() + " uPass:" + user.getuPass());
+
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		if(user == null) {
-			//TODO: check and handle error
+		if (user == null) {
+			// TODO: check and handle error
 			return;
 		}
 		try {
@@ -110,23 +120,31 @@ public class Login extends HttpServlet {
 			BasicDataSource ds = (BasicDataSource) context
 					.lookup(getServletContext().getInitParameter(AppConstants.DB_DATASOURCE) + AppConstants.OPEN);
 			Connection conn = ds.getConnection();
-			logger.log(Level.INFO, "doGet: connection opened...");
+			logger.log(Level.INFO, "doPost: connection opened...");
 			DA da = new DA(conn);
 			User fullUser = da.selectUserByUsername(user.getuName());
-			if (fullUser.getPassword().matches(user.getuPass())) {
-				logger.log(Level.INFO, "doGet: user found, password matched...");
-				String json = new Gson().toJson(fullUser);
-			    response.setContentType("application/json");
-			    response.setCharacterEncoding("UTF-8");
-			    response.getWriter().write(json);
+			if (fullUser == null) {
+				response.setStatus(HttpServletResponse.SC_NOT_FOUND);
 			}
-			
+			else if (fullUser.getPassword().matches(user.getuPass())) {
+				logger.log(Level.INFO, "doPost: user found, password matched...");
+				String json = new Gson().toJson(fullUser);
+				response.setContentType("application/json");
+				response.setCharacterEncoding("UTF-8");
+				response.getWriter().write(json);
+			}
+			else {
+				logger.log(Level.WARNING, "doPost: user found, password MISMATCHED!!!");
+				response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+			}
+			da.closeConnection();
+
 		} catch (SQLException | NamingException e) {
 			// log error
 			logger.log(Level.SEVERE, "doGet: FAILED");
 
 		}
-		
+
 	}
 
 }

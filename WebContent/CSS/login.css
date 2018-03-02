@@ -27,6 +27,9 @@
 }
 .container {
   position: relative;
+  padding: 16px;
+  padding-right: 40px;
+  padding-top: 1px;
   z-index: 1;
   max-width: 300px;
   margin: 0 auto;
@@ -34,8 +37,6 @@
 }
 
 .container-fluid {
-    padding-right: 15px;
-    padding-left: 15px;
     margin-right: auto;
     margin-left: auto;
 }
@@ -43,3 +44,66 @@
 .centralWindow {
 	border-style: solid;
 }
+
+.centralReadWindow{
+	border-style: solid;
+}
+
+
+#Header
+{
+    width: 960px;
+    height: 150px;
+}
+#Content
+{
+	overflow-y:auto;
+    height: 100%;
+    width: 960px;
+}
+#loggedIn
+{
+    height:100%;
+}
+html { 
+    height:100%;
+}
+
+body { 
+	padding:0px; margin:0px;
+    min-height:100%;
+}
+
+#showAllBooks{ 
+	overflow-y: auto;
+}
+
+/* Modal Content/Box */
+.modal-content {
+	width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    background-color: #fefefe;
+    margin: 80% auto 25% auto; /* 5% from the top, 15% from the bottom and centered */
+    border: 1px solid #888;
+}
+
+#FirstHeading {color: #2089df;}
+#sstHeading{color: #54ab56;}
+#containerIntro h1,
+#containerIntro p {
+    display: inline;
+    vertical-align: top;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 16px;
+    line-height: 28px;
+}
+
+.disRevs {
+	height:auto;
+	overflow:auto;
+}
+
+.buyingBook {
+	max-width: 100%;
+}
+

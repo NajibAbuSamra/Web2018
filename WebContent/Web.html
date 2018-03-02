@@ -1,9 +1,6 @@
 <!DOCTYPE html>
 <html>
 <head>
-<link href="//netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-<script src="//netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js"></script>
-<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
 <!-- Order might be important, in case of errors, try to shuffle -->
 <script src="lib/jquery-3.2.1.js"></script>
 <script src="lib/angular.min.js"></script>
@@ -109,7 +106,7 @@
 								<input type="text" id="photo" ng-model="regPic" class="form-control" placeholder="URL to your photo">
 							</div>
 						</div>
-						<button data-ng-click="toggleRegister()" type="button" class="btn btn-primary">Login</button>
+						<button ng-click="toggleRegister()" type="button" class="btn btn-primary">Login</button>
 						<button ng-click=registerFunc() id="register" type="button" class="btn btn-primary">Register</button>
 					</form>	
 				</div>
@@ -117,56 +114,288 @@
 			<p ng-model="errorBox"></p>
 		</div>
 	</div>
-	<div ng-show="loggedIn">
-		<nav class="navbar navbar-inverse">
+	<div ng-show="loggedIn" style="height: 100%;">
+		<nav class="navbar navbar-inverse" ng-show="!reading">
 			<div class="container-fluid">
-				<div class="collapse navbar-collapse" id="myNavbar">
+			    <div class="navbar-header">
+			      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+			        <span class="icon-bar"></span>
+			        <span class="icon-bar"></span>
+			        <span class="icon-bar"></span>                        
+			      </button>
+			        <a class="navbar-brand"  href="#"><img style="max-width:48px; margin-top: -7px;" src="books.jpg"></a>
+			    </div>
+				<div class="collapse navbar-collapse" id="myNavbar" ng-value="user">
 					<ul class="nav navbar-nav">
-						<li><a href="#">Option 1</a></li>
-						<li><a href="#">Option 2</a></li>
+						<li><a href="javascript:void(0)" ng-click=browse()>Browse</a></li>
+						<li><a href="javascript:void(0)" ng-click=readBook()>Read book</a></li>
+						<li><a href="javascript:void(0)" >Welcome {{user}}</a></li>
 					</ul>
 					<ul class="nav navbar-nav navbar-right">
-						<li><button ng-click=logout() type="button" class="btn btn-danger">Log out</button></li>
+						<li><a href="javascript:void(0)" ng-click=logout()><i class="glyphicon glyphicon-log-out"></i> Log out</a></li>
 			        </ul>
 				</div>
 			</div>
 		</nav>
-		<div class="container-fluid">
+		<div class="container-fluid" ng-show = "!reading">
 			<div class="row content">
 				<div class="col-sm-2">
 					<div class="row">
-						<p>zibfik-left</p>
 				    </div>
 				</div>
 					
 				<div class="col-sm-8">
-					<div class="centralWindow">
+					<div class="centralWindow" ng-show="isBrowsed">
 						<div class="row">
-							<div class="col-sm-3">
-								<div class="row">
-									<p>zibfik3</p>
-							    </div>
+							<div class="col-sm-3" style="overflow-y:auto; height: 900px;">
+								<div ng-app="myApp" ng-controller="myAppCrtl"> 
+									<ul ng-repeat="x in browseBooks">
+										<div id="{{x.bookId}}">
+									  		<li> 		
+									  			<a href="javascript:void(0)" ng-click=getMyCtrlScope().$parent.showBook(x)><img style="max-width:100px;" ng-src="{{x.img}}"></a>
+												<p>{{x.name}}</p>
+												<p>{{x.price}}</p>
+												<span><i ng-mouseover="displayLikes(x.bookId)" class="glyphicon glyphicon-thumbs-up"></i></span> {{x.likes}}
+												<br>
+												<br>
+											</li>	
+								  		</div>
+									</ul>
+								</div>
 							</div>
-						
-							<div class="col-sm-9">
-								<div class="row">
-									<p>zibfik9</p>
-						    	</div>
+							<div class="col-sm-9"  style="overflow-y:auto; height: 900px;">
+								<div class="leftWindow" ng-show="showDetails">
+									<div class="row">
+										<ul ng-value="currBook">
+										  		<img style="max-width:300px;" ng-src="{{currBook.img}}">
+												<h5 id="sstHeading">Book name:</h5>
+												<p>{{currBook.name}}</p>
+												<br>
+												<h5 id="sstHeading">Book price:</h5>
+												<p> {{currBook.price}}</p>
+												<br>
+												<h5 id="sstHeading">Short description:</h5>
+												<p> {{currBook.description}}</p>
+												<div>
+													<span><i ng-mouseover="displayLikes(currBook.bookId)" ng-mouseleave="dontDispLikes()" class="glyphicon glyphicon-thumbs-up"></i></span> {{currBook.likes}}	
+													<div class="likes" ng-show="isHovering">
+														<div ng-repeat="likers in browseLikers">
+															<span class="tooltiptext">{{likers.nickname}}</span>
+														</div>
+													</div>
+												</div>
+												<br>
+												<div ng-show="!showReviews">
+													<button ng-click="buyBook(currBook.bookId)" type="button" class="btn btn-success"><i class="glyphicon glyphicon-shopping-cart"></i> Buy</button>
+													<button ng-click=collapseReviews() type="button" class="btn btn-success"><i class="glyphicon glyphicon-triangle-right"></i> Show reviews</button>	
+												</div>
+												<div ng-show="showReviews">
+													<button ng-click="buyBook(currBook.bookId)" type="button" class="btn btn-success"><i class="glyphicon glyphicon-shopping-cart"></i> Buy</button>
+													<button ng-click=hideReviews() type="button" class="btn btn-sucess"><i class="glyphicon glyphicon-chevron-up"></i> Hide reviews</button>													
+												</div>
+												<br>
+											<div class="disRevs" ng-show="showReviews">
+												<br>
+												<div ng-repeat="r in currBook.reviews"> 
+													<h4 id="FirstHeading">{{$index + 1}}. {{r.nickname}}'s review:</h4>
+													<p> {{r.text}}</p>
+													<br>
+												</div>
+											</div>
+										</ul>
+							    	</div>
+								</div>
+								<div class="col-xs-12 col-sm-8 col-md-4 col-sm-offset-2 col-md-offset-4">
+									<div class="buyingBook" ng-show="optBuy">
+											<form class="modal-content animate">
+												<div class="container">										
+													<h3>Payment information</h3>
+													<div class="form-group">
+														<div class="input-group">
+															<span class="input-group-addon"><i class="glyphicon glyphicon-credit-card"></i></span>
+															<input type="text" id="cardNum" ng-model="regCardNum" class="form-control" placeholder="Card number">
+														</div>
+													</div>
+													
+													<div class="form-group">
+														<div class="input-group">
+															<span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+															<input type="text" id="month" ng-model="regMonth" class="form-control" placeholder="MM">
+		    												<span class="input-group-addon">/</span>
+															<input type="text" id="year" ng-model="regYear" class="form-control" placeholder="YY">
+														</div>
+													</div>										
+													
+												
+													<div class="form-group">
+														<div class="input-group">
+															<span class="input-group-addon"><i class="glyphicon glyphicon-option-horizontal"></i></span>
+															<input type="text" id="cvv" ng-model="regCVV" class="form-control" placeholder="CVV">
+														</div>
+													</div>
+													
+													<div class="form-group">
+														<div class="input-group">
+															<span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+															<input type="text" id="name" ng-model="regFullName" class="form-control" placeholder="full name">
+														</div>
+													</div>
+													
+													<div class="form-group">
+														<div class="input-group">
+														  	<select name="Card company" ng-model="regCardCompany">
+														  		<option value="" disabled selected>Card company</option>
+													    		<option value="masterCard">Mastercard</option>
+													    		<option value="visa">Visa</option>
+													    		<option value="visa">AMEX</option>													    		
+													  		</select>
+												  		</div>
+													</div>
+													<div class="center">
+														<h3>Billing address</h3>
+													 </div>
+													
+													<div class="form-group">
+														<div class="input-group">
+															<span class="input-group-addon"><i class="glyphicon glyphicon-home"></i></span>
+															<input type="text" id="addc" ng-model="regAddressCity" class="form-control" placeholder="Address, City">
+														</div>
+													</div>
+													
+													<div class="form-group">
+														<div class="input-group">
+															<span class="input-group-addon"><i class="glyphicon glyphicon-certificate"></i></span>
+															<input type="text" id="zipp" ng-model="regZIP" class="form-control" placeholder="ZIP code">
+														</div>
+													</div>													 
+													
+													<button ng-click=retToBrowseBooks() type="button" class="btn btn-success"><i class="glyphicon glyphicon-triangle-right"></i> return</button>	
+													<button ng-click=finishBuy() id="confirmBuy" type="button" class="btn btn-success"><i class="glyphicon glyphicon-usd"></i> pay</button>	
+												</div>
+											</form>
+									</div>
+								</div>
 							</div>
 						</div>
 				    </div>
+
+					<div class="centralReadWindow" ng-show="isReading">
+						<div class="row">
+							<div class="col-sm-3" style="overflow-y:auto; height: 900px;">
+								<div ng-app="myApp" ng-controller="myAppCrtl"> 
+									<ul ng-repeat="y in myBooks">
+										<div id="{{y.bookId}}">
+									  		<li> 		
+												<h4>{{y.name}}</h4>
+									  			<a href="javascript:void(0)" ng-click=getMyCtrlScope().$parent.showReadingBook(y)><img style="max-width:100px;" ng-src="{{y.img}}"></a>
+												<br>
+												<br>
+												<br>
+											</li>	
+								  		</div>
+									</ul>
+								</div>
+							</div>
+							
+							<div class="col-sm-9" style="overflow-y:auto; height: 900px;">
+								<div class="leftReadWindow" ng-show="showRDetails">
+									<div class="row">
+										<ul ng-value="currRBook">
+											<div class="form-group">
+										  		<img style="max-width:300px;" ng-src="{{currRBook.img}}">
+											</div>
+											<div ng-show="!liked">
+												<a href="javascript:void(0)" ng-click=updateLikers(currRBook)><span><i ng-mouseover="displayLikes(currRBook.bookId)" ng-mouseleave="dontDispLikes()" class="glyphicon glyphicon-thumbs-up"></i></span></a> 
+												{{currRBook.likes}}	
+												<div class="likes" ng-show="isHovering">
+													<div ng-repeat="likers in browseLikers">
+														<span class="tooltiptext">{{likers.nickname}}</span>
+													</div>
+												</div>
+											</div>
+											<div ng-show="liked">
+												<a href="javascript:void(0)" ng-click=removeLike(currRBook)><span><i ng-mouseover="displayLikes(currRBook.bookId)" ng-mouseleave="dontDispLikes()" class="glyphicon glyphicon-thumbs-down"></i></span></a> {{currRBook.likes}}	
+												<div class="likes" ng-show="isHovering">
+													<div ng-repeat="likers in browseLikers">
+														<span class="tooltiptext">{{likers.nickname}}</span>
+													</div>
+												</div>
+											</div>
+											<br>
+											<div ng-show="!showRReviews">
+												<button ng-click=collapseRReviews() type="button" class="btn btn-success"><i class="glyphicon glyphicon-triangle-right"></i> Show reviews</button>	
+											</div>
+											<div ng-show="showRReviews">
+												<button ng-click=hideRReviews() type="button" class="btn btn-sucess"><i class="glyphicon glyphicon-chevron-up"></i> Hide reviews</button>													
+											</div>
+											<br>
+											<div class="disRRevs" ng-show="showRReviews">
+												<br>
+												<div ng-repeat="t in currRBook.reviews"> 
+													<h4 id="FirstHeading">{{$index + 1}}. {{t.nickname}}'s review:</h4>
+													<p> {{t.text}}</p>
+													<br>
+												</div>
+											</div>
+											<button ng-click="openBookForReading(currRBook)" type="button" class="btn btn-danger">Start reading</button>
+											<button ng-click=addReview(currRBook)  type="button" class="btn btn-danger">Add Review</button>
+										</ul>
+							    	</div>
+								</div>
+								<div ng-show="popUpAddReview" class="col-lg-8">
+									<div class="row">
+										<form>
+											<div class="form-group">
+												<div class="input-group">
+													<span class="input-group-addon"><i class="glyphicon glyphicon-pencil"></i></span>
+													<textarea id="rev" ng-model="regRev" rows="6" class="form-control" placeholder="Review book..." maxlength="255"></textarea>
+												</div>
+											</div>
+										</form>
+										<button ng-click=submitReview(currRBook) id="submitRev" type="button" class="btn btn-danger">Submit</button>
+										<button ng-click=CancelReview() id="submitRev" type="button" class="btn btn-danger">Cancel</button>										
+							    	</div>
+								</div>
+							</div>
+						</div>
+					</div>					
 				</div>
 				
 				<div class="col-sm-2">
 					<div class="row">
-						<p>zibfik-right</p>
 				    </div>
 				</div>
 			</div>
 		</div>
+		<nav class="navbar navbar-inverse" ng-show="reading">
+			<div class="container-fluid">
+			    <div class="navbar-header">
+			      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+			        <span class="icon-bar"></span>
+			        <span class="icon-bar"></span>
+			        <span class="icon-bar"></span>                        
+			      </button>
+			    </div>
+				<div class="collapse navbar-collapse" id="myNavbarInsideReading">
+					<ul class="nav navbar-nav">
+						<a href="javascript:void(0)" ng-click=saveSpot(currRBook)>Save & Exit</a>
+						<a href="javascript:void(0)" ng-click=openBookForReadingFromLastPosi(currRBook)>Load</a>
+					</ul>
+				</div>
+			</div>
+		</nav>
+		<div class="container-fluid" ng-show = "reading">
+			<div class="row content">
+				<div ng-include="showContentOfBook" class="ReadWrapper" class="col-lg-12" style="overflow-y:auto; height: 900px;">
+				</div> 
+			</div>
+		</div>	
 	</div>
 </div>
 	<script src="JS/myApp.js"></script>
 </body>
 </html>
 
+
+
+        	
