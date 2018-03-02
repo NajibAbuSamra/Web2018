@@ -452,10 +452,13 @@ public class DA implements DataInterface {
 	@Override
 	public void insertScrollPosition(ScrollPosition pos, boolean append) {
 		try {
-			PreparedStatement pstmt = conn.prepareStatement(SQLstatements.INSERT_SCROLLPOSITION_STMT);
-			pstmt.setString(1, pos.getUsername());
-			pstmt.setInt(2, pos.getBookid());
-			pstmt.setInt(3, pos.getYpos());
+			PreparedStatement pstmt = null;
+			if (!append) {
+				pstmt = conn.prepareStatement(SQLstatements.INSERT_SCROLLPOSITION_STMT);
+				pstmt.setString(1, pos.getUsername());
+				pstmt.setInt(2, pos.getBookid());
+				pstmt.setInt(3, pos.getYpos());
+			}
 			if (append) {
 				pstmt = conn.prepareStatement(SQLstatements.UPDATE_YPOS_BY_USERNAME_AND_BOOKID_STMT);
 				pstmt.setInt(1, pos.getYpos());
@@ -464,8 +467,7 @@ public class DA implements DataInterface {
 	
 			}
 
-			ResultSet rs = pstmt.executeQuery();
-			rs.close();
+			pstmt.executeUpdate();
 			pstmt.close();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block

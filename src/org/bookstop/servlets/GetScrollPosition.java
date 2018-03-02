@@ -82,14 +82,13 @@ public class GetScrollPosition extends HttpServlet {
 			logger.log(Level.INFO, "doPost: connection opened...");
 			DA da = new DA(conn);
 
-			scrollPosition.setYpos(
-					da.selectYposByUsernameAndBookid(scrollPosition.getUsername(), scrollPosition.getBookid()));
+			int Y = (da.selectYposByUsernameAndBookid(scrollPosition.getUsername(), scrollPosition.getBookid()));
 
-			if (scrollPosition.getYpos() == -1) {
+			if (Y == -1) {
 				response.setStatus(HttpServletResponse.SC_NOT_FOUND); // no ypos saved/found
 				return;
 			} else {
-				String json = new Gson().toJson(scrollPosition.getYpos());
+				String json = new Gson().toJson(Y);
 				response.setContentType("application/json");
 				response.setCharacterEncoding("UTF-8");
 				response.getWriter().write(json);

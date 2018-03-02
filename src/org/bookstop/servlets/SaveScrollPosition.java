@@ -77,9 +77,9 @@ public class SaveScrollPosition extends HttpServlet {
 			logger.log(Level.INFO, "doPost: connection opened...");
 			DA da = new DA(conn);
 
-			scrollPosition.setYpos(da.selectYposByUsernameAndBookid(scrollPosition.getUsername(), scrollPosition.getBookid()));
+			int Y = (da.selectYposByUsernameAndBookid(scrollPosition.getUsername(), scrollPosition.getBookid()));
 
-			if (scrollPosition.getYpos() == -1) {
+			if (Y == -1) {
 				da.insertScrollPosition(scrollPosition,false);
 			}
 			else {

@@ -433,11 +433,7 @@ angular.module('myApp',[])
 		$scope.isReading = false;
 		$scope.reading = true;
 	}
-	$scope.stopReading = function () {
-		$scope.showRDetails = true;
-		$scope.isReading = true;
-		$scope.reading = false;
-	}
+
 	$scope.saveSpot = function (currRBook) {
 		var pos = $(".ReadWrapper").scrollTop();
 		var val = JSON.stringify({username:loggedUser, bookid:currRBook.bookId, ypos:pos});
@@ -446,6 +442,7 @@ angular.module('myApp',[])
 					$scope.showRDetails = true;
 					$scope.isReading = true;
 					$scope.reading = false;
+					$(".ReadWrapper").scrollTop(0);
 				}).error(
 				function(data, status, headers, config) {
 					/*SHOW ERROR*/
@@ -455,15 +452,10 @@ angular.module('myApp',[])
 		var val = JSON.stringify({username:loggedUser, bookid:currRBook.bookId, ypos:0});
 		$http.post("/Web2018/GetScrollPosition",val).success(
 				function(data, status, headers, config) {
-					$scope.showContentOfBook = currRBook.link;
-					$scope.showRDetails = false;
-					$scope.isReading = false;
-					$scope.reading = true;
-					 $(".ReadWrapper").scrollTop(data.ypos);
+					$(".ReadWrapper").scrollTop(data);
 				}).error(
 				function(data, status, headers, config) {
 					/*SHOW ERROR*/
 				})
 	}
 }]);
-

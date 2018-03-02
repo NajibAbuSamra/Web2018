@@ -338,7 +338,6 @@
 												</div>
 											</div>
 											<button ng-click="openBookForReading(currRBook)" type="button" class="btn btn-danger">Start reading</button>
-											<button ng-click="openBookForReadingFromLastPosi(currRBook)" type="button" class="btn btn-danger">Continue reading</button>											
 											<button ng-click=addReview(currRBook)  type="button" class="btn btn-danger">Add Review</button>
 										</ul>
 							    	</div>
@@ -379,8 +378,8 @@
 			    </div>
 				<div class="collapse navbar-collapse" id="myNavbarInsideReading">
 					<ul class="nav navbar-nav">
-						<a href="javascript:void(0)" ng-click=stopReading()>Exit</a>
-						<a href="javascript:void(0)" ng-click=saveSpot(currRBook)>Save</a>
+						<a href="javascript:void(0)" ng-click=saveSpot(currRBook)>Save & Exit</a>
+						<a href="javascript:void(0)" ng-click=openBookForReadingFromLastPosi(currRBook)>Load</a>
 					</ul>
 				</div>
 			</div>
@@ -396,7 +395,6 @@
 	<script src="JS/myApp.js"></script>
 </body>
 </html>
-
 
 
 
