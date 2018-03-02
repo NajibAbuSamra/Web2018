@@ -28,6 +28,7 @@ public final class DataContract {
 		public static final String TABLE_NAME = "reviews";
 		public static final String COL_ID = "id";
 		public static final String COL_USERNAME = "username";
+		public static final String COL_NICKNAME = "nickname";
 		public static final String COL_BOOKID = "bookid";
 		public static final String COL_TEXT = "text";
 		public static final String COL_VERIFIED = "verified";
@@ -46,10 +47,16 @@ public final class DataContract {
 		public static final String COL_BOOKID = "bookid";
 		public static final String COL_CARDCOMPANY = "company";
 		public static final String COL_CARDNUMBER = "cardnumber";
-		public static final String COL_EXPIRYMONTH = "month";
-		public static final String COL_EXPIRYYEAR = "year";
+		public static final String COL_EXPIRYMONTH = "expMonth";
+		public static final String COL_EXPIRYYEAR = "expYear";
 		public static final String COL_CVV = "cvv";
 		public static final String COL_FULLNAME = "fullname";
 	}
 	
+	public static class ScrollPositionsTable{
+		public static final String TABLE_NAME = "scrollpositions";
+		public static final String COL_USERNAME = "username";
+		public static final String COL_BOOKID = "bookid";
+		public static final String COL_YPOS = "ypos";
+	}
 }

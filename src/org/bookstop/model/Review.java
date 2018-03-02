@@ -1,42 +1,72 @@
 package org.bookstop.model;
 
 public class Review {
+	private int id;
 	private String username;
+	private String nickname;
 	private int bookID;
 	private String text;
-	private boolean verified;
+	private int verified;
 	
-	public Review(String username, int bookID, boolean verified, String text) {
+	public static final int UNVERIFIED = 0;
+	public static final int VERIFIED = 1;
+
+	public Review(int id, String username, String nickname,int bookID, int verified, String text) {
 		super();
+		this.id = id;
 		this.username = username;
+		this.nickname = nickname;
 		this.bookID = bookID;
 		this.verified = verified;
 		this.text = text;
 	}
-	
+
 	public String getUsername() {
 		return username;
 	}
+
 	public void setUsername(String username) {
 		this.username = username;
 	}
+
 	public int getBookID() {
 		return bookID;
 	}
+
 	public void setBookID(int bookID) {
 		this.bookID = bookID;
 	}
-	public boolean isApproved() {
+
+	public int getVerified() {
 		return verified;
 	}
-	public void setApproved(boolean verified) {
+
+	public void setVerified(int verified) {
 		this.verified = verified;
 	}
+
 	public String getText() {
 		return text;
 	}
+
 	public void setText(String text) {
 		this.text = text;
 	}
-	
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	public String getNickname() {
+		return nickname;
+	}
+
+	public void setNickname(String nickname) {
+		this.nickname = nickname;
+	}
+
 }

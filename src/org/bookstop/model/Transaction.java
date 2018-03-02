@@ -7,11 +7,11 @@ public class Transaction {
 	private String cardNumber;
 	private int expiryMonth;
 	private int expiryYear;
-	private int cvv;
+	private String cvv;
 	private String fullName;
 	
 	public Transaction(String username, int bookID, String cardCompany, String cardNumber, int expiryMonth,
-			int expiryYear, int cvv, String fullName) {
+			int expiryYear, String cvv, String fullName) {
 		super();
 		this.username = username;
 		this.bookID = bookID;
@@ -71,11 +71,11 @@ public class Transaction {
 		this.expiryYear = expiryYear;
 	}
 
-	public int getCvv() {
+	public String getCvv() {
 		return cvv;
 	}
 
-	public void setCvv(int cvv) {
+	public void setCvv(String cvv) {
 		this.cvv = cvv;
 	}
 
