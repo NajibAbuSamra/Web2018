@@ -13,6 +13,7 @@ angular.module('myApp',[])
 	$scope.isReading = false;
 	$scope.reading = false;
 	$scope.showDetails = false;
+	$scope.admin = false;
 	$scope.isisHovering = false;
 	$scope.optBuy = false;
 	$scope.showRDetails = false;
@@ -42,6 +43,8 @@ angular.module('myApp',[])
 			$scope.showContent = false;
 			$scope.isReading = false;
 			$scope.showDetails = false;
+			if(data.type == 1) 
+				$scope.admin = true;
 			}).
 		error(function(data,status,headers,config){
 			if (status == 404)
@@ -61,7 +64,8 @@ angular.module('myApp',[])
 	/*REGISTER*/
 	$scope.registerFunc = function() {
 		/*VALIDITY CHECK HERE*/
-		
+		if ($scope.regPic == "" || $scope.regPic == null)
+			$scope.regPic = "defaultUserImg.png"
 		var val = JSON.stringify({username:$scope.regUname , email:$scope.regEmail ,  address:$scope.regAddress, phone:$scope.regTelephone, 
 			password:$scope.regPass, nickname:$scope.regNick, picture:$scope.regPic, description:$scope.regDesc, type:0});
 		var isnum;
@@ -186,6 +190,29 @@ angular.module('myApp',[])
 					$scope.optBuy = false;
 					$scope.showContent = false;
 					$scope.myBooks = data;
+					console.log(data);
+				}).error(
+				function(data, status, headers, config) {
+					/*SHOW ERROR*/
+					if(status == 401){
+						/*wrong password, log user out and display error*/
+					}
+				})
+
+	}
+	
+	$scope.browseUsers =function() {
+		var val = JSON.stringify({uName:loggedUser , uPass:loggedPass})
+		/* Change getAvailableBooks with GetMyBooks*/
+		$http.post("/Web2018/GetAllUsers",val).success(
+				function(data, status, headers, config) {
+					/*PUT BOOKS IN PROPER DIV*/
+					$scope.isBrowsingUsers = true;
+					$scope.isBrowsed = false;
+					$scope.isReading = false;
+					$scope.optBuy = false;
+					$scope.showContent = false;
+					$scope.users = data;
 					console.log(data);
 				}).error(
 				function(data, status, headers, config) {
