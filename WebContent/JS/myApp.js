@@ -13,6 +13,7 @@ angular.module('myApp',[])
 	$scope.isReading = false;
 	$scope.reading = false;
 	$scope.showDetails = false;
+	$scope.showUserDetailsInRead = false;
 	$scope.admin = false;
 	$scope.isisHovering = false;
 	$scope.optBuy = false;
@@ -23,6 +24,7 @@ angular.module('myApp',[])
 	$scope.popUpAddReview = false;
 	$scope.showReviews = false;
 	$scope.showRReviews = false;
+	$scope.pressed = false;
 
 	
 	var loggedUser = "";
@@ -177,6 +179,7 @@ angular.module('myApp',[])
 					$scope.browseBooks = data;
 					$scope.optBuy = false;
 					$scope.showRDetails = false;
+					$scope.showUserDetailsInRead = false;
 					$scope.showContent = false;
 					$scope.isBrowsingUsers = false;
 				}).error(
@@ -199,6 +202,7 @@ angular.module('myApp',[])
 					$scope.showContent = false;
 					$scope.isBrowsingUsers = false;
 					$scope.myBooks = data;
+					$scope.showUserDetailsInRead = false;
 				}).error(
 				function(data, status, headers, config) {
 					/*SHOW ERROR*/
@@ -221,6 +225,7 @@ angular.module('myApp',[])
 					$scope.optBuy = false;
 					$scope.showContent = false;
 					$scope.showRDetails = false;
+					$scope.showUserDetailsInRead = false;
 					$scope.showContent = false;
 					$scope.users = data;
 					console.log(data);
@@ -247,6 +252,22 @@ angular.module('myApp',[])
 					/*SHOW ERROR*/
 				})
 	}	
+	
+	$scope.dispLikesforAdmin = function(bookID){
+		var val = JSON.stringify({bookid:bookID})
+		$http.post("/Web2018/GetLikersByBook",val).success(
+				function(data, status, headers, config) {
+					/*Display Likes*/
+					$scope.browseLikersForAdmin = data;
+					$scope.pressed = true;
+				}).error(
+				function(data, status, headers, config) {
+					/*SHOW ERROR*/
+				})
+	}
+	$scope.hideLikes = function() {
+		$scope.pressed = false;
+	}
 	$scope.updateLikers = function(book) {
 		var val = JSON.stringify({username:loggedUser, bookid:book.bookId})
 		$http.post("/Web2018/AddLike",val).success(
@@ -273,9 +294,11 @@ angular.module('myApp',[])
 					/*SHOW ERROR*/
 				})
 	}
+	
 	$scope.dontDispLikes = function(){
 		$scope.isHovering = false;
 	}
+	
 	$scope.showBook = function(clicked_id){
 		$scope.booksReviews = clicked_id.reviews;
 		$scope.showDetails = true;
@@ -284,12 +307,37 @@ angular.module('myApp',[])
 		$scope.optBuy = false;
 		$scope.counter = 1;
 		$scope.isBrowsingUsers = false;
+		$scope.showUserDetails = false;
 		$scope.showContent = false;
+		$scope.showUserDetailsInRead = false;
+		$scope.pressed = false;
 	}	
-	$scope.showUser = function(user){
-		$scope.showUserDetails = true;
+	
+	$scope.showUser = function(user, flag){
+		if (flag == "1") {
+			$scope.showDetails = false;
+			$scope.showUserDetails = true;
+		}
+		else {
+			$scope.showUserDetailsInRead = true;
+			$scope.showDetails = false;
+		}
 		$scope.currUser = user;
+		$scope.showReviews = false;
+		$scope.optBuy = false;
+		$scope.showContent = false;
+		$scope.pressed = false;
+		console.log(flag);
+		console.log(user);
 	}	
+	
+	$scope.retFromViewingUserInLikers = function(){
+		$scope.showDetails = true;
+		$scope.showUserDetailsInRead = false;
+	}	
+	
+	
+	
 	$scope.showReadingBook = function(book_being_read){
 		$scope.showRDetails = true;
 		$scope.popUpAddReview = false;

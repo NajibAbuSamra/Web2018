@@ -178,12 +178,10 @@
 													<br>
 													<h5 id="sstHeading">Short description:</h5>
 													<p> {{currBook.description}}</p>
-													<div>
-														<span><i ng-mouseover="displayLikes(currBook.bookId)" ng-mouseleave="dontDispLikes()" class="glyphicon glyphicon-thumbs-up"></i></span> {{currBook.likes}}	
-														<div class="likes" ng-show="isHovering">
-															<div ng-repeat="likers in browseLikers">
-																<span class="tooltiptext">{{likers.nickname}}</span>
-															</div>
+													<span><i ng-mouseover="displayLikes(currBook.bookId)" ng-mouseleave="dontDispLikes()" class="glyphicon glyphicon-thumbs-up"></i></span> {{currBook.likes}}	
+													<div class="likes" ng-show="isHovering">
+														<div ng-repeat="likers in browseLikers">
+															<span class="tooltiptext">{{likers.nickname}}</span>
 														</div>
 													</div>
 													<br>
@@ -196,6 +194,15 @@
 														<button ng-click=hideReviews() type="button" class="btn btn-sucess"><i class="glyphicon glyphicon-chevron-up"></i> Hide reviews</button>													
 													</div>
 													<br>
+													<div ng-show="!pressed">
+														<button ng-click=dispLikesforAdmin(currBook.bookId) ng-show="admin" type="button" class="btn btn-success"><i class="glyphicon glyphicon-thumbs-up"></i> Likers</button>	
+													</div>
+													<div ng-show="pressed">
+														<button ng-click=hideLikes() ng-show="admin" type="button" class="btn btn-success"><i class="glyphicon glyphicon-chevron-up"></i> Likers</button>														
+														<div ng-repeat="likes in browseLikersForAdmin">
+															<a href="javascript:void(0)" ng-click="showUser(likes, '0')"><p>{{likes.nickname}}</p></a>
+														</div>
+													</div>
 												<div class="disRevs" ng-show="showReviews">
 													<br>
 													<div ng-repeat="r in currBook.reviews"> 
@@ -207,6 +214,27 @@
 											</ul>
 								    	</div>
 									</div>
+									<div ng-show="showUserDetailsInRead">
+										<div class="row">
+												<ul ng-value="currUser">
+												  	<img style="max-width:300px;" ng-src="{{currUser.picture}}">
+												 		<h5 id="sstHeading">Username:</h5>
+														<p>{{currUser.username}}</p>
+														<br>
+														<h5 id="sstHeading">Nickname:</h5>
+														<p> {{currUser.nickname}}</p>
+														<br>
+														<h5 id="sstHeading">Address:</h5>
+														<p> {{currUser.address}}</p>
+														<br>
+														<h5 id="sstHeading">Description:</h5>
+														<p> {{currUser.description}}</p>
+														<br>
+														<br>
+												</ul>
+												<button ng-click=retFromViewingUserInLikers() ng-show="admin" type="button" class="btn btn-success"> return</button>														
+									    </div>
+								    </div>
 									<div class="col-xs-12 col-sm-8 col-md-4 col-sm-offset-2 col-md-offset-4">
 										<div class="buyingBook" ng-show="optBuy">
 												<form class="modal-content animate">
@@ -288,7 +316,7 @@
 										<ul ng-repeat="x in users">
 											<div id="{{x.username}}">
 										  		<li> 		
-										  			<a href="javascript:void(0)" ng-click=getMyCtrlScope().$parent.showUser(x)><img style="max-width:50px; max-heigth:50px;" ng-src="{{x.picture}}"></a>
+										  			<a href="javascript:void(0)" ng-click="getMyCtrlScope().$parent.showUser(x, '1')"><img style="max-width:50px; max-heigth:50px;" ng-src="{{x.picture}}"></a>
 													<p>{{x.username}}</p>
 													<br>
 												</li>	
