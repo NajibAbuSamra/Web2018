@@ -290,7 +290,6 @@
 										  		<li> 		
 										  			<a href="javascript:void(0)" ng-click=getMyCtrlScope().$parent.showUser(x)><img style="max-width:50px; max-heigth:50px;" ng-src="{{x.picture}}"></a>
 													<p>{{x.username}}</p>
-													<p>{{x.nickname}}</p>
 													<br>
 												</li>	
 									  		</div>
@@ -300,42 +299,21 @@
 								<div class="col-sm-9"  style="overflow-y:auto; height: 900px;">
 									<div class="leftMidWindow" ng-show="showUserDetails">
 										<div class="row">
-											<ul ng-value="currBook">
-											  		<img style="max-width:300px;" ng-src="{{currBook.img}}">
-													<h5 id="sstHeading">Book name:</h5>
-													<p>{{currBook.name}}</p>
+											<ul ng-value="currUser">
+											  	<img style="max-width:300px;" ng-src="{{currUser.picture}}">
+											 		<h5 id="sstHeading">Username:</h5>
+													<p>{{currUser.username}}</p>
 													<br>
-													<h5 id="sstHeading">Book price:</h5>
-													<p> {{currBook.price}}</p>
+													<h5 id="sstHeading">Nickname:</h5>
+													<p> {{currUser.nickname}}</p>
 													<br>
-													<h5 id="sstHeading">Short description:</h5>
-													<p> {{currBook.description}}</p>
-													<div>
-														<span><i ng-mouseover="displayLikes(currBook.bookId)" ng-mouseleave="dontDispLikes()" class="glyphicon glyphicon-thumbs-up"></i></span> {{currBook.likes}}	
-														<div class="likes" ng-show="isHovering">
-															<div ng-repeat="likers in browseLikers">
-																<span class="tooltiptext">{{likers.nickname}}</span>
-															</div>
-														</div>
-													</div>
+													<h5 id="sstHeading">Address:</h5>
+													<p> {{currUser.address}}</p>
 													<br>
-													<div ng-show="!showReviews">
-														<button ng-click="buyBook(currBook.bookId)" type="button" class="btn btn-success"><i class="glyphicon glyphicon-shopping-cart"></i> Buy</button>
-														<button ng-click=collapseReviews() type="button" class="btn btn-success"><i class="glyphicon glyphicon-triangle-right"></i> Show reviews</button>	
-													</div>
-													<div ng-show="showReviews">
-														<button ng-click="buyBook(currBook.bookId)" type="button" class="btn btn-success"><i class="glyphicon glyphicon-shopping-cart"></i> Buy</button>
-														<button ng-click=hideReviews() type="button" class="btn btn-sucess"><i class="glyphicon glyphicon-chevron-up"></i> Hide reviews</button>													
-													</div>
+													<h5 id="sstHeading">Description:</h5>
+													<p> {{currUser.description}}</p>
 													<br>
-												<div class="disRevs" ng-show="showReviews">
 													<br>
-													<div ng-repeat="r in currBook.reviews"> 
-														<h4 id="FirstHeading">{{$index + 1}}. {{r.nickname}}'s review:</h4>
-														<p> {{r.text}}</p>
-														<br>
-													</div>
-												</div>
 											</ul>
 								    	</div>
 									</div>

@@ -65,7 +65,14 @@ angular.module('myApp',[])
 	$scope.registerFunc = function() {
 		/*VALIDITY CHECK HERE*/
 		if ($scope.regPic == "" || $scope.regPic == null)
-			$scope.regPic = "defaultUserImg.png"
+			$scope.regPic = "defaultUserImg.png";
+
+		if ($scope.regAddress == "" || $scope.regAddress == null)
+			$scope.regAddress = "Address not Specified";				
+
+		if ($scope.regDesc == "" || $scope.regDesc == null)
+			$scope.regDesc = "Empty description";		
+		
 		var val = JSON.stringify({username:$scope.regUname , email:$scope.regEmail ,  address:$scope.regAddress, phone:$scope.regTelephone, 
 			password:$scope.regPass, nickname:$scope.regNick, picture:$scope.regPic, description:$scope.regDesc, type:0});
 		var isnum;
@@ -171,6 +178,7 @@ angular.module('myApp',[])
 					$scope.optBuy = false;
 					$scope.showRDetails = false;
 					$scope.showContent = false;
+					$scope.isBrowsingUsers = false;
 				}).error(
 				function(data, status, headers, config) {
 					/*SHOW ERROR*/
@@ -189,8 +197,8 @@ angular.module('myApp',[])
 					$scope.isBrowsed = false;
 					$scope.optBuy = false;
 					$scope.showContent = false;
+					$scope.isBrowsingUsers = false;
 					$scope.myBooks = data;
-					console.log(data);
 				}).error(
 				function(data, status, headers, config) {
 					/*SHOW ERROR*/
@@ -211,6 +219,8 @@ angular.module('myApp',[])
 					$scope.isBrowsed = false;
 					$scope.isReading = false;
 					$scope.optBuy = false;
+					$scope.showContent = false;
+					$scope.showRDetails = false;
 					$scope.showContent = false;
 					$scope.users = data;
 					console.log(data);
@@ -273,7 +283,12 @@ angular.module('myApp',[])
 		$scope.showReviews = false;
 		$scope.optBuy = false;
 		$scope.counter = 1;
+		$scope.isBrowsingUsers = false;
 		$scope.showContent = false;
+	}	
+	$scope.showUser = function(user){
+		$scope.showUserDetails = true;
+		$scope.currUser = user;
 	}	
 	$scope.showReadingBook = function(book_being_read){
 		$scope.showRDetails = true;
@@ -281,6 +296,7 @@ angular.module('myApp',[])
 		$scope.popUpAddReview = false;
 		$scope.currRBook = book_being_read;
 		$scope.showContent = false;
+		$scope.isBrowsingUsers = false;
 		$scope.isReading = true;
 		
 		var val = JSON.stringify({bookid:book_being_read.bookId})
