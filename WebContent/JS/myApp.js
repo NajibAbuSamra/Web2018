@@ -13,6 +13,8 @@ angular.module('myApp',[])
 	$scope.isReading = false;
 	$scope.reading = false;
 	$scope.showDetails = false;
+	$scope.viewBuys = true;
+	$scope.dispTransactions = false;
 	$scope.showUserDetailsInRead = false;
 	$scope.admin = false;
 	$scope.isisHovering = false;
@@ -179,6 +181,8 @@ angular.module('myApp',[])
 					$scope.browseBooks = data;
 					$scope.optBuy = false;
 					$scope.showRDetails = false;
+					$scope.viewBuys = true;	
+					$scope.dispTransactions = false;
 					$scope.showUserDetailsInRead = false;
 					$scope.showContent = false;
 					$scope.isBrowsingUsers = false;
@@ -201,6 +205,8 @@ angular.module('myApp',[])
 					$scope.optBuy = false;
 					$scope.showContent = false;
 					$scope.isBrowsingUsers = false;
+					$scope.dispTransactions = false;
+					$scope.viewBuys = true;	
 					$scope.myBooks = data;
 					$scope.showUserDetailsInRead = false;
 				}).error(
@@ -227,6 +233,8 @@ angular.module('myApp',[])
 					$scope.showRDetails = false;
 					$scope.showUserDetailsInRead = false;
 					$scope.showContent = false;
+					$scope.viewBuys = true;
+					$scope.dispTransactions = false;
 					$scope.users = data;
 					console.log(data);
 				}).error(
@@ -253,18 +261,6 @@ angular.module('myApp',[])
 				})
 	}	
 	
-	$scope.dispLikesforAdmin = function(bookID){
-		var val = JSON.stringify({bookid:bookID})
-		$http.post("/Web2018/GetLikersByBook",val).success(
-				function(data, status, headers, config) {
-					/*Display Likes*/
-					$scope.browseLikersForAdmin = data;
-					$scope.pressed = true;
-				}).error(
-				function(data, status, headers, config) {
-					/*SHOW ERROR*/
-				})
-	}
 	$scope.hideLikes = function() {
 		$scope.pressed = false;
 	}
@@ -308,8 +304,10 @@ angular.module('myApp',[])
 		$scope.counter = 1;
 		$scope.isBrowsingUsers = false;
 		$scope.showUserDetails = false;
+		$scope.dispTransactions = false;
 		$scope.showContent = false;
 		$scope.showUserDetailsInRead = false;
+		$scope.viewBuys = true;	
 		$scope.pressed = false;
 	}	
 	
@@ -323,10 +321,15 @@ angular.module('myApp',[])
 			$scope.showDetails = false;
 		}
 		$scope.currUser = user;
+		$scope.dispTransactions = false;
 		$scope.showReviews = false;
 		$scope.optBuy = false;
 		$scope.showContent = false;
 		$scope.pressed = false;
+		$scope.dispTransactions = false;
+		$scope.viewBuys = true;	
+
+
 		console.log(flag);
 		console.log(user);
 	}	
@@ -341,11 +344,14 @@ angular.module('myApp',[])
 	$scope.showReadingBook = function(book_being_read){
 		$scope.showRDetails = true;
 		$scope.popUpAddReview = false;
+		$scope.dispTransactions = false;
 		$scope.popUpAddReview = false;
 		$scope.currRBook = book_being_read;
 		$scope.showContent = false;
 		$scope.isBrowsingUsers = false;
 		$scope.isReading = true;
+		$scope.viewBuys = true;	
+
 		
 		var val = JSON.stringify({bookid:book_being_read.bookId})
 		$http.post("/Web2018/GetLikersByBook",val).success(
@@ -380,14 +386,41 @@ angular.module('myApp',[])
 	}
 	$scope.recentTransactions = function(bookId) {
 		var val = JSON.stringify({bookid:bookId})
-		$http.post("/Web2018/GetAllTransactionsByBookId",val).success(
+		$http.post("/Web2018/GetTransactionsByBook",val).success(
 				function(data, status, headers, config) {
-
+					$scope.dispTransactions = true;
+					$scope.transactions = data;
+					$scope.viewBuys = false;
+					$scope.showReviews = false;
+					$scope.pressed = false;
+					console.log(data);
 				}).error(
 				function(data, status, headers, config) {
 					/*SHOW ERROR*/
 				})
 	}
+	$scope.dispLikesforAdmin = function(bookID){
+		var val = JSON.stringify({bookid:bookID})
+		$http.post("/Web2018/GetLikersByBook",val).success(
+				function(data, status, headers, config) {
+					/*Display Likes*/
+					$scope.browseLikersForAdmin = data;
+					$scope.dispTransactions = false;
+					$scope.viewBuys = true;	
+					$scope.popUpAddReview = false;
+					$scope.showReviews = false;
+					$scope.pressed = true;
+				}).error(
+				function(data, status, headers, config) {
+					/*SHOW ERROR*/
+				})
+	}
+	
+	$scope.hideTransactions = function(){
+		$scope.viewBuys = true;	
+		$scope.dispTransactions = false;
+	}
+	
 	$scope.buyBook = function(bookId) {
 		$scope.optBuy = true;
 		$scope.showDetails = false;
@@ -532,6 +565,9 @@ angular.module('myApp',[])
 	}
 	$scope.collapseReviews = function(){
 		$scope.showReviews = true;
+		$scope.viewBuys = true;	
+		$scope.pressed = false;
+		$scope.dispTransactions = false;
 	}
 	$scope.collapseRReviews = function(){
 		$scope.showRReviews = true;

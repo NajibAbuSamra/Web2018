@@ -12,6 +12,11 @@
 <meta charset="ISO-8859-1">
 
 <title>BookStop</title>
+<style>
+table, th, td {
+    border: 1px solid black;
+}
+</style>
 </head>
 <body>
 	<div ng-app="myApp" ng-controller="myAppCrtl">
@@ -185,26 +190,18 @@
 														</div>
 													</div>
 													<br>
-													<div ng-show="!showReviews">
-														<button ng-click="buyBook(currBook.bookId)" type="button" class="btn btn-success"><i class="glyphicon glyphicon-shopping-cart"></i> Buy</button>
-														<button ng-click=collapseReviews() type="button" class="btn btn-success"><i class="glyphicon glyphicon-triangle-right"></i> Show reviews</button>	
+													<div class="outer">
+														<div class="inner"><button ng-show="!showReviews" ng-click="buyBook(currBook.bookId)" type="button" class="btn btn-success"><i class="glyphicon glyphicon-shopping-cart"></i> Buy</button></div>
+														<div class="inner"><button ng-show="!showReviews" ng-click=collapseReviews() type="button" class="btn btn-success"><i class="glyphicon glyphicon-triangle-right"></i> Show reviews</button></div>
+														<div class="inner"><button ng-show="showReviews" ng-click="buyBook(currBook.bookId)" type="button" class="btn btn-success"><i class="glyphicon glyphicon-shopping-cart"></i> Buy</button></div>
+														<div class="inner"><button ng-show="showReviews" ng-click=hideReviews() type="button" class="btn btn-sucess"><i class="glyphicon glyphicon-chevron-up"></i> Hide reviews</button></div>									
+														<div class="inner"><button ng-show="!pressed" ng-click=dispLikesforAdmin(currBook.bookId) ng-show="admin" type="button" class="btn btn-success"><i class="glyphicon glyphicon-thumbs-up"></i> Likers</button></div>
+														<div class="inner"><button ng-show="pressed" ng-click=hideLikes() ng-show="admin" type="button" class="btn btn-success"><i class="glyphicon glyphicon-chevron-up"></i> Likers</button></div>														
+														<div class="inner"><button ng-show="viewBuys" ng-click=recentTransactions(currBook.bookId) ng-show="admin" type="button" class="btn btn-success"><i class="glyphicon glyphicon-ok-circle"></i> View recent transactions</button></div>												
+														<div class="inner"><button ng-show="!viewBuys" ng-click=hideTransactions() ng-show="admin" type="button" class="btn btn-success"><i class="glyphicon glyphicon-ok-circle"></i> Hide recent transactions</button></div>	
 													</div>
-													<div ng-show="showReviews">
-														<button ng-click="buyBook(currBook.bookId)" type="button" class="btn btn-success"><i class="glyphicon glyphicon-shopping-cart"></i> Buy</button>
-														<button ng-click=hideReviews() type="button" class="btn btn-sucess"><i class="glyphicon glyphicon-chevron-up"></i> Hide reviews</button>													
-													</div>
-													<br>
-													<div ng-show="!pressed">
-														<button ng-click=dispLikesforAdmin(currBook.bookId) ng-show="admin" type="button" class="btn btn-success"><i class="glyphicon glyphicon-thumbs-up"></i> Likers</button>	
-														<button ng-click=recentTransactions(currBook.bookId) ng-show="admin" type="button" class="btn btn-success"><i class="glyphicon glyphicon-ok-circle"></i> View buyers</button>	
-													</div>
-													<div ng-show="pressed">
-														<button ng-click=hideLikes() ng-show="admin" type="button" class="btn btn-success"><i class="glyphicon glyphicon-chevron-up"></i> Likers</button>														
-														<button ng-click=recentTransactions(currBook.bookId) ng-show="admin" type="button" class="btn btn-success"><i class="glyphicon glyphicon-ok-circle"></i> View buyers</button>	
-														<div ng-repeat="likes in browseLikersForAdmin">
-															<a href="javascript:void(0)" ng-click="showUser(likes, '0')"><p>{{likes.nickname}}</p></a>
-														</div>
-													</div>
+
+
 												<div class="disRevs" ng-show="showReviews">
 													<br>
 													<div ng-repeat="r in currBook.reviews"> 
@@ -212,6 +209,25 @@
 														<p> {{r.text}}</p>
 														<br>
 													</div>
+												</div>
+												<div ng-show="dispTransactions">	
+													<br>
+													<br>												
+													<table>
+														<tr>
+													    	<th>User name</th>
+													    	<th>Card Company</th>
+													    	<th>Full Name</th>
+													  	</tr>
+													  	<tr ng-repeat="r in transactions">
+													    	<td>{{r.username}}</td>
+													    	<td>{{r.cardCompany}}</td>
+													    	<td>{{r.fullName}}</td>													    	
+													  	</tr>
+													</table>
+												</div>
+												<div ng-show="pressed" ng-repeat="likes in browseLikersForAdmin">
+													<a href="javascript:void(0)" ng-click="showUser(likes, '0')"><p>{{$index + 1}}. {{likes.nickname}}</p></a>
 												</div>
 											</ul>
 								    	</div>
@@ -344,8 +360,7 @@
 													<h5 id="sstHeading">Description:</h5>
 													<p> {{currUser.description}}</p>
 													<br>
-													<button ng-click="deleteUser(currUser, '1')" ng-show="admin" type="button" class="btn btn-primary"><i class="glyphicon glyphicon-remove"></i> Remove User</button>														
-													
+													<button ng-click="deleteUser(currUser, '1')" ng-show="admin" type="button" class="btn btn-primary"><i class="glyphicon glyphicon-remove"></i> Remove User</button>													
 													<br>
 											</ul>
 								    	</div>
