@@ -511,7 +511,7 @@ angular.module('myApp',[])
 			alert("Please fill Card Company again!");
 		}
 
-		var val = JSON.stringify({username:loggedUser, bookID:desiredBook, cardCompany:$scope.regCardCompany, cardNumber:$scope.regCardNum, expiryMonth:$scope.regMonth, expiryYear:$scope.regYear, cvv:$scope.regCVV, fullName:$scope.regFullName});
+		var val = JSON.stringify({username:loggedUser, bookID:desiredBook, cardCompany:$scope.regCardCompany, cardNumber:$scope.regCardNum, expiryMonth:$scope.regMonth, expiryYear:$scope.regYear, cvv:$scope.regCVV, fullName:$scope.regFullName, address:$scope.regAddressCity});
 		if ($scope.inputValidity)
 			{
 				$http.post("/Web2018/BuyBook", val).success(

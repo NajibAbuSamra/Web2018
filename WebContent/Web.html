@@ -195,10 +195,10 @@ table, th, td {
 														<div class="inner"><button ng-show="!showReviews" ng-click=collapseReviews() type="button" class="btn btn-success"><i class="glyphicon glyphicon-triangle-right"></i> Show reviews</button></div>
 														<div class="inner"><button ng-show="showReviews" ng-click="buyBook(currBook.bookId)" type="button" class="btn btn-success"><i class="glyphicon glyphicon-shopping-cart"></i> Buy</button></div>
 														<div class="inner"><button ng-show="showReviews" ng-click=hideReviews() type="button" class="btn btn-sucess"><i class="glyphicon glyphicon-chevron-up"></i> Hide reviews</button></div>									
-														<div class="inner"><button ng-show="!pressed" ng-click=dispLikesforAdmin(currBook.bookId) ng-show="admin" type="button" class="btn btn-success"><i class="glyphicon glyphicon-thumbs-up"></i> Likers</button></div>
-														<div class="inner"><button ng-show="pressed" ng-click=hideLikes() ng-show="admin" type="button" class="btn btn-success"><i class="glyphicon glyphicon-chevron-up"></i> Likers</button></div>														
-														<div class="inner"><button ng-show="viewBuys" ng-click=recentTransactions(currBook.bookId) ng-show="admin" type="button" class="btn btn-success"><i class="glyphicon glyphicon-ok-circle"></i> View recent transactions</button></div>												
-														<div class="inner"><button ng-show="!viewBuys" ng-click=hideTransactions() ng-show="admin" type="button" class="btn btn-success"><i class="glyphicon glyphicon-ok-circle"></i> Hide recent transactions</button></div>	
+														<div class="inner"><button ng-show="!pressed && admin" ng-click=dispLikesforAdmin(currBook.bookId) ng-show="admin" type="button" class="btn btn-success"><i class="glyphicon glyphicon-thumbs-up"></i> Likers</button></div>
+														<div class="inner"><button ng-show="pressed && admin" ng-click=hideLikes() ng-show="admin" type="button" class="btn btn-success"><i class="glyphicon glyphicon-chevron-up"></i> Likers</button></div>														
+														<div class="inner"><button ng-show="viewBuys && admin" ng-click=recentTransactions(currBook.bookId) ng-show="admin" type="button" class="btn btn-success"><i class="glyphicon glyphicon-ok-circle"></i> View recent transactions</button></div>												
+														<div class="inner"><button ng-show="!viewBuys && admin" ng-click=hideTransactions() ng-show="admin" type="button" class="btn btn-success"><i class="glyphicon glyphicon-ok-circle"></i> Hide recent transactions</button></div>	
 													</div>
 
 
@@ -218,12 +218,14 @@ table, th, td {
 													    	<th>User name</th>
 													    	<th>Card Company</th>
 													    	<th>Full Name</th>
-													  	</tr>
+													    	<th>Address</th>
+													   	</tr>
 													  	<tr ng-repeat="r in transactions">
 													    	<td>{{r.username}}</td>
 													    	<td>{{r.cardCompany}}</td>
-													    	<td>{{r.fullName}}</td>													    	
-													  	</tr>
+													    	<td>{{r.fullName}}</td>	
+													    	<td>{{r.address}}</td>													    	
+													    </tr>
 													</table>
 												</div>
 												<div ng-show="pressed" ng-repeat="likes in browseLikersForAdmin">
