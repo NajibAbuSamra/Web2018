@@ -51,6 +51,7 @@ public final class DataContract {
 		public static final String COL_EXPIRYYEAR = "expYear";
 		public static final String COL_CVV = "cvv";
 		public static final String COL_FULLNAME = "fullname";
+		public static final String COL_ADDRESS = "address";
 	}
 	
 	public static class ScrollPositionsTable{

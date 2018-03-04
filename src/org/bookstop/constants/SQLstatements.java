@@ -89,7 +89,8 @@ public final class SQLstatements {
 			+ DataContract.TransactionsTable.COL_EXPIRYMONTH + " INTEGER NOT NULL,"
 			+ DataContract.TransactionsTable.COL_EXPIRYYEAR + " INTEGER NOT NULL,"
 			+ DataContract.TransactionsTable.COL_CVV + " VARCHAR(4) NOT NULL," // max length of cvv is 4
-			+ DataContract.TransactionsTable.COL_FULLNAME + " VARCHAR(255) NOT NULL," + "PRIMARY KEY ("
+			+ DataContract.TransactionsTable.COL_FULLNAME + " VARCHAR(255) NOT NULL," 
+			+ DataContract.TransactionsTable.COL_ADDRESS + " VARCHAR(255) NOT NULL,"+ "PRIMARY KEY ("
 			+ DataContract.TransactionsTable.COL_ID + ")," + "CONSTRAINT username_trans_ref FOREIGN KEY ("
 			+ DataContract.TransactionsTable.COL_USERNAME + ") REFERENCES " + DataContract.UsersTable.TABLE_NAME + "("
 			+ DataContract.UsersTable.COL_USERNAME + ") ON DELETE CASCADE,"

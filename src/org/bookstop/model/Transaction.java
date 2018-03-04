@@ -9,9 +9,10 @@ public class Transaction {
 	private int expiryYear;
 	private String cvv;
 	private String fullName;
+	private String address;
 	
 	public Transaction(String username, int bookID, String cardCompany, String cardNumber, int expiryMonth,
-			int expiryYear, String cvv, String fullName) {
+			int expiryYear, String cvv, String fullName, String address) {
 		super();
 		this.username = username;
 		this.bookID = bookID;
@@ -21,6 +22,7 @@ public class Transaction {
 		this.expiryYear = expiryYear;
 		this.cvv = cvv;
 		this.fullName = fullName;
+		this.address = address;
 	}
 
 	public String getUsername() {
@@ -85,6 +87,14 @@ public class Transaction {
 
 	public void setFullName(String fullName) {
 		this.fullName = fullName;
+	}
+
+	public String getAddress() {
+		return address;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
 	}
 	
 }
