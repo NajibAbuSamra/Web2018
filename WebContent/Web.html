@@ -232,7 +232,8 @@
 														<br>
 														<br>
 												</ul>
-												<button ng-click=retFromViewingUserInLikers() ng-show="admin" type="button" class="btn btn-success"> return</button>														
+												<button ng-click=retFromViewingUserInLikers() ng-show="admin" type="button" class="btn btn-primary"> return</button>														
+												<button ng-click="deleteUser(currUser, '0')" ng-show="admin" type="button" class="btn btn-primary"><i class="glyphicon glyphicon-remove"></i> Remove User</button>														
 									    </div>
 								    </div>
 									<div class="col-xs-12 col-sm-8 col-md-4 col-sm-offset-2 col-md-offset-4">
@@ -341,6 +342,8 @@
 													<h5 id="sstHeading">Description:</h5>
 													<p> {{currUser.description}}</p>
 													<br>
+													<button ng-click="deleteUser(currUser, '1')" ng-show="admin" type="button" class="btn btn-primary"><i class="glyphicon glyphicon-remove"></i> Remove User</button>														
+													
 													<br>
 											</ul>
 								    	</div>

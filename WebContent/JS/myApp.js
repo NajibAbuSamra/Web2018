@@ -362,7 +362,22 @@ angular.module('myApp',[])
 				})
 		
 	}
-
+	$scope.deleteUser = function(user, flag) {
+		var val = JSON.stringify({username:user.username})
+		$http.post("/Web2018/RemoveUser",val).success(
+				function(data, status, headers, config) {
+					if (flag == "1") {
+						$scope.browseUsers();
+					} else {
+						$scope.browse();						
+					}
+					$scope.showUserDetails = false;
+					$scope.showDetails = false;
+				}).error(
+				function(data, status, headers, config) {
+					/*SHOW ERROR*/
+				})
+	}
 	$scope.buyBook = function(bookId) {
 		$scope.optBuy = true;
 		$scope.showDetails = false;
