@@ -280,6 +280,7 @@ public class DA implements DataInterface {
 			pstmt.setInt(6, transaction.getExpiryYear());
 			pstmt.setString(7, transaction.getCvv());
 			pstmt.setString(8, transaction.getFullName());
+			pstmt.setString(9, transaction.getAddress());
 
 			pstmt.executeUpdate();
 
@@ -308,7 +309,8 @@ public class DA implements DataInterface {
 						rs.getInt(DataContract.TransactionsTable.COL_EXPIRYMONTH),
 						rs.getInt(DataContract.TransactionsTable.COL_EXPIRYYEAR),
 						rs.getString(DataContract.TransactionsTable.COL_CVV),
-						rs.getString(DataContract.TransactionsTable.COL_FULLNAME)));
+						rs.getString(DataContract.TransactionsTable.COL_FULLNAME),
+						rs.getString(DataContract.TransactionsTable.COL_ADDRESS)));
 			}
 			rs.close();
 			pstmt.close();
@@ -336,7 +338,8 @@ public class DA implements DataInterface {
 						rs.getInt(DataContract.TransactionsTable.COL_EXPIRYMONTH),
 						rs.getInt(DataContract.TransactionsTable.COL_EXPIRYYEAR),
 						rs.getString(DataContract.TransactionsTable.COL_CVV),
-						rs.getString(DataContract.TransactionsTable.COL_FULLNAME)));
+						rs.getString(DataContract.TransactionsTable.COL_FULLNAME),
+						rs.getString(DataContract.TransactionsTable.COL_ADDRESS)));
 			}
 			rs.close();
 			pstmt.close();
@@ -452,7 +455,8 @@ public class DA implements DataInterface {
 						rs.getInt(DataContract.TransactionsTable.COL_EXPIRYMONTH),
 						rs.getInt(DataContract.TransactionsTable.COL_EXPIRYYEAR),
 						rs.getString(DataContract.TransactionsTable.COL_CVV),
-						rs.getString(DataContract.TransactionsTable.COL_FULLNAME)));
+						rs.getString(DataContract.TransactionsTable.COL_FULLNAME),
+						rs.getString(DataContract.TransactionsTable.COL_ADDRESS)));
 			}
 			rs.close();
 			pstmt.close();
@@ -482,7 +486,8 @@ public class DA implements DataInterface {
 						rs.getInt(DataContract.TransactionsTable.COL_EXPIRYMONTH),
 						rs.getInt(DataContract.TransactionsTable.COL_EXPIRYYEAR),
 						rs.getString(DataContract.TransactionsTable.COL_CVV),
-						rs.getString(DataContract.TransactionsTable.COL_FULLNAME));
+						rs.getString(DataContract.TransactionsTable.COL_FULLNAME),
+						rs.getString(DataContract.TransactionsTable.COL_ADDRESS));
 			}
 			rs.close();
 			pstmt.close();
