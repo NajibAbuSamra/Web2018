@@ -65,6 +65,7 @@ public class GetLikersByBook extends HttpServlet {
 		logger.log(Level.INFO, "doPost: Start...");
 
 		Gson gson = new Gson();
+		//TODO: try to user Book model, maybe it will partially fill the information, no need for the BookId model
 		BookId bookid = null;
 		try {
 			StringBuilder sb = new StringBuilder();
@@ -96,9 +97,11 @@ public class GetLikersByBook extends HttpServlet {
 			ArrayList<String> usernames = da.selectUsernameFromLikesByBookId(bookid.getBookid());
 
 			ArrayList<User> likers = new ArrayList<User>();
-
+			//TODO: sending full user information (specifically username and password) is a violation, so we clear out the password field)
 			for (String username : usernames) {
-				likers.add(da.selectUserByUsername(username));
+				User u = da.selectUserByUsername(username);
+				u.setPassword("");
+				likers.add(u);
 			}
 			String json = new Gson().toJson(likers);
 			response.setContentType("application/json");

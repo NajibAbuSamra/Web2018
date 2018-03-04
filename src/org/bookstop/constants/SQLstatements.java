@@ -12,7 +12,6 @@ public final class SQLstatements {
 			+ " varchar(255) NOT NULL," + DataContract.BooksTable.COL_PRICE + " DOUBLE NOT NULL,"
 			+ DataContract.BooksTable.COL_DESCRIPTION + " varchar(255) NOT NULL," + DataContract.BooksTable.COL_LINK
 			+ " varchar(255) NOT NULL," + "PRIMARY KEY (" + DataContract.BooksTable.COL_ID + "))";
-
 	public final static String INSERT_BOOK_STMT = "INSERT INTO " + DataContract.BooksTable.TABLE_NAME
 			+ " VALUES(DEFAULT,?,?,?,?,?)";
 	public final static String SELECT_ALL_BOOKS_STMT = "SELECT * FROM " + DataContract.BooksTable.TABLE_NAME;
@@ -27,14 +26,15 @@ public final class SQLstatements {
 			+ " varchar(255)," + DataContract.UsersTable.COL_PASSWORD + " varchar(8) NOT NULL,"
 			+ DataContract.UsersTable.COL_NICKNAME + " varchar(20) NOT NULL," + DataContract.UsersTable.COL_DESCRIPTION
 			+ " varchar(50)," + DataContract.UsersTable.COL_PICTURE + " varchar(255))";
-
 	public final static String INSERT_USER_STMT = "INSERT INTO " + DataContract.UsersTable.TABLE_NAME
 			+ " VALUES(?,?,?,?,?,?,?,?,?)";
 	public final static String SELECT_ALL_USERS_STMT = "SELECT * FROM " + DataContract.UsersTable.TABLE_NAME + " WHERE "
 			+ DataContract.UsersTable.COL_TYPE + " = 0";
 	public final static String SELECT_USER_BY_USERNAME_STMT = "SELECT * FROM " + DataContract.UsersTable.TABLE_NAME
 			+ " WHERE " + DataContract.UsersTable.COL_USERNAME + "=?";
-
+	public final static String DELETE_USER_BY_USERNAME_STMT = "DELETE FROM "
+			+ DataContract.UsersTable.TABLE_NAME + " WHERE " + DataContract.UsersTable.COL_USERNAME + " = ?";
+	
 	// Reviews
 	public final static String CREATE_REVIEWS_TABLE = "CREATE TABLE " + DataContract.ReviewsTable.TABLE_NAME + "("
 			+ DataContract.ReviewsTable.COL_ID
@@ -47,7 +47,6 @@ public final class SQLstatements {
 			+ DataContract.UsersTable.TABLE_NAME + "(" + DataContract.UsersTable.COL_USERNAME + ") ON DELETE CASCADE,"
 			+ "CONSTRAINT bookid_reviews_ref FOREIGN KEY (" + DataContract.ReviewsTable.COL_BOOKID + ") REFERENCES "
 			+ DataContract.BooksTable.TABLE_NAME + "(" + DataContract.BooksTable.COL_ID + ") ON DELETE CASCADE)";
-
 	public final static String INSERT_REVIEW_STMT = "INSERT INTO " + DataContract.ReviewsTable.TABLE_NAME
 			+ " VALUES(DEFAULT,?,?,?,?,?)";
 	public final static String SELECT_REVIEWS_VERIFIED_BY_BOOKID_STMT = "SELECT * FROM "
@@ -69,7 +68,6 @@ public final class SQLstatements {
 			+ DataContract.UsersTable.COL_USERNAME + ") ON DELETE CASCADE,"
 			+ "CONSTRAINT bookid_likes_ref FOREIGN KEY (" + DataContract.LikesTable.COL_BOOKID + ") REFERENCES "
 			+ DataContract.BooksTable.TABLE_NAME + "(" + DataContract.BooksTable.COL_ID + ") ON DELETE CASCADE)";
-
 	public final static String INSERT_LIKE_STMT = "INSERT INTO " + DataContract.LikesTable.TABLE_NAME + " VALUES(?,?)";
 	public final static String DELETE_LIKE_BY_USERNAME_AND_BOOKID_STMT = "DELETE FROM "
 			+ DataContract.LikesTable.TABLE_NAME + " WHERE " + DataContract.LikesTable.COL_USERNAME + " = ? AND "
@@ -97,7 +95,6 @@ public final class SQLstatements {
 			+ DataContract.UsersTable.COL_USERNAME + ") ON DELETE CASCADE,"
 			+ "CONSTRAINT bookid_trans_ref FOREIGN KEY (" + DataContract.TransactionsTable.COL_BOOKID + ") REFERENCES "
 			+ DataContract.BooksTable.TABLE_NAME + "(" + DataContract.BooksTable.COL_ID + ") ON DELETE CASCADE)";
-
 	public final static String INSERT_TRANSACTION_STMT = "INSERT INTO " + DataContract.TransactionsTable.TABLE_NAME
 			+ " VALUES(DEFAULT,?,?,?,?,?,?,?,?)";
 	public final static String SELECT_ALL_TRANSACTIONS = "SELECT * FROM " + DataContract.TransactionsTable.TABLE_NAME;

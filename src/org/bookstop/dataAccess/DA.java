@@ -111,6 +111,23 @@ public class DA implements DataInterface {
 
 		return users;
 	}
+	
+	@Override
+	public void deleteUser(String username) {
+		try {
+			PreparedStatement pstmt = conn.prepareStatement(SQLstatements.DELETE_USER_BY_USERNAME_STMT);
+			pstmt.setString(1, username);
+			pstmt.executeUpdate();
+
+			conn.commit();
+			pstmt.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return;
+		
+	}
 
 	@Override
 	public Book selectBookById(int id) {
@@ -496,5 +513,7 @@ public class DA implements DataInterface {
 
 		return ypos;
 	}
+
+
 
 }

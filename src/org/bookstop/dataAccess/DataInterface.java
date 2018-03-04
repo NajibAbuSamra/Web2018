@@ -20,6 +20,7 @@ public interface DataInterface {
 	public void insertUser(User user);
 	public User selectUserByUsername(String username);
 	public ArrayList<User> getAllUsers();
+	public void deleteUser(String username);
 	
 	//Reviews
 	public void insertReview(Review review);
