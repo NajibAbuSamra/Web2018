@@ -378,6 +378,16 @@ angular.module('myApp',[])
 					/*SHOW ERROR*/
 				})
 	}
+	$scope.recentTransactions = function(bookId) {
+		var val = JSON.stringify({bookid:bookId})
+		$http.post("/Web2018/GetAllTransactionsByBookId",val).success(
+				function(data, status, headers, config) {
+
+				}).error(
+				function(data, status, headers, config) {
+					/*SHOW ERROR*/
+				})
+	}
 	$scope.buyBook = function(bookId) {
 		$scope.optBuy = true;
 		$scope.showDetails = false;

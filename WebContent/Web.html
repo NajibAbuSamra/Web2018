@@ -196,9 +196,11 @@
 													<br>
 													<div ng-show="!pressed">
 														<button ng-click=dispLikesforAdmin(currBook.bookId) ng-show="admin" type="button" class="btn btn-success"><i class="glyphicon glyphicon-thumbs-up"></i> Likers</button>	
+														<button ng-click=recentTransactions(currBook.bookId) ng-show="admin" type="button" class="btn btn-success"><i class="glyphicon glyphicon-ok-circle"></i> View buyers</button>	
 													</div>
 													<div ng-show="pressed">
 														<button ng-click=hideLikes() ng-show="admin" type="button" class="btn btn-success"><i class="glyphicon glyphicon-chevron-up"></i> Likers</button>														
+														<button ng-click=recentTransactions(currBook.bookId) ng-show="admin" type="button" class="btn btn-success"><i class="glyphicon glyphicon-ok-circle"></i> View buyers</button>	
 														<div ng-repeat="likes in browseLikersForAdmin">
 															<a href="javascript:void(0)" ng-click="showUser(likes, '0')"><p>{{likes.nickname}}</p></a>
 														</div>
