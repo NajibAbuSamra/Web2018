@@ -110,7 +110,7 @@ public class GetAvailableBooks extends HttpServlet {
 				ArrayList<BookInfo> booksInfo = new ArrayList<BookInfo>();
 				for (Book b : books) {
 					int likes = da.countLikesByBookId(b.getBookId());
-					ArrayList<Review> reviews = da.selectReviewsByBookId(b.getBookId());
+					ArrayList<Review> reviews = da.selectReviewsByBookId(b.getBookId(),true);
 					booksInfo.add(new BookInfo(b, likes, reviews));
 				}
 				String json = new Gson().toJson(booksInfo);

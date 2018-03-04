@@ -393,12 +393,16 @@ public class DA implements DataInterface {
 	}
 
 	@Override
-	public ArrayList<Review> selectReviewsByBookId(int bookid) {
+	public ArrayList<Review> selectReviewsByBookId(int bookid, boolean approved) {
 		ArrayList<Review> reviews = new ArrayList<Review>();
 
 		try {
-			PreparedStatement pstmt = conn.prepareStatement(SQLstatements.SELECT_REVIEWS_VERIFIED_BY_BOOKID_STMT);
+			PreparedStatement pstmt = conn.prepareStatement(SQLstatements.SELECT_REVIEWS_UNVERIFIED_BY_BOOKID_STMT);
 			pstmt.setInt(1, bookid);
+			if(approved) {
+				pstmt = conn.prepareStatement(SQLstatements.SELECT_REVIEWS_VERIFIED_BY_BOOKID_STMT);
+				pstmt.setInt(1, bookid);
+			}
 			ResultSet rs = pstmt.executeQuery();
 			while (rs.next()) {
 				reviews.add(new Review(rs.getInt(DataContract.ReviewsTable.COL_ID),

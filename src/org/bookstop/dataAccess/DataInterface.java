@@ -26,7 +26,7 @@ public interface DataInterface {
 	public void insertReview(Review review);
 	public void updateVerifiedReview(int verified);
 	public void deleteReviewByUsernameAndBookId(String username, int bookId);
-	public ArrayList<Review> selectReviewsByBookId(int bookid);
+	public ArrayList<Review> selectReviewsByBookId(int bookid, boolean approved);
 	
 	//Likes
 	public void insertLike(Like like);
