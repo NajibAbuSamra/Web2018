@@ -98,10 +98,13 @@ public final class SQLstatements {
 	public final static String INSERT_TRANSACTION_STMT = "INSERT INTO " + DataContract.TransactionsTable.TABLE_NAME
 			+ " VALUES(DEFAULT,?,?,?,?,?,?,?,?)";
 	public final static String SELECT_ALL_TRANSACTIONS = "SELECT * FROM " + DataContract.TransactionsTable.TABLE_NAME;
-	public final static String SELECT_TRANSACTIONS_BY_USERNAME = "SELECT * FROM "
+	public final static String SELECT_TRANSACTIONS_BY_USERNAME_STMT = "SELECT * FROM "
 			+ DataContract.TransactionsTable.TABLE_NAME + " WHERE " + DataContract.TransactionsTable.COL_USERNAME
 			+ " = ?";
-	public final static String SELECT_TRANSACTIONS_BOOKID_BY_USERNAME = "SELECT "
+	public final static String SELECT_TRANSACTIONS_BY_BOOKID_STMT = "SELECT * FROM "
+			+ DataContract.TransactionsTable.TABLE_NAME + " WHERE " + DataContract.TransactionsTable.COL_BOOKID
+			+ " = ?";
+	public final static String SELECT_TRANSACTIONS_BOOKID_BY_USERNAME_STMT = "SELECT "
 			+ DataContract.TransactionsTable.COL_BOOKID + " FROM " + DataContract.TransactionsTable.TABLE_NAME
 			+ " WHERE " + DataContract.TransactionsTable.COL_USERNAME + " = ?";
 	// TODO: not sure if needed

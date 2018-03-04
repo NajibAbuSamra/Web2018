@@ -325,7 +325,7 @@ public class DA implements DataInterface {
 		ArrayList<Transaction> transactions = new ArrayList<Transaction>();
 
 		try {
-			PreparedStatement pstmt = conn.prepareStatement(SQLstatements.SELECT_TRANSACTIONS_BY_USERNAME);
+			PreparedStatement pstmt = conn.prepareStatement(SQLstatements.SELECT_TRANSACTIONS_BY_USERNAME_STMT);
 			pstmt.setString(1, username);
 			ResultSet rs = pstmt.executeQuery();
 			while (rs.next()) {
@@ -353,7 +353,7 @@ public class DA implements DataInterface {
 		ArrayList<Integer> arr = new ArrayList<Integer>();
 
 		try {
-			PreparedStatement pstmt = conn.prepareStatement(SQLstatements.SELECT_TRANSACTIONS_BOOKID_BY_USERNAME);
+			PreparedStatement pstmt = conn.prepareStatement(SQLstatements.SELECT_TRANSACTIONS_BOOKID_BY_USERNAME_STMT);
 			pstmt.setString(1, username);
 			ResultSet rs = pstmt.executeQuery();
 			while (rs.next()) {
@@ -437,6 +437,34 @@ public class DA implements DataInterface {
 	}
 
 	@Override
+	public ArrayList<Transaction> selectTransactionsByBookid(int bookid) {
+		ArrayList<Transaction> transactions = new ArrayList<Transaction>();
+
+		try {
+			PreparedStatement pstmt = conn.prepareStatement(SQLstatements.SELECT_TRANSACTIONS_BY_BOOKID_STMT);
+			pstmt.setInt(1, bookid);
+			ResultSet rs = pstmt.executeQuery();
+			while (rs.next()) {
+				transactions.add(new Transaction(rs.getString(DataContract.TransactionsTable.COL_USERNAME),
+						rs.getInt(DataContract.TransactionsTable.COL_BOOKID),
+						rs.getString(DataContract.TransactionsTable.COL_CARDCOMPANY),
+						rs.getString(DataContract.TransactionsTable.COL_CARDNUMBER),
+						rs.getInt(DataContract.TransactionsTable.COL_EXPIRYMONTH),
+						rs.getInt(DataContract.TransactionsTable.COL_EXPIRYYEAR),
+						rs.getString(DataContract.TransactionsTable.COL_CVV),
+						rs.getString(DataContract.TransactionsTable.COL_FULLNAME)));
+			}
+			rs.close();
+			pstmt.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		return transactions;
+	}
+	
+	@Override
 	public Transaction selectTransactionByUsernameAndBookid(String username, int bookid) {
 		Transaction t = null;
 
@@ -465,6 +493,7 @@ public class DA implements DataInterface {
 
 		return t;
 	}
+	
 
 	@Override
 	public void insertScrollPosition(ScrollPosition pos, boolean append) {
@@ -513,6 +542,8 @@ public class DA implements DataInterface {
 
 		return ypos;
 	}
+
+
 
 
 

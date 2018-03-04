@@ -3,6 +3,7 @@ package org.bookstop.servlets;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -18,22 +19,27 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.tomcat.dbcp.dbcp2.BasicDataSource;
 import org.bookstop.constants.AppConstants;
 import org.bookstop.dataAccess.DA;
-import org.bookstop.model.Like;
+import org.bookstop.model.Book;
+import org.bookstop.model.BookId;
+import org.bookstop.model.BookInfo;
+import org.bookstop.model.Review;
+import org.bookstop.model.Transaction;
 import org.bookstop.model.User;
+import org.bookstop.model.UserLogin;
 
 import com.google.gson.Gson;
 
 /**
- * Servlet implementation class RemoveUser
+ * Servlet implementation class GetTransactionsByBookid
  */
-@WebServlet("/RemoveUser")
-public class RemoveUser extends HttpServlet {
+@WebServlet("/GetTransactionsByBook")
+public class GetTransactionsByBook extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public RemoveUser() {
+    public GetTransactionsByBook() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -50,30 +56,32 @@ public class RemoveUser extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		System.out.println("RemoveUser Servlet");
+		// TODO Auto-generated method stub
+		System.out.println("GetTransactionsByBook Servlet");
 
-		Logger logger = Logger.getLogger("RemoveUserServlet");
+		Logger logger = Logger.getLogger("GetTransactionsByBookServlet");
 		logger.log(Level.INFO, "doPost: Start...");
 
 		Gson gson = new Gson();
-		User u = null;
+		//TODO: try to user Book model, maybe it will partially fill the information, no need for the BookId model
+		BookId bookid = null;
 		try {
 			StringBuilder sb = new StringBuilder();
 			String s;
 			while ((s = request.getReader().readLine()) != null) {
 				sb.append(s);
 			}
-
-			u = (User) gson.fromJson(sb.toString(), User.class);
+			bookid = (BookId) gson.fromJson(sb.toString(), BookId.class);
+			logger.log(Level.INFO, "doPost: bookId: " + bookid);
 
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		if (u == null) {
-			logger.log(Level.SEVERE, "doPost: USER FROM JSON IS NULL!!!!!");
-			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+		if (bookid == null || bookid.getBookid() == 0) {
+			// TODO: check and handle error
 			return;
 		}
+
 		try {
 
 			// obtain CustomerDB data source from Tomcat's context
@@ -84,18 +92,18 @@ public class RemoveUser extends HttpServlet {
 			logger.log(Level.INFO, "doPost: connection opened...");
 			DA da = new DA(conn);
 
-			User temp = da.selectUserByUsername(u.getUsername());
+			ArrayList<Transaction> transactions = da.selectTransactionsByBookid(bookid.getBookid());
 
-			if (temp == null) {
-				response.setStatus(HttpServletResponse.SC_NOT_FOUND);
-			} else {
-				da.deleteUser(u.getUsername());
-			}
-
+			String json = new Gson().toJson(transactions);
+			response.setContentType("application/json");
+			response.setCharacterEncoding("UTF-8");
+			response.getWriter().write(json);
 			da.closeConnection();
 			if (conn.isClosed() == false) {
+				logger.log(Level.WARNING, "doPost: connection not closed after DA method, closing manually");
 				conn.close();
 			}
+
 		} catch (SQLException | NamingException e) {
 			// log error
 			logger.log(Level.SEVERE, "doPost: FAILED");

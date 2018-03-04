@@ -38,6 +38,7 @@ public interface DataInterface {
 	public void insertTransaction(Transaction transaction);
 	public ArrayList<Transaction> selectAllTransactions();
 	public ArrayList<Transaction> selectTransactionsByUsername(String username);
+	public ArrayList<Transaction> selectTransactionsByBookid(int bookid);
 	public Transaction selectTransactionByUsernameAndBookid(String username, int bookid);
 	
 	//ScrollPositions
