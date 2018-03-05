@@ -19,67 +19,60 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.tomcat.dbcp.dbcp2.BasicDataSource;
 import org.bookstop.constants.AppConstants;
 import org.bookstop.dataAccess.DA;
-import org.bookstop.model.Book;
 import org.bookstop.model.BookId;
-import org.bookstop.model.BookInfo;
-import org.bookstop.model.Review;
+import org.bookstop.model.ReviewId;
 import org.bookstop.model.User;
-import org.bookstop.model.UserLogin;
 
 import com.google.gson.Gson;
 
 /**
- * Servlet implementation class GetLikersByBook
+ * Servlet implementation class VerifyReview
  */
-@WebServlet("/GetLikersByBook")
-public class GetLikersByBook extends HttpServlet {
+@WebServlet("/VerifyReview")
+public class VerifyReview extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+       
+    /**
+     * @see HttpServlet#HttpServlet()
+     */
+    public VerifyReview() {
+        super();
+        // TODO Auto-generated constructor stub
+    }
 
 	/**
-	 * @see HttpServlet#HttpServlet()
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
-	public GetLikersByBook() {
-		super();
-		// TODO Auto-generated constructor stub
-	}
-
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
-	 *      response)
-	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		response.getWriter().append("Served at: ").append(request.getContextPath());
 	}
 
 	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
-	 *      response)
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-		System.out.println("GetLikersByBook Servlet");
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		System.out.println("VerifyReview Servlet");
 
-		Logger logger = Logger.getLogger("GetLikersByBookServlet");
+		Logger logger = Logger.getLogger("VerifyReviewServlet");
 		logger.log(Level.INFO, "doPost: Start...");
 
 		Gson gson = new Gson();
 		//TODO: try to user Book model, maybe it will partially fill the information, no need for the BookId model
-		BookId bookid = null;
+		ReviewId id = null;
 		try {
 			StringBuilder sb = new StringBuilder();
 			String s;
 			while ((s = request.getReader().readLine()) != null) {
 				sb.append(s);
 			}
-			bookid = (BookId) gson.fromJson(sb.toString(), BookId.class);
-			logger.log(Level.INFO, "doPost: bookId: " + bookid);
+			id = (ReviewId) gson.fromJson(sb.toString(), ReviewId.class);
+			logger.log(Level.INFO, "doPost: bookId: " + id);
 
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		if (bookid == null || bookid.getBookid() == 0) {
+		if (id == null || id.getReviewid() == 0) {
 			// TODO: check and handle error
 			return;
 		}
@@ -94,24 +87,10 @@ public class GetLikersByBook extends HttpServlet {
 			logger.log(Level.INFO, "doPost: connection opened...");
 			DA da = new DA(conn);
 
+			//TODO: check if there is a review with such id
 			
-			//TODO: should we check if there is a book with the sent id?
+			da.updateVerifiedReview(1, id.getReviewid());
 			
-			ArrayList<String> usernames = da.selectUsernameFromLikesByBookId(bookid.getBookid());
-
-			ArrayList<User> likers = new ArrayList<User>();
-			//sending full user information (specifically username and password) is a violation, so we clear out the password field)
-			//this could have been achieved by not selecing the password column from the sql table, but it's too late to change now...
-			//we'll save this for the next iteration/optimizations
-			for (String username : usernames) {
-				User u = da.selectUserByUsername(username);
-				u.setPassword("");
-				likers.add(u);
-			}
-			String json = new Gson().toJson(likers);
-			response.setContentType("application/json");
-			response.setCharacterEncoding("UTF-8");
-			response.getWriter().write(json);
 			da.closeConnection();
 			if (conn.isClosed() == false) {
 				logger.log(Level.WARNING, "doPost: connection not closed after DA method, closing manually");

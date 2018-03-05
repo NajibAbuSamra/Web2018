@@ -19,49 +19,42 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.tomcat.dbcp.dbcp2.BasicDataSource;
 import org.bookstop.constants.AppConstants;
 import org.bookstop.dataAccess.DA;
-import org.bookstop.model.Book;
 import org.bookstop.model.BookId;
-import org.bookstop.model.BookInfo;
 import org.bookstop.model.Review;
 import org.bookstop.model.User;
-import org.bookstop.model.UserLogin;
 
 import com.google.gson.Gson;
 
 /**
- * Servlet implementation class GetLikersByBook
+ * Servlet implementation class GetUnapprovedReviewsForBook
  */
-@WebServlet("/GetLikersByBook")
-public class GetLikersByBook extends HttpServlet {
+@WebServlet("/GetUnapprovedReviewsForBook")
+public class GetUnapprovedReviewsForBook extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+       
+    /**
+     * @see HttpServlet#HttpServlet()
+     */
+    public GetUnapprovedReviewsForBook() {
+        super();
+        // TODO Auto-generated constructor stub
+    }
 
 	/**
-	 * @see HttpServlet#HttpServlet()
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
-	public GetLikersByBook() {
-		super();
-		// TODO Auto-generated constructor stub
-	}
-
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
-	 *      response)
-	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		response.getWriter().append("Served at: ").append(request.getContextPath());
 	}
 
 	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
-	 *      response)
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-		System.out.println("GetLikersByBook Servlet");
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		System.out.println("GetUnapprovedReviewsForBook Servlet");
 
-		Logger logger = Logger.getLogger("GetLikersByBookServlet");
+		Logger logger = Logger.getLogger("GetUnapprovedReviewsForBookServlet");
 		logger.log(Level.INFO, "doPost: Start...");
 
 		Gson gson = new Gson();
@@ -94,21 +87,9 @@ public class GetLikersByBook extends HttpServlet {
 			logger.log(Level.INFO, "doPost: connection opened...");
 			DA da = new DA(conn);
 
-			
-			//TODO: should we check if there is a book with the sent id?
-			
-			ArrayList<String> usernames = da.selectUsernameFromLikesByBookId(bookid.getBookid());
+			ArrayList<Review> reviews = da.selectReviewsByBookId(bookid.getBookid(),false);
 
-			ArrayList<User> likers = new ArrayList<User>();
-			//sending full user information (specifically username and password) is a violation, so we clear out the password field)
-			//this could have been achieved by not selecing the password column from the sql table, but it's too late to change now...
-			//we'll save this for the next iteration/optimizations
-			for (String username : usernames) {
-				User u = da.selectUserByUsername(username);
-				u.setPassword("");
-				likers.add(u);
-			}
-			String json = new Gson().toJson(likers);
+			String json = new Gson().toJson(reviews);
 			response.setContentType("application/json");
 			response.setCharacterEncoding("UTF-8");
 			response.getWriter().write(json);

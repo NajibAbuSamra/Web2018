@@ -12,7 +12,12 @@ angular.module('myApp',[])
 	$scope.isBrowsed = false;
 	$scope.isReading = false;
 	$scope.reading = false;
+	$scope.unverifiedRevs = true;
 	$scope.showDetails = false;
+	$scope.viewBuys = true;
+	$scope.dispTransactions = false;
+	$scope.showUserDetailsInRead = false;
+	$scope.admin = false;
 	$scope.isisHovering = false;
 	$scope.optBuy = false;
 	$scope.showRDetails = false;
@@ -22,6 +27,7 @@ angular.module('myApp',[])
 	$scope.popUpAddReview = false;
 	$scope.showReviews = false;
 	$scope.showRReviews = false;
+	$scope.pressed = false;
 
 	
 	var loggedUser = "";
@@ -42,6 +48,8 @@ angular.module('myApp',[])
 			$scope.showContent = false;
 			$scope.isReading = false;
 			$scope.showDetails = false;
+			if(data.type == 1) 
+				$scope.admin = true;
 			}).
 		error(function(data,status,headers,config){
 			if (status == 404)
@@ -61,6 +69,14 @@ angular.module('myApp',[])
 	/*REGISTER*/
 	$scope.registerFunc = function() {
 		/*VALIDITY CHECK HERE*/
+		if ($scope.regPic == "" || $scope.regPic == null)
+			$scope.regPic = "defaultUserImg.png";
+
+		if ($scope.regAddress == "" || $scope.regAddress == null)
+			$scope.regAddress = "Address not Specified";				
+
+		if ($scope.regDesc == "" || $scope.regDesc == null)
+			$scope.regDesc = "Empty description";		
 		
 		var val = JSON.stringify({username:$scope.regUname , email:$scope.regEmail ,  address:$scope.regAddress, phone:$scope.regTelephone, 
 			password:$scope.regPass, nickname:$scope.regNick, picture:$scope.regPic, description:$scope.regDesc, type:0});
@@ -166,7 +182,13 @@ angular.module('myApp',[])
 					$scope.browseBooks = data;
 					$scope.optBuy = false;
 					$scope.showRDetails = false;
+					$scope.viewBuys = true;	
+					$scope.dispTransactions = false;
+					$scope.showUserDetailsInRead = false;
 					$scope.showContent = false;
+					$scope.unverifiedRevs = true;
+					$scope.showUnapprovedReviews = false;
+					$scope.isBrowsingUsers = false;
 				}).error(
 				function(data, status, headers, config) {
 					/*SHOW ERROR*/
@@ -185,7 +207,42 @@ angular.module('myApp',[])
 					$scope.isBrowsed = false;
 					$scope.optBuy = false;
 					$scope.showContent = false;
+					$scope.isBrowsingUsers = false;
+					$scope.dispTransactions = false;
+					$scope.viewBuys = true;	
+					$scope.unverifiedRevs = true;
+					$scope.showUnapprovedReviews = false;
 					$scope.myBooks = data;
+					$scope.showUserDetailsInRead = false;
+				}).error(
+				function(data, status, headers, config) {
+					/*SHOW ERROR*/
+					if(status == 401){
+						/*wrong password, log user out and display error*/
+					}
+				})
+
+	}
+	
+	$scope.browseUsers =function() {
+		var val = JSON.stringify({uName:loggedUser , uPass:loggedPass})
+		/* Change getAvailableBooks with GetMyBooks*/
+		$http.post("/Web2018/GetAllUsers",val).success(
+				function(data, status, headers, config) {
+					/*PUT BOOKS IN PROPER DIV*/
+					$scope.isBrowsingUsers = true;
+					$scope.isBrowsed = false;
+					$scope.isReading = false;
+					$scope.optBuy = false;
+					$scope.showContent = false;
+					$scope.showRDetails = false;
+					$scope.showUserDetailsInRead = false;
+					$scope.showContent = false;
+					$scope.viewBuys = true;
+					$scope.dispTransactions = false;
+					$scope.users = data;
+					$scope.unverifiedRevs = true;
+					$scope.showUnapprovedReviews = false;
 					console.log(data);
 				}).error(
 				function(data, status, headers, config) {
@@ -210,6 +267,10 @@ angular.module('myApp',[])
 					/*SHOW ERROR*/
 				})
 	}	
+	
+	$scope.hideLikes = function() {
+		$scope.pressed = false;
+	}
 	$scope.updateLikers = function(book) {
 		var val = JSON.stringify({username:loggedUser, bookid:book.bookId})
 		$http.post("/Web2018/AddLike",val).success(
@@ -236,9 +297,11 @@ angular.module('myApp',[])
 					/*SHOW ERROR*/
 				})
 	}
+	
 	$scope.dontDispLikes = function(){
 		$scope.isHovering = false;
 	}
+	
 	$scope.showBook = function(clicked_id){
 		$scope.booksReviews = clicked_id.reviews;
 		$scope.showDetails = true;
@@ -246,15 +309,60 @@ angular.module('myApp',[])
 		$scope.showReviews = false;
 		$scope.optBuy = false;
 		$scope.counter = 1;
+		$scope.isBrowsingUsers = false;
+		$scope.showUserDetails = false;
+		$scope.dispTransactions = false;
+		$scope.unverifiedRevs = true;
+		$scope.showUnapprovedReviews = false;
 		$scope.showContent = false;
+		$scope.showUserDetailsInRead = false;
+		$scope.viewBuys = true;	
+		$scope.pressed = false;
 	}	
+	
+	$scope.showUser = function(user, flag){
+		if (flag == "1") {
+			$scope.showDetails = false;
+			$scope.showUserDetails = true;
+		}
+		else {
+			$scope.showUserDetailsInRead = true;
+			$scope.showDetails = false;
+		}
+		$scope.unverifiedRevs = true;
+		$scope.showUnapprovedReviews = false;
+		$scope.currUser = user;
+		$scope.dispTransactions = false;
+		$scope.showReviews = false;
+		$scope.optBuy = false;
+		$scope.showContent = false;
+		$scope.pressed = false;
+		$scope.dispTransactions = false;
+		$scope.viewBuys = true;	
+
+
+		console.log(flag);
+		console.log(user);
+	}	
+	
+	$scope.retFromViewingUserInLikers = function(){
+		$scope.showDetails = true;
+		$scope.showUserDetailsInRead = false;
+	}	
+	
+	
+	
 	$scope.showReadingBook = function(book_being_read){
 		$scope.showRDetails = true;
 		$scope.popUpAddReview = false;
+		$scope.dispTransactions = false;
 		$scope.popUpAddReview = false;
 		$scope.currRBook = book_being_read;
 		$scope.showContent = false;
+		$scope.isBrowsingUsers = false;
 		$scope.isReading = true;
+		$scope.viewBuys = true;	
+
 		
 		var val = JSON.stringify({bookid:book_being_read.bookId})
 		$http.post("/Web2018/GetLikersByBook",val).success(
@@ -271,7 +379,63 @@ angular.module('myApp',[])
 				})
 		
 	}
-
+	$scope.deleteUser = function(user, flag) {
+		var val = JSON.stringify({username:user.username})
+		$http.post("/Web2018/RemoveUser",val).success(
+				function(data, status, headers, config) {
+					if (flag == "1") {
+						$scope.browseUsers();
+					} else {
+						$scope.browse();						
+					}
+					$scope.showUserDetails = false;
+					$scope.showDetails = false;
+				}).error(
+				function(data, status, headers, config) {
+					/*SHOW ERROR*/
+				})
+	}
+	$scope.recentTransactions = function(bookId) {
+		var val = JSON.stringify({bookid:bookId})
+		$http.post("/Web2018/GetTransactionsByBook",val).success(
+				function(data, status, headers, config) {
+					$scope.dispTransactions = true;
+					$scope.transactions = data;
+					$scope.viewBuys = false;
+					$scope.showReviews = false;
+					$scope.pressed = false;
+					$scope.showUnapprovedReviews = false;
+					$scope.unverifiedRevs = true;
+					console.log(data);
+				}).error(
+				function(data, status, headers, config) {
+					/*SHOW ERROR*/
+				})
+	}
+	$scope.dispLikesforAdmin = function(bookID){
+		var val = JSON.stringify({bookid:bookID})
+		$http.post("/Web2018/GetLikersByBook",val).success(
+				function(data, status, headers, config) {
+					/*Display Likes*/
+					$scope.browseLikersForAdmin = data;
+					$scope.dispTransactions = false;
+					$scope.viewBuys = true;	
+					$scope.popUpAddReview = false;
+					$scope.showUnapprovedReviews = false;
+					$scope.showReviews = false;
+					$scope.unverifiedRevs = true;
+					$scope.pressed = true;
+				}).error(
+				function(data, status, headers, config) {
+					/*SHOW ERROR*/
+				})
+	}
+	
+	$scope.hideTransactions = function(){
+		$scope.viewBuys = true;	
+		$scope.dispTransactions = false;
+	}
+	
 	$scope.buyBook = function(bookId) {
 		$scope.optBuy = true;
 		$scope.showDetails = false;
@@ -361,10 +525,11 @@ angular.module('myApp',[])
 			$scope.inputValidity = false;
 			alert("Please fill Card Company again!");
 		}
-
-		var val = JSON.stringify({username:loggedUser, bookID:desiredBook, cardCompany:$scope.regCardCompany, cardNumber:$scope.regCardNum, expiryMonth:$scope.regMonth, expiryYear:$scope.regYear, cvv:$scope.regCVV, fullName:$scope.regFullName});
+		console.log("before");
+		var val = JSON.stringify({username:loggedUser, bookID:desiredBook, cardCompany:$scope.regCardCompany, cardNumber:$scope.regCardNum, expiryMonth:$scope.regMonth, expiryYear:$scope.regYear, cvv:$scope.regCVV, fullName:$scope.regFullName, address:$scope.regAddressCity});
 		if ($scope.inputValidity)
 			{
+				console.log("After validity");
 				$http.post("/Web2018/BuyBook", val).success(
 						function(data, status, headers, config) {
 							$scope.optBuy = false;
@@ -374,11 +539,13 @@ angular.module('myApp',[])
 							$scope.regMonth = "";
 							$scope.regCardNum = "";
 							$scope.regCardCompany = "";
+							$scope.browse();
 						}).error(
 						function(data, status, headers, config) {
 							$scope.errorBox = "Error";
 							$scope.regCVV = "";
 							$scope.regYear = "";
+							console.log("fail");
 							$scope.regMonth = "";
 							$scope.regCardNum = "";
 							$scope.regCardCompany = "";
@@ -416,6 +583,11 @@ angular.module('myApp',[])
 	}
 	$scope.collapseReviews = function(){
 		$scope.showReviews = true;
+		$scope.viewBuys = true;	
+		$scope.pressed = false;
+		$scope.unverifiedRevs = true;
+		$scope.showUnapprovedReviews = false;
+		$scope.dispTransactions = false;
 	}
 	$scope.collapseRReviews = function(){
 		$scope.showRReviews = true;
@@ -457,5 +629,42 @@ angular.module('myApp',[])
 				function(data, status, headers, config) {
 					/*SHOW ERROR*/
 				})
+	}
+	$scope.hideUnverifiedReviews = function() {
+		$scope.unverifiedRevs = true;
+		$scope.showUnapprovedReviews = false;
+	}
+	
+	$scope.unverifiedReviews = function(bookId) {
+		var val = JSON.stringify({bookid : bookId});
+		$http.post("/Web2018/GetUnapprovedReviewsForBook",val).success(
+				function(data, status, headers, config) {
+					$scope.showUnapprovedReviews = true;
+					$scope.unverifiedRevs = false;
+					$scope.unapprovedReviews = data;
+					$scope.pressed = false;
+					$scope.dispTransactions = false;
+					$scope.showReviews = false;
+				}).error(
+				function(data, status, headers, config) {
+					/*SHOW ERROR*/
+				})		
+	}
+	$scope.approveReview = function(reviewIndex) {
+		if ($scope.revIndex == "" || $scope.revIndex == null) {
+			$scope.revIndex = "";
+			alert("Please insert the index of the review!");			
+		} else {
+			var val = JSON.stringify({reviewid : $scope.unapprovedReviews[$scope.revIndex-1].id});
+			var bookID = $scope.unapprovedReviews[$scope.revIndex-1].bookID;
+			$http.post("/Web2018/VerifyReview",val).success(
+					function(data, status, headers, config) {
+						$scope.revIndex = "";
+						$scope.unverifiedReviews(bookID);
+					}).error(
+					function(data, status, headers, config) {
+						/*SHOW ERROR*/
+					})		
+		}
 	}
 }]);

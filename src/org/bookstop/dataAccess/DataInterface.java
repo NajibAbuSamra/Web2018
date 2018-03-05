@@ -20,12 +20,13 @@ public interface DataInterface {
 	public void insertUser(User user);
 	public User selectUserByUsername(String username);
 	public ArrayList<User> getAllUsers();
+	public void deleteUser(String username);
 	
 	//Reviews
 	public void insertReview(Review review);
-	public void updateVerifiedReview(int verified);
+	public void updateVerifiedReview(int verified, int id);
 	public void deleteReviewByUsernameAndBookId(String username, int bookId);
-	public ArrayList<Review> selectReviewsByBookId(int bookid);
+	public ArrayList<Review> selectReviewsByBookId(int bookid, boolean approved);
 	
 	//Likes
 	public void insertLike(Like like);
@@ -37,6 +38,7 @@ public interface DataInterface {
 	public void insertTransaction(Transaction transaction);
 	public ArrayList<Transaction> selectAllTransactions();
 	public ArrayList<Transaction> selectTransactionsByUsername(String username);
+	public ArrayList<Transaction> selectTransactionsByBookid(int bookid);
 	public Transaction selectTransactionByUsernameAndBookid(String username, int bookid);
 	
 	//ScrollPositions

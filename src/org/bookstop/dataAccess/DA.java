@@ -111,6 +111,23 @@ public class DA implements DataInterface {
 
 		return users;
 	}
+	
+	@Override
+	public void deleteUser(String username) {
+		try {
+			PreparedStatement pstmt = conn.prepareStatement(SQLstatements.DELETE_USER_BY_USERNAME_STMT);
+			pstmt.setString(1, username);
+			pstmt.executeUpdate();
+
+			conn.commit();
+			pstmt.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return;
+		
+	}
 
 	@Override
 	public Book selectBookById(int id) {
@@ -182,10 +199,11 @@ public class DA implements DataInterface {
 	}
 
 	@Override
-	public void updateVerifiedReview(int verified) {
+	public void updateVerifiedReview(int verified, int id) {
 		try {
-			PreparedStatement pstmt = conn.prepareStatement(SQLstatements.UPDATE_REVIEW_VERIFIED_STMT);
+			PreparedStatement pstmt = conn.prepareStatement(SQLstatements.UPDATE_REVIEW_VERIFIED_BY_ID_STMT);
 			pstmt.setInt(1, verified);
+			pstmt.setInt(2, id);
 			pstmt.executeUpdate();
 
 			conn.commit();
@@ -263,6 +281,7 @@ public class DA implements DataInterface {
 			pstmt.setInt(6, transaction.getExpiryYear());
 			pstmt.setString(7, transaction.getCvv());
 			pstmt.setString(8, transaction.getFullName());
+			pstmt.setString(9, transaction.getAddress());
 
 			pstmt.executeUpdate();
 
@@ -291,7 +310,8 @@ public class DA implements DataInterface {
 						rs.getInt(DataContract.TransactionsTable.COL_EXPIRYMONTH),
 						rs.getInt(DataContract.TransactionsTable.COL_EXPIRYYEAR),
 						rs.getString(DataContract.TransactionsTable.COL_CVV),
-						rs.getString(DataContract.TransactionsTable.COL_FULLNAME)));
+						rs.getString(DataContract.TransactionsTable.COL_FULLNAME),
+						rs.getString(DataContract.TransactionsTable.COL_ADDRESS)));
 			}
 			rs.close();
 			pstmt.close();
@@ -308,7 +328,7 @@ public class DA implements DataInterface {
 		ArrayList<Transaction> transactions = new ArrayList<Transaction>();
 
 		try {
-			PreparedStatement pstmt = conn.prepareStatement(SQLstatements.SELECT_TRANSACTIONS_BY_USERNAME);
+			PreparedStatement pstmt = conn.prepareStatement(SQLstatements.SELECT_TRANSACTIONS_BY_USERNAME_STMT);
 			pstmt.setString(1, username);
 			ResultSet rs = pstmt.executeQuery();
 			while (rs.next()) {
@@ -319,7 +339,8 @@ public class DA implements DataInterface {
 						rs.getInt(DataContract.TransactionsTable.COL_EXPIRYMONTH),
 						rs.getInt(DataContract.TransactionsTable.COL_EXPIRYYEAR),
 						rs.getString(DataContract.TransactionsTable.COL_CVV),
-						rs.getString(DataContract.TransactionsTable.COL_FULLNAME)));
+						rs.getString(DataContract.TransactionsTable.COL_FULLNAME),
+						rs.getString(DataContract.TransactionsTable.COL_ADDRESS)));
 			}
 			rs.close();
 			pstmt.close();
@@ -336,7 +357,7 @@ public class DA implements DataInterface {
 		ArrayList<Integer> arr = new ArrayList<Integer>();
 
 		try {
-			PreparedStatement pstmt = conn.prepareStatement(SQLstatements.SELECT_TRANSACTIONS_BOOKID_BY_USERNAME);
+			PreparedStatement pstmt = conn.prepareStatement(SQLstatements.SELECT_TRANSACTIONS_BOOKID_BY_USERNAME_STMT);
 			pstmt.setString(1, username);
 			ResultSet rs = pstmt.executeQuery();
 			while (rs.next()) {
@@ -373,12 +394,16 @@ public class DA implements DataInterface {
 	}
 
 	@Override
-	public ArrayList<Review> selectReviewsByBookId(int bookid) {
+	public ArrayList<Review> selectReviewsByBookId(int bookid, boolean approved) {
 		ArrayList<Review> reviews = new ArrayList<Review>();
 
 		try {
-			PreparedStatement pstmt = conn.prepareStatement(SQLstatements.SELECT_REVIEWS_VERIFIED_BY_BOOKID_STMT);
+			PreparedStatement pstmt = conn.prepareStatement(SQLstatements.SELECT_REVIEWS_UNVERIFIED_BY_BOOKID_STMT);
 			pstmt.setInt(1, bookid);
+			if(approved) {
+				pstmt = conn.prepareStatement(SQLstatements.SELECT_REVIEWS_VERIFIED_BY_BOOKID_STMT);
+				pstmt.setInt(1, bookid);
+			}
 			ResultSet rs = pstmt.executeQuery();
 			while (rs.next()) {
 				reviews.add(new Review(rs.getInt(DataContract.ReviewsTable.COL_ID),
@@ -420,6 +445,35 @@ public class DA implements DataInterface {
 	}
 
 	@Override
+	public ArrayList<Transaction> selectTransactionsByBookid(int bookid) {
+		ArrayList<Transaction> transactions = new ArrayList<Transaction>();
+
+		try {
+			PreparedStatement pstmt = conn.prepareStatement(SQLstatements.SELECT_TRANSACTIONS_BY_BOOKID_STMT);
+			pstmt.setInt(1, bookid);
+			ResultSet rs = pstmt.executeQuery();
+			while (rs.next()) {
+				transactions.add(new Transaction(rs.getString(DataContract.TransactionsTable.COL_USERNAME),
+						rs.getInt(DataContract.TransactionsTable.COL_BOOKID),
+						rs.getString(DataContract.TransactionsTable.COL_CARDCOMPANY),
+						rs.getString(DataContract.TransactionsTable.COL_CARDNUMBER),
+						rs.getInt(DataContract.TransactionsTable.COL_EXPIRYMONTH),
+						rs.getInt(DataContract.TransactionsTable.COL_EXPIRYYEAR),
+						rs.getString(DataContract.TransactionsTable.COL_CVV),
+						rs.getString(DataContract.TransactionsTable.COL_FULLNAME),
+						rs.getString(DataContract.TransactionsTable.COL_ADDRESS)));
+			}
+			rs.close();
+			pstmt.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		return transactions;
+	}
+	
+	@Override
 	public Transaction selectTransactionByUsernameAndBookid(String username, int bookid) {
 		Transaction t = null;
 
@@ -437,7 +491,8 @@ public class DA implements DataInterface {
 						rs.getInt(DataContract.TransactionsTable.COL_EXPIRYMONTH),
 						rs.getInt(DataContract.TransactionsTable.COL_EXPIRYYEAR),
 						rs.getString(DataContract.TransactionsTable.COL_CVV),
-						rs.getString(DataContract.TransactionsTable.COL_FULLNAME));
+						rs.getString(DataContract.TransactionsTable.COL_FULLNAME),
+						rs.getString(DataContract.TransactionsTable.COL_ADDRESS));
 			}
 			rs.close();
 			pstmt.close();
@@ -448,6 +503,7 @@ public class DA implements DataInterface {
 
 		return t;
 	}
+	
 
 	@Override
 	public void insertScrollPosition(ScrollPosition pos, boolean append) {
@@ -496,5 +552,9 @@ public class DA implements DataInterface {
 
 		return ypos;
 	}
+
+
+
+
 
 }
