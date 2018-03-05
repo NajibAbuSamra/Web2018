@@ -186,6 +186,8 @@ angular.module('myApp',[])
 					$scope.dispTransactions = false;
 					$scope.showUserDetailsInRead = false;
 					$scope.showContent = false;
+					$scope.unverifiedRevs = true;
+					$scope.showUnapprovedReviews = false;
 					$scope.isBrowsingUsers = false;
 				}).error(
 				function(data, status, headers, config) {
@@ -208,6 +210,8 @@ angular.module('myApp',[])
 					$scope.isBrowsingUsers = false;
 					$scope.dispTransactions = false;
 					$scope.viewBuys = true;	
+					$scope.unverifiedRevs = true;
+					$scope.showUnapprovedReviews = false;
 					$scope.myBooks = data;
 					$scope.showUserDetailsInRead = false;
 				}).error(
@@ -237,6 +241,8 @@ angular.module('myApp',[])
 					$scope.viewBuys = true;
 					$scope.dispTransactions = false;
 					$scope.users = data;
+					$scope.unverifiedRevs = true;
+					$scope.showUnapprovedReviews = false;
 					console.log(data);
 				}).error(
 				function(data, status, headers, config) {
@@ -306,6 +312,8 @@ angular.module('myApp',[])
 		$scope.isBrowsingUsers = false;
 		$scope.showUserDetails = false;
 		$scope.dispTransactions = false;
+		$scope.unverifiedRevs = true;
+		$scope.showUnapprovedReviews = false;
 		$scope.showContent = false;
 		$scope.showUserDetailsInRead = false;
 		$scope.viewBuys = true;	
@@ -321,6 +329,8 @@ angular.module('myApp',[])
 			$scope.showUserDetailsInRead = true;
 			$scope.showDetails = false;
 		}
+		$scope.unverifiedRevs = true;
+		$scope.showUnapprovedReviews = false;
 		$scope.currUser = user;
 		$scope.dispTransactions = false;
 		$scope.showReviews = false;
@@ -394,6 +404,8 @@ angular.module('myApp',[])
 					$scope.viewBuys = false;
 					$scope.showReviews = false;
 					$scope.pressed = false;
+					$scope.showUnapprovedReviews = false;
+					$scope.unverifiedRevs = true;
 					console.log(data);
 				}).error(
 				function(data, status, headers, config) {
@@ -409,7 +421,9 @@ angular.module('myApp',[])
 					$scope.dispTransactions = false;
 					$scope.viewBuys = true;	
 					$scope.popUpAddReview = false;
+					$scope.showUnapprovedReviews = false;
 					$scope.showReviews = false;
+					$scope.unverifiedRevs = true;
 					$scope.pressed = true;
 				}).error(
 				function(data, status, headers, config) {
@@ -519,13 +533,13 @@ angular.module('myApp',[])
 				$http.post("/Web2018/BuyBook", val).success(
 						function(data, status, headers, config) {
 							$scope.optBuy = false;
-							console.log("succeSS");
 							$scope.showDetails = false;
 							$scope.regCVV = "";
 							$scope.regYear = "";
 							$scope.regMonth = "";
 							$scope.regCardNum = "";
 							$scope.regCardCompany = "";
+							$scope.browse();
 						}).error(
 						function(data, status, headers, config) {
 							$scope.errorBox = "Error";
@@ -571,6 +585,8 @@ angular.module('myApp',[])
 		$scope.showReviews = true;
 		$scope.viewBuys = true;	
 		$scope.pressed = false;
+		$scope.unverifiedRevs = true;
+		$scope.showUnapprovedReviews = false;
 		$scope.dispTransactions = false;
 	}
 	$scope.collapseRReviews = function(){
@@ -626,10 +642,29 @@ angular.module('myApp',[])
 					$scope.showUnapprovedReviews = true;
 					$scope.unverifiedRevs = false;
 					$scope.unapprovedReviews = data;
+					$scope.pressed = false;
+					$scope.dispTransactions = false;
+					$scope.showReviews = false;
 				}).error(
 				function(data, status, headers, config) {
 					/*SHOW ERROR*/
 				})		
 	}
-	
+	$scope.approveReview = function(reviewIndex) {
+		if ($scope.revIndex == "" || $scope.revIndex == null) {
+			$scope.revIndex = "";
+			alert("Please insert the index of the review!");			
+		} else {
+			var val = JSON.stringify({reviewid : $scope.unapprovedReviews[$scope.revIndex-1].id});
+			var bookID = $scope.unapprovedReviews[$scope.revIndex-1].bookID;
+			$http.post("/Web2018/VerifyReview",val).success(
+					function(data, status, headers, config) {
+						$scope.revIndex = "";
+						$scope.unverifiedReviews(bookID);
+					}).error(
+					function(data, status, headers, config) {
+						/*SHOW ERROR*/
+					})		
+		}
+	}
 }]);

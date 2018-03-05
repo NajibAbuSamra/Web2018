@@ -134,7 +134,7 @@ table, th, td {
 					<div class="collapse navbar-collapse" id="myNavbar" ng-value="user">
 						<ul class="nav navbar-nav">
 							<li><a href="javascript:void(0)" ng-click=browse()>Browse books</a></li>
-							<li><a href="javascript:void(0)" ng-click=readBook()>Read book</a></li>
+							<li><a href="javascript:void(0)" ng-show="!admin" ng-click=readBook()>Read book</a></li>
 							<li><a href="javascript:void(0)" ng-show="admin" ng-click=browseUsers()>Browse users</a></li>
 							<li><a href="javascript:void(0)" >Welcome {{user}}</a></li>
 						</ul>
@@ -191,7 +191,7 @@ table, th, td {
 													</div>
 													<br>
 													<div class="outer">
-														<div class="inner"><button ng-click="buyBook(currBook.bookId)" type="button" class="btn btn-success"><i class="glyphicon glyphicon-shopping-cart"></i> Buy</button></div>
+														<div class="inner"><button ng-show="!admin" ng-click="buyBook(currBook.bookId)" type="button" class="btn btn-success"><i class="glyphicon glyphicon-shopping-cart"></i> Buy</button></div>
 														<div class="inner"><button ng-show="!showReviews" ng-click=collapseReviews() type="button" class="btn btn-success"><i class="glyphicon glyphicon-ok"></i> Reviews</button></div>
 														<div class="inner"><button ng-show="showReviews" ng-click=hideReviews() type="button" class="btn btn-sucess"><i class="glyphicon glyphicon-chevron-up"></i> Reviews</button></div>	
 														<div class="inner"><button ng-show="unverifiedRevs && admin" ng-click="unverifiedReviews(currBook.bookId)" ng-show="admin" type="button" class="btn btn-success"><i class="glyphicon glyphicon-remove"></i> Reviews</button></div>	
@@ -213,6 +213,11 @@ table, th, td {
 												</div>
 												
 												<div ng-show="showUnapprovedReviews">
+													<br>
+													<form class="form-inline">
+															<input type="text" ng-model="revIndex" style="width:150px;" class="form-control" placeholder="Number of review" required>
+															<button ng-click=approveReview() type="button" class="btn btn-primary"> Approve review</button>																			
+													</form>
 													<br>
 													<div ng-repeat="r in unapprovedReviews"> 
 														<h4 id="FirstHeading">{{$index + 1}}. {{r.nickname}}'s review:</h4>
@@ -500,7 +505,4 @@ table, th, td {
 	<script src="JS/myApp.js"></script>
 </body>
 </html>
-
-
-
         	
