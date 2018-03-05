@@ -94,6 +94,7 @@ public class AddReview extends HttpServlet {
 			if (u == null) {
 				response.setStatus(HttpServletResponse.SC_FORBIDDEN);
 			} else {
+				r.setVerified(0);
 				da.insertReview(r);
 			}
 
