@@ -12,6 +12,7 @@ angular.module('myApp',[])
 	$scope.isBrowsed = false;
 	$scope.isReading = false;
 	$scope.reading = false;
+	$scope.unverifiedRevs = true;
 	$scope.showDetails = false;
 	$scope.viewBuys = true;
 	$scope.dispTransactions = false;
@@ -510,13 +511,15 @@ angular.module('myApp',[])
 			$scope.inputValidity = false;
 			alert("Please fill Card Company again!");
 		}
-
+		console.log("before");
 		var val = JSON.stringify({username:loggedUser, bookID:desiredBook, cardCompany:$scope.regCardCompany, cardNumber:$scope.regCardNum, expiryMonth:$scope.regMonth, expiryYear:$scope.regYear, cvv:$scope.regCVV, fullName:$scope.regFullName, address:$scope.regAddressCity});
 		if ($scope.inputValidity)
 			{
+				console.log("After validity");
 				$http.post("/Web2018/BuyBook", val).success(
 						function(data, status, headers, config) {
 							$scope.optBuy = false;
+							console.log("succeSS");
 							$scope.showDetails = false;
 							$scope.regCVV = "";
 							$scope.regYear = "";
@@ -528,6 +531,7 @@ angular.module('myApp',[])
 							$scope.errorBox = "Error";
 							$scope.regCVV = "";
 							$scope.regYear = "";
+							console.log("fail");
 							$scope.regMonth = "";
 							$scope.regCardNum = "";
 							$scope.regCardCompany = "";
@@ -610,4 +614,22 @@ angular.module('myApp',[])
 					/*SHOW ERROR*/
 				})
 	}
+	$scope.hideUnverifiedReviews = function() {
+		$scope.unverifiedRevs = true;
+		$scope.showUnapprovedReviews = false;
+	}
+	
+	$scope.unverifiedReviews = function(bookId) {
+		var val = JSON.stringify({bookid : bookId});
+		$http.post("/Web2018/GetUnapprovedReviewsForBook",val).success(
+				function(data, status, headers, config) {
+					$scope.showUnapprovedReviews = true;
+					$scope.unverifiedRevs = false;
+					$scope.unapprovedReviews = data;
+				}).error(
+				function(data, status, headers, config) {
+					/*SHOW ERROR*/
+				})		
+	}
+	
 }]);
