@@ -99,7 +99,7 @@ public final class SQLstatements {
 			+ "CONSTRAINT bookid_trans_ref FOREIGN KEY (" + DataContract.TransactionsTable.COL_BOOKID + ") REFERENCES "
 			+ DataContract.BooksTable.TABLE_NAME + "(" + DataContract.BooksTable.COL_ID + ") ON DELETE CASCADE)";
 	public final static String INSERT_TRANSACTION_STMT = "INSERT INTO " + DataContract.TransactionsTable.TABLE_NAME
-			+ " VALUES(DEFAULT,?,?,?,?,?,?,?,?)";
+			+ " VALUES(DEFAULT,?,?,?,?,?,?,?,?,?)";
 	public final static String SELECT_ALL_TRANSACTIONS = "SELECT * FROM " + DataContract.TransactionsTable.TABLE_NAME;
 	public final static String SELECT_TRANSACTIONS_BY_USERNAME_STMT = "SELECT * FROM "
 			+ DataContract.TransactionsTable.TABLE_NAME + " WHERE " + DataContract.TransactionsTable.COL_USERNAME
