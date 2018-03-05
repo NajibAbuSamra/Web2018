@@ -199,10 +199,11 @@ public class DA implements DataInterface {
 	}
 
 	@Override
-	public void updateVerifiedReview(int verified) {
+	public void updateVerifiedReview(int verified, int id) {
 		try {
-			PreparedStatement pstmt = conn.prepareStatement(SQLstatements.UPDATE_REVIEW_VERIFIED_STMT);
+			PreparedStatement pstmt = conn.prepareStatement(SQLstatements.UPDATE_REVIEW_VERIFIED_BY_ID_STMT);
 			pstmt.setInt(1, verified);
+			pstmt.setInt(2, id);
 			pstmt.executeUpdate();
 
 			conn.commit();
