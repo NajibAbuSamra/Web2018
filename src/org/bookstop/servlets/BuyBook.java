@@ -3,7 +3,6 @@ package org.bookstop.servlets;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -20,11 +19,8 @@ import org.apache.tomcat.dbcp.dbcp2.BasicDataSource;
 import org.bookstop.constants.AppConstants;
 import org.bookstop.dataAccess.DA;
 import org.bookstop.model.Book;
-import org.bookstop.model.BookInfo;
-import org.bookstop.model.Review;
 import org.bookstop.model.Transaction;
 import org.bookstop.model.User;
-import org.bookstop.model.UserLogin;
 
 import com.google.gson.Gson;
 
@@ -40,7 +36,6 @@ public class BuyBook extends HttpServlet {
 	 */
 	public BuyBook() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
 	/**
@@ -79,7 +74,7 @@ public class BuyBook extends HttpServlet {
 			e.printStackTrace();
 		}
 		if (t == null) {
-			// TODO: check and handle error
+			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 			return;
 		}
 		try {
@@ -93,9 +88,17 @@ public class BuyBook extends HttpServlet {
 			DA da = new DA(conn);
 
 			User u = da.selectUserByUsername(t.getUsername());
-
+			Book b = da.selectBookById(t.getBookID());
 			if (u == null) {
 				response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+			} else if (b == null) {
+				response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+			} else if (t.getAddress() == null || t.getAddress().isEmpty() || t.getFullName() == null
+					|| t.getFullName().isEmpty() || t.getCardNumber() == null || t.getCardNumber().length() != 16
+					|| t.getCvv() == null || t.getCvv().length() != 3 || t.getExpiryMonth() < 1
+					|| t.getExpiryMonth() > 12 || t.getExpiryYear() > 99 || t.getExpiryYear() < 18
+					|| t.getCardCompany() == null) {
+				response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 			} else {
 				Transaction temp = da.selectTransactionByUsernameAndBookid(t.getUsername(), t.getBookID());
 				if (temp != null) {
@@ -106,15 +109,12 @@ public class BuyBook extends HttpServlet {
 			}
 
 			da.closeConnection();
-			if (conn.isClosed() == false) {
-				logger.log(Level.WARNING, "doPost: connection not closed after DA method, closing manually");
-				conn.close();
-			}
 
 		} catch (SQLException | NamingException e) {
 			// log error
 			logger.log(Level.SEVERE, "doPost: FAILED");
 			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+			e.printStackTrace();
 		}
 	}
 

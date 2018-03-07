@@ -18,8 +18,8 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.tomcat.dbcp.dbcp2.BasicDataSource;
 import org.bookstop.constants.AppConstants;
 import org.bookstop.dataAccess.DA;
+import org.bookstop.model.Book;
 import org.bookstop.model.Like;
-import org.bookstop.model.Transaction;
 import org.bookstop.model.User;
 
 import com.google.gson.Gson;
@@ -36,7 +36,6 @@ public class AddLike extends HttpServlet {
 	 */
 	public AddLike() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
 	/**
@@ -72,10 +71,12 @@ public class AddLike extends HttpServlet {
 			l = (Like) gson.fromJson(sb.toString(), Like.class);
 
 		} catch (Exception e) {
+			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 			e.printStackTrace();
+			
 		}
 		if (l == null) {
-			// TODO: check and handle error
+			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 			return;
 		}
 		try {
@@ -89,24 +90,26 @@ public class AddLike extends HttpServlet {
 			DA da = new DA(conn);
 
 			User u = da.selectUserByUsername(l.getUsername());
-
+			Book b = da.selectBookById(l.getBookid());
 			if (u == null) {
 				response.setStatus(HttpServletResponse.SC_FORBIDDEN);
-			} else {
+			} else if(b == null){
+				response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+			}
+			else{
 				da.insertLike(l);
 			}
 
 			da.closeConnection();
-			if (conn.isClosed() == false) {
-				logger.log(Level.WARNING, "doPost: connection not closed after DA method, closing manually");
-				conn.close();
-			}
+		}catch(SQLException|
 
-		} catch (SQLException | NamingException e) {
-			// log error
-			logger.log(Level.SEVERE, "doPost: FAILED");
-
-		}
+	NamingException e)
+	{
+		// log error
+		logger.log(Level.SEVERE, "doPost: FAILED");
+		response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+		e.printStackTrace();
 	}
+}
 
 }

@@ -1,5 +1,11 @@
 package org.bookstop.model;
 
+/**
+ * This class is used to handle like data stored in the database.
+ * Like fields are received and sent in json requests/responds from the client.
+ * @author najib
+ *
+ */
 public class Like {
 	String username;
 	int bookid;

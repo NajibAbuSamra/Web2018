@@ -2,6 +2,14 @@ package org.bookstop.model;
 
 import java.util.ArrayList;
 
+/**
+ * A class used to give more information about a Book to the client side.
+ * BookInfo holds the number of likes a book has, as well as a list of reviews for the book.
+ * BookInfo fields are sent to the client side in json format when there is a request for a book.
+ * @author najib
+ * @see Book
+ *
+ */
 public class BookInfo extends Book{
 	private int likes;
 	private ArrayList<Review> reviews;

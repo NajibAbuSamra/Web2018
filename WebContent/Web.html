@@ -12,11 +12,6 @@
 <meta charset="ISO-8859-1">
 
 <title>BookStop</title>
-<style>
-table, th, td {
-    border: 1px solid black;
-}
-</style>
 </head>
 <body>
 	<div ng-app="myApp" ng-controller="myAppCrtl">
@@ -124,7 +119,7 @@ table, th, td {
 		</div>
 	</div>
 	<!-- Landing page -->
-	<div ng-show="loggedIn" style="height: 100%;">
+	<div ng-show="loggedIn">
 			<nav class="navbar navbar-inverse" ng-show="!reading">
 				<div class="container-fluid">
 				    <div class="navbar-header">
@@ -134,7 +129,7 @@ table, th, td {
 				        <span class="icon-bar"></span>
 				        <span class="icon-bar"></span>                        
 				      </button>
-				        <a class="navbar-brand"  href="#"><img style="max-width:48px; margin-top: -7px;" src="books.jpg"></a>
+				        <a class="navbar-brand"  href="#"><img class="logoImg" src="books.jpg"></a>
 				    </div>
 				    <!-- Navigation menue -->
 					<div class="collapse navbar-collapse" id="myNavbar" ng-value="usser">
@@ -160,12 +155,12 @@ table, th, td {
 					<div class="col-sm-8">
 						<div class="centralWindow" ng-show="isBrowsed">
 							<div class="row">
-								<div class="col-sm-3" style="overflow-y:auto; height: 900px;">
+								<div class="col-sm-3">
 									<div ng-app="myApp" ng-controller="myAppCrtl"> 
 										<ul ng-repeat="x in browseBooks">
 											<div id="{{x.bookId}}">
 										  		<li> 		
-										  			<a href="javascript:void(0)" ng-click=getMyCtrlScope().$parent.showBook(x)><img style="max-width:100px;" ng-src="{{x.img}}"></a>
+										  			<a href="javascript:void(0)" ng-click=getMyCtrlScope().$parent.showBook(x)><img class="BookBrowser" ng-src="{{x.img}}"></a>
 													<p>{{x.name}}</p>
 													<p>{{x.price}}</p>
 													<span><i ng-mouseover="displayLikes(x.bookId)" class="glyphicon glyphicon-thumbs-up"></i></span> {{x.likes}}
@@ -177,11 +172,11 @@ table, th, td {
 									</div>
 								</div>
 								<!-- Showing details of specific book -->
-								<div class="col-sm-9"  style="overflow-y:auto; height: 900px;">
+								<div class="col-sm-9">
 									<div class="leftWindow" ng-show="showDetails">
 										<div class="row">
 											<ul ng-value="currBook">
-											  		<img style="max-width:300px;" ng-src="{{currBook.img}}">
+											  		<img class="CurrDetBook" ng-src="{{currBook.img}}">
 													<h5 id="sstHeading">Book name:</h5>
 													<p>{{currBook.name}}</p>
 													<br>
@@ -356,12 +351,12 @@ table, th, td {
 						<!-- Admin can browse list of users -->
 						<div class="centralMidWindow" ng-show="isBrowsingUsers">
 							<div class="row">
-								<div class="col-sm-3" style="overflow-y:auto; height: 900px;">
+								<div class="col-sm-3">
 									<div ng-app="myApp" ng-controller="myAppCrtl"> 
 										<ul ng-repeat="x in users">
 											<div id="{{x.username}}">
 										  		<li> 		
-										  			<a href="javascript:void(0)" ng-click="getMyCtrlScope().$parent.showUser(x, '1')"><img style="max-width:50px; max-heigth:50px;" ng-src="{{x.picture}}"></a>
+										  			<a href="javascript:void(0)" ng-click="getMyCtrlScope().$parent.showUser(x, '1')"><img class="ProfileImage" ng-src="{{x.picture}}"></a>
 													<p>{{x.username}}</p>
 													<br>
 												</li>	
@@ -370,7 +365,7 @@ table, th, td {
 									</div>
 								</div>
 								<!-- Specific user details -->
-								<div class="col-sm-9"  style="overflow-y:auto; height: 900px;">
+								<div class="col-sm-9">
 									<div class="leftMidWindow" ng-show="showUserDetails">
 										<div class="row">
 											<ul ng-value="currUser">
@@ -400,7 +395,7 @@ table, th, td {
 						<!-- Desplaying list of owned books -->
 						<div class="centralReadWindow" ng-show="isReading">
 							<div class="row">
-								<div class="col-sm-3" style="overflow-y:auto; height: 900px;">
+								<div class="col-sm-3">
 									<div ng-app="myApp" ng-controller="myAppCrtl"> 
 										<ul ng-repeat="y in myBooks">
 											<div id="{{y.bookId}}">
@@ -416,7 +411,7 @@ table, th, td {
 									</div>
 								</div>
 								<!-- Info of specific owned book with a button to read\like\add review -->
-								<div class="col-sm-9" style="overflow-y:auto; height: 900px;">s
+								<div class="col-sm-9">
 									<div class="leftReadWindow" ng-show="showRDetails">
 										<div class="row">
 											<ul ng-value="currRBook">

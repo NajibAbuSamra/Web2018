@@ -3,7 +3,6 @@ package org.bookstop.servlets;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -19,10 +18,8 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.tomcat.dbcp.dbcp2.BasicDataSource;
 import org.bookstop.constants.AppConstants;
 import org.bookstop.dataAccess.DA;
-import org.bookstop.model.BookId;
+import org.bookstop.model.Review;
 import org.bookstop.model.ReviewId;
-import org.bookstop.model.User;
-
 import com.google.gson.Gson;
 
 /**
@@ -37,7 +34,6 @@ public class VerifyReview extends HttpServlet {
      */
     public VerifyReview() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
 	/**
@@ -58,7 +54,10 @@ public class VerifyReview extends HttpServlet {
 		logger.log(Level.INFO, "doPost: Start...");
 
 		Gson gson = new Gson();
-		//TODO: try to user Book model, maybe it will partially fill the information, no need for the BookId model
+		// 	NOTE: it is possible to use the Review model to store the id given in the json.
+		//	at the time of writing this servlet we had problems with Gson and the first solution
+		//	that worked was to create a new model. We didn't have time to change things on the 
+		//	client side and server side to match the Review model so Gson works.
 		ReviewId id = null;
 		try {
 			StringBuilder sb = new StringBuilder();
@@ -73,7 +72,7 @@ public class VerifyReview extends HttpServlet {
 			e.printStackTrace();
 		}
 		if (id == null || id.getReviewid() == 0) {
-			// TODO: check and handle error
+			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 			return;
 		}
 
@@ -86,20 +85,20 @@ public class VerifyReview extends HttpServlet {
 			Connection conn = ds.getConnection();
 			logger.log(Level.INFO, "doPost: connection opened...");
 			DA da = new DA(conn);
-
-			//TODO: check if there is a review with such id
 			
-			da.updateVerifiedReview(1, id.getReviewid());
+			Review r = da.selectReviewById(id.getReviewid());
+			if(r==null) {
+				response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+			}
+			da.updateVerifiedReview(Review.VERIFIED, id.getReviewid());
 			
 			da.closeConnection();
-			if (conn.isClosed() == false) {
-				logger.log(Level.WARNING, "doPost: connection not closed after DA method, closing manually");
-				conn.close();
-			}
 
 		} catch (SQLException | NamingException e) {
 			// log error
 			logger.log(Level.SEVERE, "doPost: FAILED");
+			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+			e.getStackTrace();
 
 		}
 	}

@@ -2,6 +2,15 @@ package org.bookstop.constants;
 
 import org.bookstop.dataAccess.DataContract;
 
+/**
+ * This class holds all the SQL DDL and DML commands that are used in the
+ * DataAccess and at the time of initializing the DB (context listener).
+ * 
+ * Assumptions: Any field that was not specified in the project guidelines
+ * as required or optional was considered optional for User.
+ * @author najib
+ *
+ */
 public final class SQLstatements {
 
 	// Books
@@ -16,7 +25,7 @@ public final class SQLstatements {
 			+ " VALUES(DEFAULT,?,?,?,?,?)";
 	public final static String SELECT_ALL_BOOKS_STMT = "SELECT * FROM " + DataContract.BooksTable.TABLE_NAME;
 	public final static String SELECT_BOOKS_BY_ID_STMT = "SELECT * FROM " + DataContract.BooksTable.TABLE_NAME
-			+ "WHERE " + DataContract.BooksTable.COL_ID + "=?";
+			+ " WHERE " + DataContract.BooksTable.COL_ID + " = ?";
 
 	// Users
 	public final static String CREATE_USERS_TABLE = "CREATE TABLE " + DataContract.UsersTable.TABLE_NAME + "("
@@ -32,9 +41,9 @@ public final class SQLstatements {
 			+ DataContract.UsersTable.COL_TYPE + " = 0";
 	public final static String SELECT_USER_BY_USERNAME_STMT = "SELECT * FROM " + DataContract.UsersTable.TABLE_NAME
 			+ " WHERE " + DataContract.UsersTable.COL_USERNAME + "=?";
-	public final static String DELETE_USER_BY_USERNAME_STMT = "DELETE FROM "
-			+ DataContract.UsersTable.TABLE_NAME + " WHERE " + DataContract.UsersTable.COL_USERNAME + " = ?";
-	
+	public final static String DELETE_USER_BY_USERNAME_STMT = "DELETE FROM " + DataContract.UsersTable.TABLE_NAME
+			+ " WHERE " + DataContract.UsersTable.COL_USERNAME + " = ?";
+
 	// Reviews
 	public final static String CREATE_REVIEWS_TABLE = "CREATE TABLE " + DataContract.ReviewsTable.TABLE_NAME + "("
 			+ DataContract.ReviewsTable.COL_ID
@@ -55,11 +64,14 @@ public final class SQLstatements {
 	public final static String SELECT_REVIEWS_UNVERIFIED_BY_BOOKID_STMT = "SELECT * FROM "
 			+ DataContract.ReviewsTable.TABLE_NAME + " WHERE " + DataContract.ReviewsTable.COL_BOOKID + " = ? AND "
 			+ DataContract.ReviewsTable.COL_VERIFIED + " = 0";
-	public final static String UPDATE_REVIEW_VERIFIED_BY_ID_STMT = "UPDATE " + DataContract.ReviewsTable.TABLE_NAME + " SET "
-			+ DataContract.ReviewsTable.COL_VERIFIED + " = ? WHERE " + DataContract.ReviewsTable.COL_ID + " =?";
+	public final static String UPDATE_REVIEW_VERIFIED_BY_ID_STMT = "UPDATE " + DataContract.ReviewsTable.TABLE_NAME
+			+ " SET " + DataContract.ReviewsTable.COL_VERIFIED + " = ? WHERE " + DataContract.ReviewsTable.COL_ID
+			+ " =?";
 	public final static String DELETE_REVIEW_BY_USERNAME_AND_BOOKID_STMT = "DELETE FROM "
 			+ DataContract.ReviewsTable.TABLE_NAME + " WHERE " + DataContract.ReviewsTable.COL_USERNAME + " = ? AND "
 			+ DataContract.ReviewsTable.COL_BOOKID + " = ?";
+	public final static String SELECT_REVIEW_BY_ID_STMT = "SELECT * FROM " + DataContract.ReviewsTable.TABLE_NAME
+			+ " WHERE " + DataContract.ReviewsTable.COL_ID + " = ?";
 
 	// Likes
 	public final static String CREATE_LIKES_TABLE = "CREATE TABLE " + DataContract.LikesTable.TABLE_NAME + "("
@@ -78,6 +90,8 @@ public final class SQLstatements {
 			+ " WHERE " + DataContract.LikesTable.COL_BOOKID + " = ?";
 	public final static String SELECT_LIKE_USERNAMES_BY_BOOKID_STMT = "SELECT " + DataContract.LikesTable.COL_USERNAME
 			+ " FROM " + DataContract.LikesTable.TABLE_NAME + " WHERE " + DataContract.LikesTable.COL_BOOKID + " = ?";
+	public final static String SELECT_LIKE_STMT = "SELECT * FROM " + DataContract.LikesTable.TABLE_NAME + " WHERE "
+			+ DataContract.LikesTable.COL_USERNAME + " = ? AND " + DataContract.LikesTable.COL_BOOKID + " = ?";
 
 	// Transactions
 	public final static String CREATE_TRANSACTIONS_TABLE = "CREATE TABLE " + DataContract.TransactionsTable.TABLE_NAME
@@ -91,8 +105,8 @@ public final class SQLstatements {
 			+ DataContract.TransactionsTable.COL_EXPIRYMONTH + " INTEGER NOT NULL,"
 			+ DataContract.TransactionsTable.COL_EXPIRYYEAR + " INTEGER NOT NULL,"
 			+ DataContract.TransactionsTable.COL_CVV + " VARCHAR(4) NOT NULL," // max length of cvv is 4
-			+ DataContract.TransactionsTable.COL_FULLNAME + " VARCHAR(255) NOT NULL," 
-			+ DataContract.TransactionsTable.COL_ADDRESS + " VARCHAR(255) NOT NULL,"+ "PRIMARY KEY ("
+			+ DataContract.TransactionsTable.COL_FULLNAME + " VARCHAR(255) NOT NULL,"
+			+ DataContract.TransactionsTable.COL_ADDRESS + " VARCHAR(255) NOT NULL," + "PRIMARY KEY ("
 			+ DataContract.TransactionsTable.COL_ID + ")," + "CONSTRAINT username_trans_ref FOREIGN KEY ("
 			+ DataContract.TransactionsTable.COL_USERNAME + ") REFERENCES " + DataContract.UsersTable.TABLE_NAME + "("
 			+ DataContract.UsersTable.COL_USERNAME + ") ON DELETE CASCADE,"

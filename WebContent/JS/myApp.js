@@ -37,7 +37,7 @@ angular.module('myApp',[])
 	/*LOGIN*/
 	$scope.loginFunc = function(){
 		var val = JSON.stringify({uName:$scope.uName , uPass:$scope.uPass});
-		$http.post("/Web2018/Login",val).
+		$http.post("/BooksForAll/Login",val).
 		success(function(data,status,headers,config){
 			$scope.loggedIn=true;
 			$scope.user = data.nickname;
@@ -61,8 +61,11 @@ angular.module('myApp',[])
 			if (status == 403)
 			{
 				alert("Incorrect password! please try again!");
-				$scope.uName = "";
 				$scope.uPass = "";
+			}
+			if(status==500)
+			{
+				alert("Server error");
 			}
 		});
 	}
@@ -119,7 +122,7 @@ angular.module('myApp',[])
 		}
 		if ($scope.regValidity)
 		{
-			$http.post("/Web2018/Register", val).success(
+			$http.post("/BooksForAll/Register", val).success(
 					function(data, status, headers, config) {
 						$scope.loggedIn = true;
 						loggedUser = $scope.regUname;
@@ -132,12 +135,23 @@ angular.module('myApp',[])
 					}).error(
 					function(data, status, headers, config) {
 						$scope.errorBox = "Error";
-						if (status == 400) {
+						if (status == 403) {
 							alert("Username not available!");
 							$scope.regUname = "";
 						}
 						if (status == 500) {
 							alert("Unexpected error!");
+							$scope.regUname = "";
+							$scope.regNick = "";
+							$scope.regPass = "";
+							$scope.regEmail = "";
+							$scope.regAddress = "";
+							$scope.regTelephone = "";
+							$scope.regPic = "";
+							$scope.regDesc = "";
+						}
+						if (status == 400) {
+							alert("Invalid registeration!");
 							$scope.regUname = "";
 							$scope.regNick = "";
 							$scope.regPass = "";
@@ -174,7 +188,7 @@ angular.module('myApp',[])
 	/*Return list of not owned ebooks*/
 	$scope.browse = function(){
 		var val = JSON.stringify({uName:loggedUser , uPass:loggedPass})
-		$http.post("/Web2018/GetAvailableBooks",val).success(
+		$http.post("/BooksForAll/GetAvailableBooks",val).success(
 				function(data, status, headers, config) {
 					/*PUT BOOKS IN PROPER DIV*/
 					$scope.isBrowsed = true;
@@ -192,7 +206,20 @@ angular.module('myApp',[])
 				}).error(
 				function(data, status, headers, config) {
 					/*SHOW ERROR*/
-
+					if(status == 403)
+					{
+						alert("Invalid User");
+						$scope.logout();
+					}
+					if(status==500)
+					{
+						alert("Server Error");
+					}
+					if(status==401)
+					{
+						alert("Unauthorized user, invalid password");
+						$scope.logout();
+					}
 				})
 	}
 	
@@ -200,7 +227,7 @@ angular.module('myApp',[])
 	$scope.readBook =function() {
 		var val = JSON.stringify({uName:loggedUser , uPass:loggedPass})
 		/* Change getAvailableBooks with GetMyBooks*/
-		$http.post("/Web2018/GetMyBooks",val).success(
+		$http.post("/BooksForAll/GetMyBooks",val).success(
 				function(data, status, headers, config) {
 					/*PUT BOOKS IN PROPER DIV*/
 					$scope.isReading = true;
@@ -217,18 +244,28 @@ angular.module('myApp',[])
 				}).error(
 				function(data, status, headers, config) {
 					/*SHOW ERROR*/
-					if(status == 401){
-						/*wrong password, log user out and display error*/
+					if(status == 403)
+					{
+						alert("Invalid User");
+						$scope.logout();
+					}
+					if(status==500)
+					{
+						alert("Server Error");
+					}
+					if(status==401)
+					{
+						alert("Unauthorized user, invalid password");
+						$scope.logout();
 					}
 				})
-
 	}
 	
 	/* Return list of active users */
 	$scope.browseUsers = function() {
 		var val = JSON.stringify({uName:loggedUser , uPass:loggedPass})
 		/* Change getAvailableBooks with GetMyBooks*/
-		$http.post("/Web2018/GetAllUsers",val).success(
+		$http.post("/BooksForAll/GetAllUsers",val).success(
 				function(data, status, headers, config) {
 					/*PUT BOOKS IN PROPER DIV*/
 					$scope.isBrowsingUsers = true;
@@ -249,7 +286,16 @@ angular.module('myApp',[])
 				function(data, status, headers, config) {
 					/*SHOW ERROR*/
 					if(status == 401){
-						/*wrong password, log user out and display error*/
+						alert("Unauthorized user");
+					}
+					if(status == 400)
+					{
+						alert("Bad request");
+						$scope.logout();
+					}
+					if(status==500)
+					{
+						alert("Server Error");
 					}
 				})
 
@@ -258,7 +304,7 @@ angular.module('myApp',[])
 	/*Show Likes*/
 	$scope.displayLikes = function(bookID){
 		var val = JSON.stringify({bookid:bookID})
-		$http.post("/Web2018/GetLikersByBook",val).success(
+		$http.post("/BooksForAll/GetLikersByBook",val).success(
 				function(data, status, headers, config) {
 					/*Display Likes*/
 					$scope.browseLikers = data;
@@ -266,6 +312,18 @@ angular.module('myApp',[])
 				}).error(
 				function(data, status, headers, config) {
 					/*SHOW ERROR*/
+					if(status==500)
+					{
+						alert("Server Error");
+					}
+					if(status==404)
+					{
+						alert("Book not found");
+					}
+					if(status==400)
+					{
+						alert("Invalid Book id");
+					}
 				})
 	}	
 	
@@ -275,7 +333,7 @@ angular.module('myApp',[])
 	/* When user likes an owned book it is added to the likes of that book*/
 	$scope.updateLikers = function(book) {
 		var val = JSON.stringify({username:loggedUser, bookid:book.bookId})
-		$http.post("/Web2018/AddLike",val).success(
+		$http.post("/BooksForAll/AddLike",val).success(
 				function(data, status, headers, config) {
 					/*Display Likes*/
 					$scope.liked = true;
@@ -283,14 +341,26 @@ angular.module('myApp',[])
 					$scope.currRBook.likes = $scope.currRBook.likes + 1; 
 				}).error(
 				function(data, status, headers, config) {
-					/*SHOW ERROR*/
+					if(status == 403)
+					{
+						alert("Invalid User");
+						$scope.logout();
+					}
+					if(status==500)
+					{
+						alert("Server Error");
+					}
+					if(status==404)
+					{
+						alert("Book not found");
+					}
 				})
 	}
 	
 	/* Unlike a book and update*/
 	$scope.removeLike = function(book) {
 		var val = JSON.stringify({username:loggedUser, bookid:book.bookId})
-		$http.post("/Web2018/RemoveLike",val).success(
+		$http.post("/BooksForAll/RemoveLike",val).success(
 				function(data, status, headers, config) {
 					/*Display Likes*/
 					$scope.liked = false;
@@ -299,6 +369,25 @@ angular.module('myApp',[])
 				}).error(
 				function(data, status, headers, config) {
 					/*SHOW ERROR*/
+					if(status == 400)
+					{
+						alert("Like not found");
+						$scope.liked = false;	
+					}
+					if(status == 403)
+					{
+						alert("User not found");
+						$scope.logout();	
+					}
+					if(status==500)
+					{
+						alert("Server Error");
+					}
+					if(status==404)
+					{
+						alert("Like not found");
+						$scope.liked = false;
+					}					
 				})
 	}
 	
@@ -371,7 +460,7 @@ angular.module('myApp',[])
 
 		
 		var val = JSON.stringify({bookid:book_being_read.bookId})
-		$http.post("/Web2018/GetLikersByBook",val).success(
+		$http.post("/BooksForAll/GetLikersByBook",val).success(
 				function(data, status, headers, config) {
 					/*Display Likes*/
 					angular.forEach(data, function(value, key) {
@@ -388,7 +477,7 @@ angular.module('myApp',[])
 	/* Triggered when admin presses the delete button on user profile */
 	$scope.deleteUser = function(user, flag) {
 		var val = JSON.stringify({username:user.username})
-		$http.post("/Web2018/RemoveUser",val).success(
+		$http.post("/BooksForAll/RemoveUser",val).success(
 				function(data, status, headers, config) {
 					if (flag == "1") {
 						$scope.browseUsers();
@@ -400,12 +489,21 @@ angular.module('myApp',[])
 				}).error(
 				function(data, status, headers, config) {
 					/*SHOW ERROR*/
+					if(status == 404)
+					{
+						alert("User not found");
+						$scope.liked = false;	
+					}
+					if(status==500)
+					{
+						alert("Server Error");
+					}	
 				})
 	}
 	/* Returns the transactions of the specific book*/
 	$scope.recentTransactions = function(bookId) {
 		var val = JSON.stringify({bookid:bookId})
-		$http.post("/Web2018/GetTransactionsByBook",val).success(
+		$http.post("/BooksForAll/GetTransactionsByBook",val).success(
 				function(data, status, headers, config) {
 					$scope.dispTransactions = true;
 					$scope.transactions = data;
@@ -418,12 +516,24 @@ angular.module('myApp',[])
 				}).error(
 				function(data, status, headers, config) {
 					/*SHOW ERROR*/
+					if(status==500)
+					{
+						alert("Server Error");
+					}
+					if(status == 404)
+					{
+						alert("Book not found");
+					}
+					if(status == 400)
+					{
+						alert("Invalid book id");
+					}
 				})
 	}
 	/* This function can only be triggered by admin and it displays the people who bought that book*/
 	$scope.dispLikesforAdmin = function(bookID){
 		var val = JSON.stringify({bookid:bookID})
-		$http.post("/Web2018/GetLikersByBook",val).success(
+		$http.post("/BooksForAll/GetLikersByBook",val).success(
 				function(data, status, headers, config) {
 					/*Display Likes*/
 					$scope.browseLikersForAdmin = data;
@@ -541,7 +651,7 @@ angular.module('myApp',[])
 		if ($scope.inputValidity)
 			{
 				console.log("After validity");
-				$http.post("/Web2018/BuyBook", val).success(
+				$http.post("/BooksForAll/BuyBook", val).success(
 						function(data, status, headers, config) {
 							$scope.optBuy = false;
 							$scope.showDetails = false;
@@ -556,10 +666,26 @@ angular.module('myApp',[])
 							$scope.errorBox = "Error";
 							$scope.regCVV = "";
 							$scope.regYear = "";
-							console.log("fail");
 							$scope.regMonth = "";
 							$scope.regCardNum = "";
 							$scope.regCardCompany = "";
+							if(status == 403)
+							{
+								alert("Invalid User");
+								$scope.logout();
+							}
+							if(status==500)
+							{
+								alert("Server Error");
+							}
+							if(status==404)
+							{
+								alert("Book does not exist");
+							}
+							if(status==400)
+							{
+								alert("Invalid Transaction or Book already owned");
+							}							
 						})
 			}
 		if(	$scope.inputValidity == false)
@@ -577,18 +703,39 @@ angular.module('myApp',[])
 	}
 	/* When user writes a review and submits it, this function is triggered */
 	$scope.submitReview = function(currRBook){
-		var val = JSON.stringify({username:loggedUser, nickname:loggedNick, bookID:currRBook.bookId, text:$scope.regRev});
-		$http.post("/Web2018/AddReview",val).success(
-				function(data, status, headers, config) {
-					$scope.showRDetails = true;
-					$scope.popUpAddReview = false;
-					$scope.readBook();
-					$scope.showReadingBook(currRBook);
-					$scope.regRev = "";
-				}).error(
-				function(data, status, headers, config) {
-					/*SHOW ERROR*/
-				})
+		if($scope.regRev == "" || $scope.regRev == null) {
+			alert("Please write review before submitting!");
+		} else {
+			var val = JSON.stringify({username:loggedUser, nickname:loggedNick, bookID:currRBook.bookId, text:$scope.regRev});
+			$http.post("/BooksForAll/AddReview",val).success(
+					function(data, status, headers, config) {
+						$scope.showRDetails = true;
+						$scope.popUpAddReview = false;
+						$scope.readBook();
+						$scope.showReadingBook(currRBook);
+						$scope.regRev = "";
+					}).error(
+					function(data, status, headers, config) {
+						/*SHOW ERROR*/
+						if(status == 403)
+						{
+							alert("Invalid User");
+							$scope.logout();
+						}
+						if(status==500)
+						{
+							alert("Server Error");
+						}
+						if(status==404)
+						{
+							alert("Book not found");
+						}
+						if(status==400)
+						{
+							alert("Invalid review");
+						}
+					})
+		}
 	}
 	/* Triggered when user wants to go back from writing a review */
 	$scope.CancelReview = function(){
@@ -628,7 +775,7 @@ angular.module('myApp',[])
 	$scope.saveSpot = function (currRBook) {
 		var pos = $(".ReadWrapper").scrollTop();
 		var val = JSON.stringify({username:loggedUser, bookid:currRBook.bookId, ypos:pos});
-		$http.post("/Web2018/SaveScrollPosition",val).success(
+		$http.post("/BooksForAll/SaveScrollPosition",val).success(
 				function(data, status, headers, config) {
 					$scope.showRDetails = true;
 					$scope.isReading = true;
@@ -637,17 +784,37 @@ angular.module('myApp',[])
 				}).error(
 				function(data, status, headers, config) {
 					/*SHOW ERROR*/
+					if(status == 400)
+					{
+						alert("Invalid username or book id");
+					}
+					if(status==500)
+					{
+						alert("Server Error");
+					}	
 				})
 	}
 	/* Triggered when user decides to read from last place (loads where he left)*/
 	$scope.openBookForReadingFromLastPosi = function (currRBook) {
 		var val = JSON.stringify({username:loggedUser, bookid:currRBook.bookId, ypos:0});
-		$http.post("/Web2018/GetScrollPosition",val).success(
+		$http.post("/BooksForAll/GetScrollPosition",val).success(
 				function(data, status, headers, config) {
 					$(".ReadWrapper").scrollTop(data);
 				}).error(
 				function(data, status, headers, config) {
 					/*SHOW ERROR*/
+					if(status == 404)
+					{
+						alert("No saved position");
+					}
+					if(status==500)
+					{
+						alert("Server Error");
+					}
+					if(status == 400)
+					{
+						alert("Invalid username or book id");
+					}
 				})
 	}
 	$scope.hideUnverifiedReviews = function() {
@@ -657,7 +824,7 @@ angular.module('myApp',[])
 	/* Return list of unverified reviews for admin*/
 	$scope.unverifiedReviews = function(bookId) {
 		var val = JSON.stringify({bookid : bookId});
-		$http.post("/Web2018/GetUnapprovedReviewsForBook",val).success(
+		$http.post("/BooksForAll/GetUnapprovedReviewsForBook",val).success(
 				function(data, status, headers, config) {
 					$scope.showUnapprovedReviews = true;
 					$scope.unverifiedRevs = false;
@@ -667,7 +834,18 @@ angular.module('myApp',[])
 					$scope.showReviews = false;
 				}).error(
 				function(data, status, headers, config) {
-					/*SHOW ERROR*/
+					if(status==500)
+					{
+						alert("Server Error");
+					}
+					if(status==400)
+					{
+						alert("Invalid book id");
+					}
+					if(status==404)
+					{
+						alert("Book not found");
+					}
 				})		
 	}
 	/* Triggered when admin approves a review */
@@ -678,13 +856,21 @@ angular.module('myApp',[])
 		} else {
 			var val = JSON.stringify({reviewid : $scope.unapprovedReviews[$scope.revIndex-1].id});
 			var bookID = $scope.unapprovedReviews[$scope.revIndex-1].bookID;
-			$http.post("/Web2018/VerifyReview",val).success(
+			$http.post("/BooksForAll/VerifyReview",val).success(
 					function(data, status, headers, config) {
 						$scope.revIndex = "";
 						$scope.unverifiedReviews(bookID);
 					}).error(
 					function(data, status, headers, config) {
 						/*SHOW ERROR*/
+						if(status == 404)
+						{
+							alert("Review not found");
+						}
+						if(status==500)
+						{
+							alert("Server Error");
+						}
 					})		
 		}
 	}
