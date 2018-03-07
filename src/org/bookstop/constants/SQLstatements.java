@@ -32,9 +32,9 @@ public final class SQLstatements {
 			+ DataContract.UsersTable.COL_TYPE + " = 0";
 	public final static String SELECT_USER_BY_USERNAME_STMT = "SELECT * FROM " + DataContract.UsersTable.TABLE_NAME
 			+ " WHERE " + DataContract.UsersTable.COL_USERNAME + "=?";
-	public final static String DELETE_USER_BY_USERNAME_STMT = "DELETE FROM "
-			+ DataContract.UsersTable.TABLE_NAME + " WHERE " + DataContract.UsersTable.COL_USERNAME + " = ?";
-	
+	public final static String DELETE_USER_BY_USERNAME_STMT = "DELETE FROM " + DataContract.UsersTable.TABLE_NAME
+			+ " WHERE " + DataContract.UsersTable.COL_USERNAME + " = ?";
+
 	// Reviews
 	public final static String CREATE_REVIEWS_TABLE = "CREATE TABLE " + DataContract.ReviewsTable.TABLE_NAME + "("
 			+ DataContract.ReviewsTable.COL_ID
@@ -55,8 +55,9 @@ public final class SQLstatements {
 	public final static String SELECT_REVIEWS_UNVERIFIED_BY_BOOKID_STMT = "SELECT * FROM "
 			+ DataContract.ReviewsTable.TABLE_NAME + " WHERE " + DataContract.ReviewsTable.COL_BOOKID + " = ? AND "
 			+ DataContract.ReviewsTable.COL_VERIFIED + " = 0";
-	public final static String UPDATE_REVIEW_VERIFIED_BY_ID_STMT = "UPDATE " + DataContract.ReviewsTable.TABLE_NAME + " SET "
-			+ DataContract.ReviewsTable.COL_VERIFIED + " = ? WHERE " + DataContract.ReviewsTable.COL_ID + " =?";
+	public final static String UPDATE_REVIEW_VERIFIED_BY_ID_STMT = "UPDATE " + DataContract.ReviewsTable.TABLE_NAME
+			+ " SET " + DataContract.ReviewsTable.COL_VERIFIED + " = ? WHERE " + DataContract.ReviewsTable.COL_ID
+			+ " =?";
 	public final static String DELETE_REVIEW_BY_USERNAME_AND_BOOKID_STMT = "DELETE FROM "
 			+ DataContract.ReviewsTable.TABLE_NAME + " WHERE " + DataContract.ReviewsTable.COL_USERNAME + " = ? AND "
 			+ DataContract.ReviewsTable.COL_BOOKID + " = ?";
@@ -78,6 +79,8 @@ public final class SQLstatements {
 			+ " WHERE " + DataContract.LikesTable.COL_BOOKID + " = ?";
 	public final static String SELECT_LIKE_USERNAMES_BY_BOOKID_STMT = "SELECT " + DataContract.LikesTable.COL_USERNAME
 			+ " FROM " + DataContract.LikesTable.TABLE_NAME + " WHERE " + DataContract.LikesTable.COL_BOOKID + " = ?";
+	public final static String SELECT_LIKE_STMT = "SELECT * FROM " + DataContract.LikesTable.TABLE_NAME + " WHERE "
+			+ DataContract.LikesTable.COL_USERNAME + " = ? AND " + DataContract.LikesTable.COL_BOOKID + " = ?";
 
 	// Transactions
 	public final static String CREATE_TRANSACTIONS_TABLE = "CREATE TABLE " + DataContract.TransactionsTable.TABLE_NAME
@@ -91,8 +94,8 @@ public final class SQLstatements {
 			+ DataContract.TransactionsTable.COL_EXPIRYMONTH + " INTEGER NOT NULL,"
 			+ DataContract.TransactionsTable.COL_EXPIRYYEAR + " INTEGER NOT NULL,"
 			+ DataContract.TransactionsTable.COL_CVV + " VARCHAR(4) NOT NULL," // max length of cvv is 4
-			+ DataContract.TransactionsTable.COL_FULLNAME + " VARCHAR(255) NOT NULL," 
-			+ DataContract.TransactionsTable.COL_ADDRESS + " VARCHAR(255) NOT NULL,"+ "PRIMARY KEY ("
+			+ DataContract.TransactionsTable.COL_FULLNAME + " VARCHAR(255) NOT NULL,"
+			+ DataContract.TransactionsTable.COL_ADDRESS + " VARCHAR(255) NOT NULL," + "PRIMARY KEY ("
 			+ DataContract.TransactionsTable.COL_ID + ")," + "CONSTRAINT username_trans_ref FOREIGN KEY ("
 			+ DataContract.TransactionsTable.COL_USERNAME + ") REFERENCES " + DataContract.UsersTable.TABLE_NAME + "("
 			+ DataContract.UsersTable.COL_USERNAME + ") ON DELETE CASCADE,"

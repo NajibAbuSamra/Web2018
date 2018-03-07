@@ -87,12 +87,6 @@ public class SaveScrollPosition extends HttpServlet {
 			}
 			
 			da.closeConnection();
-			if (conn.isClosed() == false) {
-				logger.log(Level.WARNING, "doPost: connection not closed after DA method, closing manually");
-				conn.close();
-			}
-
-			
 
 		} catch (SQLException | NamingException e) {
 			// log error

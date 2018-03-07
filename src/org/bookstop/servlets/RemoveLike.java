@@ -18,6 +18,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.tomcat.dbcp.dbcp2.BasicDataSource;
 import org.bookstop.constants.AppConstants;
 import org.bookstop.dataAccess.DA;
+import org.bookstop.model.Book;
 import org.bookstop.model.Like;
 import org.bookstop.model.User;
 
@@ -88,18 +89,17 @@ public class RemoveLike extends HttpServlet {
 			DA da = new DA(conn);
 
 			User u = da.selectUserByUsername(l.getUsername());
+			Book b = da.selectBookById(l.getBookid());
 
-			if (u == null) {
-				response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+			if (u == null || b == null) {
+				response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+			} else if (da.likeExists(l) == false) {
+				response.setStatus(HttpServletResponse.SC_NOT_FOUND);
 			} else {
-				// TODO: check if like exists, if not, can't remove, 404
 				da.deleteLike(l);
 			}
 
 			da.closeConnection();
-			if (conn.isClosed() == false) {
-				conn.close();
-			}
 		} catch (SQLException | NamingException e) {
 			// log error
 			logger.log(Level.SEVERE, "doPost: FAILED");

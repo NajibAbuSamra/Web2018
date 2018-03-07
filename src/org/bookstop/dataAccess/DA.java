@@ -18,6 +18,11 @@ public class DA implements DataInterface {
 
 	Connection conn = null;
 
+	/**
+	 * C'tor for DA (DataAccess) class, that takes a connection that was opened in the servlet.
+	 * The connection is passed from the servlet because of context issues.
+	 * @param conn	connection to the derby database.
+	 */
 	public DA(Connection conn) {
 		this.conn = conn;
 		// use connection as you wish but close after usage! (this
@@ -25,15 +30,22 @@ public class DA implements DataInterface {
 		// within Tomcat
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	public void closeConnection() {
 		try {
-			conn.close();
+			if(conn.isClosed() == false)
+				conn.close();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public User selectUserByUsername(String username) {
 		User user = null;
@@ -60,6 +72,9 @@ public class DA implements DataInterface {
 		return user;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void insertUser(User user) {
 		try {
@@ -84,6 +99,9 @@ public class DA implements DataInterface {
 		return;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public ArrayList<User> getAllUsers() {
 		ArrayList<User> users = new ArrayList<User>();
@@ -112,6 +130,9 @@ public class DA implements DataInterface {
 		return users;
 	}
 	
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void deleteUser(String username) {
 		try {
@@ -129,6 +150,9 @@ public class DA implements DataInterface {
 		
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public Book selectBookById(int id) {
 		Book book = null;
@@ -154,6 +178,9 @@ public class DA implements DataInterface {
 		return book;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public ArrayList<Book> getAllBooks() {
 		ArrayList<Book> books = new ArrayList<Book>();
@@ -178,6 +205,9 @@ public class DA implements DataInterface {
 		return books;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void insertReview(Review review) {
 		try {
@@ -198,6 +228,9 @@ public class DA implements DataInterface {
 		return;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void updateVerifiedReview(int verified, int id) {
 		try {
@@ -215,6 +248,9 @@ public class DA implements DataInterface {
 		return;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void deleteReviewByUsernameAndBookId(String username, int bookId) {
 		try {
@@ -233,6 +269,9 @@ public class DA implements DataInterface {
 
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void insertLike(Like like) {
 		try {
@@ -251,6 +290,9 @@ public class DA implements DataInterface {
 
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void deleteLike(Like like) {
 		try {
@@ -269,6 +311,9 @@ public class DA implements DataInterface {
 
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void insertTransaction(Transaction transaction) {
 		try {
@@ -295,6 +340,9 @@ public class DA implements DataInterface {
 
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public ArrayList<Transaction> selectAllTransactions() {
 		ArrayList<Transaction> transactions = new ArrayList<Transaction>();
@@ -323,6 +371,9 @@ public class DA implements DataInterface {
 		return transactions;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public ArrayList<Transaction> selectTransactionsByUsername(String username) {
 		ArrayList<Transaction> transactions = new ArrayList<Transaction>();
@@ -352,6 +403,9 @@ public class DA implements DataInterface {
 		return transactions;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public ArrayList<Integer> getOwnedBookIds(String username) {
 		ArrayList<Integer> arr = new ArrayList<Integer>();
@@ -373,6 +427,9 @@ public class DA implements DataInterface {
 		return arr;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public int countLikesByBookId(int bookid) {
 		int likes = -1; // default error
@@ -393,6 +450,9 @@ public class DA implements DataInterface {
 		return likes;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public ArrayList<Review> selectReviewsByBookId(int bookid, boolean approved) {
 		ArrayList<Review> reviews = new ArrayList<Review>();
@@ -423,6 +483,9 @@ public class DA implements DataInterface {
 		return reviews;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public ArrayList<String> selectUsernameFromLikesByBookId(int bookid) {
 		ArrayList<String> likers = new ArrayList<String>();
@@ -444,6 +507,9 @@ public class DA implements DataInterface {
 		return likers;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public ArrayList<Transaction> selectTransactionsByBookid(int bookid) {
 		ArrayList<Transaction> transactions = new ArrayList<Transaction>();
@@ -473,6 +539,9 @@ public class DA implements DataInterface {
 		return transactions;
 	}
 	
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public Transaction selectTransactionByUsernameAndBookid(String username, int bookid) {
 		Transaction t = null;
@@ -504,7 +573,9 @@ public class DA implements DataInterface {
 		return t;
 	}
 	
-
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void insertScrollPosition(ScrollPosition pos, boolean append) {
 		try {
@@ -531,6 +602,9 @@ public class DA implements DataInterface {
 		}
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public int selectYposByUsernameAndBookid(String username, int bookid) {
 		int ypos = -1;
@@ -551,6 +625,29 @@ public class DA implements DataInterface {
 		}
 
 		return ypos;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public boolean likeExists(Like like) {
+		boolean flag = false;
+		try {
+			PreparedStatement pstmt = conn.prepareStatement(SQLstatements.SELECT_LIKE_STMT);
+			pstmt.setString(1, like.getUsername());
+			pstmt.setInt(2, like.getBookid());
+			ResultSet rs = pstmt.executeQuery();
+			if (rs.next()) {
+				flag = true;
+			}
+			rs.close();
+			pstmt.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return flag;
 	}
 
 

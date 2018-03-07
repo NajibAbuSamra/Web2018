@@ -93,9 +93,7 @@ public class RemoveUser extends HttpServlet {
 			}
 
 			da.closeConnection();
-			if (conn.isClosed() == false) {
-				conn.close();
-			}
+
 		} catch (SQLException | NamingException e) {
 			// log error
 			logger.log(Level.SEVERE, "doPost: FAILED");
