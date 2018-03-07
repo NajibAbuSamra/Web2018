@@ -19,9 +19,12 @@ public class DA implements DataInterface {
 	Connection conn = null;
 
 	/**
-	 * C'tor for DA (DataAccess) class, that takes a connection that was opened in the servlet.
-	 * The connection is passed from the servlet because of context issues.
-	 * @param conn	connection to the derby database.
+	 * C'tor for DA (DataAccess) class, that takes a connection that was opened in
+	 * the servlet. The connection is passed from the servlet because of context
+	 * issues.
+	 * 
+	 * @param conn
+	 *            connection to the derby database.
 	 */
 	public DA(Connection conn) {
 		this.conn = conn;
@@ -35,10 +38,9 @@ public class DA implements DataInterface {
 	 */
 	public void closeConnection() {
 		try {
-			if(conn.isClosed() == false)
+			if (conn.isClosed() == false)
 				conn.close();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -66,7 +68,6 @@ public class DA implements DataInterface {
 			rs.close();
 			pstmt.close();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return user;
@@ -93,7 +94,6 @@ public class DA implements DataInterface {
 			conn.commit();
 			pstmt.close();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return;
@@ -123,13 +123,12 @@ public class DA implements DataInterface {
 			rs.close();
 			pstmt.close();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
 		return users;
 	}
-	
+
 	/**
 	 * {@inheritDoc}
 	 */
@@ -143,11 +142,10 @@ public class DA implements DataInterface {
 			conn.commit();
 			pstmt.close();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return;
-		
+
 	}
 
 	/**
@@ -171,7 +169,6 @@ public class DA implements DataInterface {
 			rs.close();
 			pstmt.close();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
@@ -198,7 +195,6 @@ public class DA implements DataInterface {
 			rs.close();
 			pstmt.close();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
@@ -222,7 +218,6 @@ public class DA implements DataInterface {
 			conn.commit();
 			pstmt.close();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return;
@@ -242,7 +237,6 @@ public class DA implements DataInterface {
 			conn.commit();
 			pstmt.close();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return;
@@ -262,7 +256,6 @@ public class DA implements DataInterface {
 			conn.commit();
 			pstmt.close();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return;
@@ -283,7 +276,6 @@ public class DA implements DataInterface {
 			conn.commit();
 			pstmt.close();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return;
@@ -304,7 +296,6 @@ public class DA implements DataInterface {
 			conn.commit();
 			pstmt.close();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return;
@@ -333,7 +324,6 @@ public class DA implements DataInterface {
 			conn.commit();
 			pstmt.close();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return;
@@ -364,7 +354,6 @@ public class DA implements DataInterface {
 			rs.close();
 			pstmt.close();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
@@ -396,7 +385,6 @@ public class DA implements DataInterface {
 			rs.close();
 			pstmt.close();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
@@ -420,7 +408,6 @@ public class DA implements DataInterface {
 			rs.close();
 			pstmt.close();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
@@ -443,7 +430,6 @@ public class DA implements DataInterface {
 			rs.close();
 			pstmt.close();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
@@ -460,7 +446,7 @@ public class DA implements DataInterface {
 		try {
 			PreparedStatement pstmt = conn.prepareStatement(SQLstatements.SELECT_REVIEWS_UNVERIFIED_BY_BOOKID_STMT);
 			pstmt.setInt(1, bookid);
-			if(approved) {
+			if (approved) {
 				pstmt = conn.prepareStatement(SQLstatements.SELECT_REVIEWS_VERIFIED_BY_BOOKID_STMT);
 				pstmt.setInt(1, bookid);
 			}
@@ -476,7 +462,6 @@ public class DA implements DataInterface {
 			rs.close();
 			pstmt.close();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
@@ -500,7 +485,6 @@ public class DA implements DataInterface {
 			rs.close();
 			pstmt.close();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
@@ -532,13 +516,12 @@ public class DA implements DataInterface {
 			rs.close();
 			pstmt.close();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
 		return transactions;
 	}
-	
+
 	/**
 	 * {@inheritDoc}
 	 */
@@ -566,13 +549,12 @@ public class DA implements DataInterface {
 			rs.close();
 			pstmt.close();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
 		return t;
 	}
-	
+
 	/**
 	 * {@inheritDoc}
 	 */
@@ -591,13 +573,12 @@ public class DA implements DataInterface {
 				pstmt.setInt(1, pos.getYpos());
 				pstmt.setString(2, pos.getUsername());
 				pstmt.setInt(3, pos.getBookid());
-	
+
 			}
 
 			pstmt.executeUpdate();
 			pstmt.close();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -620,7 +601,6 @@ public class DA implements DataInterface {
 			rs.close();
 			pstmt.close();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
@@ -644,14 +624,32 @@ public class DA implements DataInterface {
 			rs.close();
 			pstmt.close();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return flag;
 	}
 
-
-
-
+	@Override
+	public Review selectReviewById(int id) {
+		Review r = null;
+		try {
+			PreparedStatement pstmt = conn.prepareStatement(SQLstatements.SELECT_REVIEW_BY_ID_STMT);
+			pstmt.setInt(1, id);
+			ResultSet rs = pstmt.executeQuery();
+			if (rs.next()) {
+				r = new Review(rs.getInt(DataContract.ReviewsTable.COL_ID),
+						rs.getString(DataContract.ReviewsTable.COL_USERNAME),
+						rs.getString(DataContract.ReviewsTable.COL_NICKNAME),
+						rs.getInt(DataContract.ReviewsTable.COL_BOOKID),
+						rs.getInt(DataContract.ReviewsTable.COL_VERIFIED),
+						rs.getString(DataContract.ReviewsTable.COL_TEXT));
+			}
+			rs.close();
+			pstmt.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return r;
+	}
 
 }

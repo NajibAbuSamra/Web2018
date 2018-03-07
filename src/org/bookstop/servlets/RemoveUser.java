@@ -18,7 +18,6 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.tomcat.dbcp.dbcp2.BasicDataSource;
 import org.bookstop.constants.AppConstants;
 import org.bookstop.dataAccess.DA;
-import org.bookstop.model.Like;
 import org.bookstop.model.User;
 
 import com.google.gson.Gson;
@@ -29,27 +28,30 @@ import com.google.gson.Gson;
 @WebServlet("/RemoveUser")
 public class RemoveUser extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
-    public RemoveUser() {
-        super();
-        // TODO Auto-generated constructor stub
-    }
 
 	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 * @see HttpServlet#HttpServlet()
 	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	public RemoveUser() {
+		super();
+	}
+
+	/**
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
+	 *      response)
+	 */
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		response.getWriter().append("Served at: ").append(request.getContextPath());
 	}
 
 	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
+	 *      response)
 	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		System.out.println("RemoveUser Servlet");
 
 		Logger logger = Logger.getLogger("RemoveUserServlet");
@@ -97,6 +99,8 @@ public class RemoveUser extends HttpServlet {
 		} catch (SQLException | NamingException e) {
 			// log error
 			logger.log(Level.SEVERE, "doPost: FAILED");
+			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+			e.printStackTrace();
 
 		}
 	}

@@ -32,7 +32,6 @@ public class Drop extends HttpServlet {
 	 */
 	public Drop() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
 	/**

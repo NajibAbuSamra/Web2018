@@ -21,11 +21,7 @@ import org.bookstop.constants.AppConstants;
 import org.bookstop.dataAccess.DA;
 import org.bookstop.model.Book;
 import org.bookstop.model.BookId;
-import org.bookstop.model.BookInfo;
-import org.bookstop.model.Review;
 import org.bookstop.model.Transaction;
-import org.bookstop.model.User;
-import org.bookstop.model.UserLogin;
 
 import com.google.gson.Gson;
 
@@ -35,27 +31,30 @@ import com.google.gson.Gson;
 @WebServlet("/GetTransactionsByBook")
 public class GetTransactionsByBook extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
-    public GetTransactionsByBook() {
-        super();
-        // TODO Auto-generated constructor stub
-    }
 
 	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 * @see HttpServlet#HttpServlet()
 	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	public GetTransactionsByBook() {
+		super();
+	}
+
+	/**
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
+	 *      response)
+	 */
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		response.getWriter().append("Served at: ").append(request.getContextPath());
 	}
 
 	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
+	 *      response)
 	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		System.out.println("GetTransactionsByBook Servlet");
 
@@ -63,7 +62,10 @@ public class GetTransactionsByBook extends HttpServlet {
 		logger.log(Level.INFO, "doPost: Start...");
 
 		Gson gson = new Gson();
-		//TODO: try to user Book model, maybe it will partially fill the information, no need for the BookId model
+		// 	NOTE: it is possible to use the Book model to store the bookid given in the json.
+		//	at the time of writing this servlet we had problems with Gson and the first solution
+		//	that worked was to create a new model. We didn't have time to change things on the 
+		//	client side and server side to match the Book model so Gson works.
 		BookId bookid = null;
 		try {
 			StringBuilder sb = new StringBuilder();
@@ -77,11 +79,14 @@ public class GetTransactionsByBook extends HttpServlet {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		if (bookid == null || bookid.getBookid() == 0) {
-			// TODO: check and handle error
+		if (bookid == null) {
+			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 			return;
 		}
-
+		if(bookid.getBookid() < 0) {
+			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+			return;
+		}
 		try {
 
 			// obtain CustomerDB data source from Tomcat's context
@@ -92,18 +97,24 @@ public class GetTransactionsByBook extends HttpServlet {
 			logger.log(Level.INFO, "doPost: connection opened...");
 			DA da = new DA(conn);
 
-			ArrayList<Transaction> transactions = da.selectTransactionsByBookid(bookid.getBookid());
+			Book b = da.selectBookById(bookid.getBookid());
+			if (b == null) {
+				response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+			} else {
+				ArrayList<Transaction> transactions = da.selectTransactionsByBookid(bookid.getBookid());
 
-			String json = new Gson().toJson(transactions);
-			response.setContentType("application/json");
-			response.setCharacterEncoding("UTF-8");
-			response.getWriter().write(json);
-			da.closeConnection();
+				String json = new Gson().toJson(transactions);
+				response.setContentType("application/json");
+				response.setCharacterEncoding("UTF-8");
+				response.getWriter().write(json);
+				da.closeConnection();
+			}
 
 		} catch (SQLException | NamingException e) {
 			// log error
 			logger.log(Level.SEVERE, "doPost: FAILED");
-
+			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+			e.printStackTrace();
 		}
 	}
 

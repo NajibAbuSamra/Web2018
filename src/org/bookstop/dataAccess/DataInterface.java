@@ -95,6 +95,13 @@ public interface DataInterface {
 	 */
 	public ArrayList<Review> selectReviewsByBookId(int bookid, boolean approved);
 	
+	/**
+	 * Returns a review from the database that matches the given id, if exists.
+	 * @param id	of the review we want
+	 * @return		Review with matched id, null otherwise
+	 */
+	public Review selectReviewById(int id);
+	
 	//Like related methods
 	/**
 	 * Adds a Like to the database. Validity checks are done prior, such as that an 

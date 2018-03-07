@@ -32,4 +32,7 @@ public interface AppConstants {
 	public final int USERTYPE_USER = 0;
 	public final int USERTYPE_ADMIN = 1;
 	
+	public final int REVIEW_VERIFIED_APPROVED = 1;
+	public final int REVIEW_VERIFIED_UNAPPROVED = 0;
+	
 }

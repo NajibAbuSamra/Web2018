@@ -32,7 +32,6 @@ import org.bookstop.model.Review;
 import org.bookstop.model.User;
 
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 
 /**
  * Application Lifecycle Listener implementation class ManageDB
@@ -45,7 +44,6 @@ public class ManageDB implements ServletContextListener {
 	 * Default constructor.
 	 */
 	public ManageDB() {
-		// TODO Auto-generated constructor stub
 	}
 
 	// utility that checks whether a table already exists
@@ -121,12 +119,10 @@ public class ManageDB implements ServletContextListener {
 				// check if exception thrown since table was already created (so we created the
 				// database already
 				// in the past
-				logger.log(Level.SEVERE, "contextInitialized: sql exception while creating tables");
-				// TODO: for debug, remove when done
-				// cntx.log("Error during database initialization", e);
+				logger.log(Level.SEVERE, "contextInitialized: sql exception while creating tables");;
 				created = tableAlreadyExists(e);
 				if (!created) {
-					// TODO: in case of error should delete all created tables. Add below
+					// NOTE: in case of error should delete all created tables. Use Drop servlet.
 					logger.log(Level.SEVERE, "contextInitialized: Error, something happened...");
 					throw e;// re-throw the exception so it will be caught in the
 					// external try..catch and recorded as error in the log
@@ -140,8 +136,6 @@ public class ManageDB implements ServletContextListener {
 				Collection<Book> books = loadBooks(cntx.getResourceAsStream(File.separator + AppConstants.BOOKS_FILE));
 				PreparedStatement pstmt = conn.prepareStatement(SQLstatements.INSERT_BOOK_STMT);
 				for (Book book : books) {
-					// TODO: create json file and set proper attributes so the db is created
-					// correctly
 					pstmt.setString(1, book.getName());
 					pstmt.setString(2, book.getImg());
 					pstmt.setDouble(3, book.getPrice());

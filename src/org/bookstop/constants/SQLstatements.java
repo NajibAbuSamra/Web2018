@@ -61,6 +61,8 @@ public final class SQLstatements {
 	public final static String DELETE_REVIEW_BY_USERNAME_AND_BOOKID_STMT = "DELETE FROM "
 			+ DataContract.ReviewsTable.TABLE_NAME + " WHERE " + DataContract.ReviewsTable.COL_USERNAME + " = ? AND "
 			+ DataContract.ReviewsTable.COL_BOOKID + " = ?";
+	public final static String SELECT_REVIEW_BY_ID_STMT = "SELECT * FROM " + DataContract.ReviewsTable.TABLE_NAME
+			+ " WHERE " + DataContract.ReviewsTable.COL_ID + " = ?";
 
 	// Likes
 	public final static String CREATE_LIKES_TABLE = "CREATE TABLE " + DataContract.LikesTable.TABLE_NAME + "("

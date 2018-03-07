@@ -18,8 +18,8 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.tomcat.dbcp.dbcp2.BasicDataSource;
 import org.bookstop.constants.AppConstants;
 import org.bookstop.dataAccess.DA;
+import org.bookstop.model.Book;
 import org.bookstop.model.Review;
-import org.bookstop.model.Transaction;
 import org.bookstop.model.User;
 
 import com.google.gson.Gson;
@@ -36,7 +36,6 @@ public class AddReview extends HttpServlet {
 	 */
 	public AddReview() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
 	/**
@@ -72,10 +71,10 @@ public class AddReview extends HttpServlet {
 			r = (Review) gson.fromJson(sb.toString(), Review.class);
 
 		} catch (Exception e) {
+			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 			e.printStackTrace();
 		}
 		if (r == null) {
-			// TODO: check and handle error
 			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 			return;
 		}
@@ -90,10 +89,15 @@ public class AddReview extends HttpServlet {
 			DA da = new DA(conn);
 
 			User u = da.selectUserByUsername(r.getUsername());
+			Book b = da.selectBookById(r.getBookID());
 
 			if (u == null) {
 				response.setStatus(HttpServletResponse.SC_FORBIDDEN);
-			} else {
+			}else if(r.getText().isEmpty() || !(r.getNickname().equals(u.getNickname()))) {
+				response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+			}else if(b==null){
+				response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+			}else{
 				r.setVerified(0);
 				da.insertReview(r);
 			}
@@ -103,6 +107,7 @@ public class AddReview extends HttpServlet {
 			// log error
 			logger.log(Level.SEVERE, "doPost: FAILED");
 			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+			e.printStackTrace();
 		}
 	}
 

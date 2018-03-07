@@ -36,7 +36,6 @@ public class GetAllUsers extends HttpServlet {
      */
     public GetAllUsers() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
 	/**
@@ -72,7 +71,7 @@ public class GetAllUsers extends HttpServlet {
 			e.printStackTrace();
 		}
 		if (user == null) {
-			// TODO: check and handle error
+			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 			return;
 		}
 		try {
@@ -107,7 +106,8 @@ public class GetAllUsers extends HttpServlet {
 		} catch (SQLException | NamingException e) {
 			// log error
 			logger.log(Level.SEVERE, "doPost: FAILED");
-
+			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+			e.printStackTrace();
 		}
 	}
 
