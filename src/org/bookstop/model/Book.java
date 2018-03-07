@@ -1,5 +1,13 @@
 package org.bookstop.model;
-
+/**
+ * This class is used to handle book data stored in the database.
+ * Book model is NOT sent in JSON responses from the server, as when we designed
+ * the system a book would also provide information on number of likes and reviews
+ * it had, which is why we created BooksInfo class.
+ * @author najib
+ * @see BooksInfo
+ *
+ */
 public class Book {
 	private int bookId;
 	private String name;

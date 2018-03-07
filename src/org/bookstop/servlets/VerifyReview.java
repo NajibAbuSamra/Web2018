@@ -90,7 +90,7 @@ public class VerifyReview extends HttpServlet {
 			if(r==null) {
 				response.setStatus(HttpServletResponse.SC_NOT_FOUND);
 			}
-			da.updateVerifiedReview(AppConstants.REVIEW_VERIFIED_APPROVED, id.getReviewid());
+			da.updateVerifiedReview(Review.VERIFIED, id.getReviewid());
 			
 			da.closeConnection();
 
