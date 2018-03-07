@@ -61,8 +61,11 @@ angular.module('myApp',[])
 			if (status == 403)
 			{
 				alert("Incorrect password! please try again!");
-				$scope.uName = "";
 				$scope.uPass = "";
+			}
+			if(status==500)
+			{
+				alert("Server error");
 			}
 		});
 	}
@@ -132,12 +135,23 @@ angular.module('myApp',[])
 					}).error(
 					function(data, status, headers, config) {
 						$scope.errorBox = "Error";
-						if (status == 400) {
+						if (status == 403) {
 							alert("Username not available!");
 							$scope.regUname = "";
 						}
 						if (status == 500) {
 							alert("Unexpected error!");
+							$scope.regUname = "";
+							$scope.regNick = "";
+							$scope.regPass = "";
+							$scope.regEmail = "";
+							$scope.regAddress = "";
+							$scope.regTelephone = "";
+							$scope.regPic = "";
+							$scope.regDesc = "";
+						}
+						if (status == 400) {
+							alert("Invalid registeration!");
 							$scope.regUname = "";
 							$scope.regNick = "";
 							$scope.regPass = "";
@@ -192,7 +206,20 @@ angular.module('myApp',[])
 				}).error(
 				function(data, status, headers, config) {
 					/*SHOW ERROR*/
-
+					if(status == 403)
+					{
+						alert("Invalid User");
+						$scope.logout();
+					}
+					if(status==500)
+					{
+						alert("Server Error");
+					}
+					if(status==401)
+					{
+						alert("Unauthorized user, invalid password");
+						$scope.logout();
+					}
 				})
 	}
 	
@@ -217,11 +244,21 @@ angular.module('myApp',[])
 				}).error(
 				function(data, status, headers, config) {
 					/*SHOW ERROR*/
-					if(status == 401){
-						/*wrong password, log user out and display error*/
+					if(status == 403)
+					{
+						alert("Invalid User");
+						$scope.logout();
+					}
+					if(status==500)
+					{
+						alert("Server Error");
+					}
+					if(status==401)
+					{
+						alert("Unauthorized user, invalid password");
+						$scope.logout();
 					}
 				})
-
 	}
 	
 	/* Return list of active users */
@@ -249,7 +286,16 @@ angular.module('myApp',[])
 				function(data, status, headers, config) {
 					/*SHOW ERROR*/
 					if(status == 401){
-						/*wrong password, log user out and display error*/
+						alert("Unauthorized user");
+					}
+					if(status == 400)
+					{
+						alert("Bad request");
+						$scope.logout();
+					}
+					if(status==500)
+					{
+						alert("Server Error");
 					}
 				})
 
@@ -266,6 +312,18 @@ angular.module('myApp',[])
 				}).error(
 				function(data, status, headers, config) {
 					/*SHOW ERROR*/
+					if(status==500)
+					{
+						alert("Server Error");
+					}
+					if(status==404)
+					{
+						alert("Book not found");
+					}
+					if(status==400)
+					{
+						alert("Invalid Book id");
+					}
 				})
 	}	
 	
@@ -283,7 +341,19 @@ angular.module('myApp',[])
 					$scope.currRBook.likes = $scope.currRBook.likes + 1; 
 				}).error(
 				function(data, status, headers, config) {
-					/*SHOW ERROR*/
+					if(status == 403)
+					{
+						alert("Invalid User");
+						$scope.logout();
+					}
+					if(status==500)
+					{
+						alert("Server Error");
+					}
+					if(status==404)
+					{
+						alert("Book not found");
+					}
 				})
 	}
 	
@@ -299,6 +369,25 @@ angular.module('myApp',[])
 				}).error(
 				function(data, status, headers, config) {
 					/*SHOW ERROR*/
+					if(status == 400)
+					{
+						alert("Like not found");
+						$scope.liked = false;	
+					}
+					if(status == 403)
+					{
+						alert("User not found");
+						$scope.logout();	
+					}
+					if(status==500)
+					{
+						alert("Server Error");
+					}
+					if(status==404)
+					{
+						alert("Like not found");
+						$scope.liked = false;
+					}					
 				})
 	}
 	
@@ -400,6 +489,15 @@ angular.module('myApp',[])
 				}).error(
 				function(data, status, headers, config) {
 					/*SHOW ERROR*/
+					if(status == 404)
+					{
+						alert("User not found");
+						$scope.liked = false;	
+					}
+					if(status==500)
+					{
+						alert("Server Error");
+					}	
 				})
 	}
 	/* Returns the transactions of the specific book*/
@@ -418,6 +516,18 @@ angular.module('myApp',[])
 				}).error(
 				function(data, status, headers, config) {
 					/*SHOW ERROR*/
+					if(status==500)
+					{
+						alert("Server Error");
+					}
+					if(status == 404)
+					{
+						alert("Book not found");
+					}
+					if(status == 400)
+					{
+						alert("Invalid book id");
+					}
 				})
 	}
 	/* This function can only be triggered by admin and it displays the people who bought that book*/
@@ -556,10 +666,26 @@ angular.module('myApp',[])
 							$scope.errorBox = "Error";
 							$scope.regCVV = "";
 							$scope.regYear = "";
-							console.log("fail");
 							$scope.regMonth = "";
 							$scope.regCardNum = "";
 							$scope.regCardCompany = "";
+							if(status == 403)
+							{
+								alert("Invalid User");
+								$scope.logout();
+							}
+							if(status==500)
+							{
+								alert("Server Error");
+							}
+							if(status==404)
+							{
+								alert("Book does not exist");
+							}
+							if(status==400)
+							{
+								alert("Invalid Transaction or Book already owned");
+							}							
 						})
 			}
 		if(	$scope.inputValidity == false)
@@ -577,18 +703,39 @@ angular.module('myApp',[])
 	}
 	/* When user writes a review and submits it, this function is triggered */
 	$scope.submitReview = function(currRBook){
-		var val = JSON.stringify({username:loggedUser, nickname:loggedNick, bookID:currRBook.bookId, text:$scope.regRev});
-		$http.post("/BooksForAll/AddReview",val).success(
-				function(data, status, headers, config) {
-					$scope.showRDetails = true;
-					$scope.popUpAddReview = false;
-					$scope.readBook();
-					$scope.showReadingBook(currRBook);
-					$scope.regRev = "";
-				}).error(
-				function(data, status, headers, config) {
-					/*SHOW ERROR*/
-				})
+		if($scope.regRev == "" || $scope.regRev == null) {
+			alert("Please write review before submitting!");
+		} else {
+			var val = JSON.stringify({username:loggedUser, nickname:loggedNick, bookID:currRBook.bookId, text:$scope.regRev});
+			$http.post("/BooksForAll/AddReview",val).success(
+					function(data, status, headers, config) {
+						$scope.showRDetails = true;
+						$scope.popUpAddReview = false;
+						$scope.readBook();
+						$scope.showReadingBook(currRBook);
+						$scope.regRev = "";
+					}).error(
+					function(data, status, headers, config) {
+						/*SHOW ERROR*/
+						if(status == 403)
+						{
+							alert("Invalid User");
+							$scope.logout();
+						}
+						if(status==500)
+						{
+							alert("Server Error");
+						}
+						if(status==404)
+						{
+							alert("Book not found");
+						}
+						if(status==400)
+						{
+							alert("Invalid review");
+						}
+					})
+		}
 	}
 	/* Triggered when user wants to go back from writing a review */
 	$scope.CancelReview = function(){
@@ -637,6 +784,14 @@ angular.module('myApp',[])
 				}).error(
 				function(data, status, headers, config) {
 					/*SHOW ERROR*/
+					if(status == 400)
+					{
+						alert("Invalid username or book id");
+					}
+					if(status==500)
+					{
+						alert("Server Error");
+					}	
 				})
 	}
 	/* Triggered when user decides to read from last place (loads where he left)*/
@@ -648,6 +803,18 @@ angular.module('myApp',[])
 				}).error(
 				function(data, status, headers, config) {
 					/*SHOW ERROR*/
+					if(status == 404)
+					{
+						alert("No saved position");
+					}
+					if(status==500)
+					{
+						alert("Server Error");
+					}
+					if(status == 400)
+					{
+						alert("Invalid username or book id");
+					}
 				})
 	}
 	$scope.hideUnverifiedReviews = function() {
@@ -667,7 +834,18 @@ angular.module('myApp',[])
 					$scope.showReviews = false;
 				}).error(
 				function(data, status, headers, config) {
-					/*SHOW ERROR*/
+					if(status==500)
+					{
+						alert("Server Error");
+					}
+					if(status==400)
+					{
+						alert("Invalid book id");
+					}
+					if(status==404)
+					{
+						alert("Book not found");
+					}
 				})		
 	}
 	/* Triggered when admin approves a review */
@@ -685,6 +863,14 @@ angular.module('myApp',[])
 					}).error(
 					function(data, status, headers, config) {
 						/*SHOW ERROR*/
+						if(status == 404)
+						{
+							alert("Review not found");
+						}
+						if(status==500)
+						{
+							alert("Server Error");
+						}
 					})		
 		}
 	}
