@@ -2,6 +2,12 @@ package org.bookstop.constants;
 
 import org.bookstop.dataAccess.DataContract;
 
+/**
+ * This class holds all the SQL DDL and DML commands that are used in the
+ * DataAccess and at the time of initializing the DB (context listener).
+ * @author najib
+ *
+ */
 public final class SQLstatements {
 
 	// Books
@@ -16,7 +22,7 @@ public final class SQLstatements {
 			+ " VALUES(DEFAULT,?,?,?,?,?)";
 	public final static String SELECT_ALL_BOOKS_STMT = "SELECT * FROM " + DataContract.BooksTable.TABLE_NAME;
 	public final static String SELECT_BOOKS_BY_ID_STMT = "SELECT * FROM " + DataContract.BooksTable.TABLE_NAME
-			+ "WHERE " + DataContract.BooksTable.COL_ID + "=?";
+			+ " WHERE " + DataContract.BooksTable.COL_ID + " = ?";
 
 	// Users
 	public final static String CREATE_USERS_TABLE = "CREATE TABLE " + DataContract.UsersTable.TABLE_NAME + "("
