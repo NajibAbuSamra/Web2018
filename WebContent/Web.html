@@ -29,6 +29,7 @@ table, th, td {
 		<div class="row">
 			<!-- Using bootstrap grid system. -->
         	<div class="col-xs-12 col-sm-8 col-md-4 col-sm-offset-2 col-md-offset-4">
+			<!-- Not logged in -->
 			<div ng-show="!loggedIn" class="col-lg-8">
 				<!-- LOGIN DIV -->
 				<div ng-show="registered" class="col-lg-8">
@@ -55,6 +56,8 @@ table, th, td {
 					<button ng-click="loginFunc()" type="button" class="btn btn-primary">Login</button>
 					<button data-ng-click="toggleRegister()" type="button" class="btn btn-primary">Register</button>
 				</div>
+				
+				<!-- Registeration DIV -->
 				<div ng-show="!registered" >
 						<div class="form-group">
 							<div class="input-group">
@@ -111,6 +114,7 @@ table, th, td {
 								<input type="text" id="photo" ng-model="regPic" class="form-control" placeholder="URL to your photo">
 							</div>
 						</div>
+						<!-- Button to complete registeration and one go to back to sign in page -->
 						<button ng-click="toggleRegister()" type="button" class="btn btn-primary">Login</button>
 						<button ng-click=registerFunc() id="register" type="button" class="btn btn-primary">Register</button>
 					</form>	
@@ -119,6 +123,7 @@ table, th, td {
 			<p ng-model="errorBox"></p>
 		</div>
 	</div>
+	<!-- Landing page -->
 	<div ng-show="loggedIn" style="height: 100%;">
 			<nav class="navbar navbar-inverse" ng-show="!reading">
 				<div class="container-fluid">
@@ -131,7 +136,8 @@ table, th, td {
 				      </button>
 				        <a class="navbar-brand"  href="#"><img style="max-width:48px; margin-top: -7px;" src="books.jpg"></a>
 				    </div>
-					<div class="collapse navbar-collapse" id="myNavbar" ng-value="user">
+				    <!-- Navigation menue -->
+					<div class="collapse navbar-collapse" id="myNavbar" ng-value="usser">
 						<ul class="nav navbar-nav">
 							<li><a href="javascript:void(0)" ng-click=browse()>Browse books</a></li>
 							<li><a href="javascript:void(0)" ng-show="!admin" ng-click=readBook()>Read book</a></li>
@@ -150,7 +156,7 @@ table, th, td {
 						<div class="row">
 					    </div>
 					</div>
-						
+					<!-- Browsing unowned ebooks -->
 					<div class="col-sm-8">
 						<div class="centralWindow" ng-show="isBrowsed">
 							<div class="row">
@@ -170,6 +176,7 @@ table, th, td {
 										</ul>
 									</div>
 								</div>
+								<!-- Showing details of specific book -->
 								<div class="col-sm-9"  style="overflow-y:auto; height: 900px;">
 									<div class="leftWindow" ng-show="showDetails">
 										<div class="row">
@@ -272,6 +279,7 @@ table, th, td {
 												<button ng-click="deleteUser(currUser, '0')" ng-show="admin" type="button" class="btn btn-primary"><i class="glyphicon glyphicon-remove"></i> Remove User</button>														
 									    </div>
 								    </div>
+								    <!-- Payment DIV -->
 									<div class="col-xs-12 col-sm-8 col-md-4 col-sm-offset-2 col-md-offset-4">
 										<div class="buyingBook" ng-show="optBuy">
 												<form class="modal-content animate">
@@ -345,7 +353,7 @@ table, th, td {
 								</div>
 							</div>
 					    </div>
-	
+						<!-- Admin can browse list of users -->
 						<div class="centralMidWindow" ng-show="isBrowsingUsers">
 							<div class="row">
 								<div class="col-sm-3" style="overflow-y:auto; height: 900px;">
@@ -361,6 +369,7 @@ table, th, td {
 										</ul>
 									</div>
 								</div>
+								<!-- Specific user details -->
 								<div class="col-sm-9"  style="overflow-y:auto; height: 900px;">
 									<div class="leftMidWindow" ng-show="showUserDetails">
 										<div class="row">
@@ -388,7 +397,7 @@ table, th, td {
 						</div>						
 	
 	
-	
+						<!-- Desplaying list of owned books -->
 						<div class="centralReadWindow" ng-show="isReading">
 							<div class="row">
 								<div class="col-sm-3" style="overflow-y:auto; height: 900px;">
@@ -406,8 +415,8 @@ table, th, td {
 										</ul>
 									</div>
 								</div>
-								
-								<div class="col-sm-9" style="overflow-y:auto; height: 900px;">
+								<!-- Info of specific owned book with a button to read\like\add review -->
+								<div class="col-sm-9" style="overflow-y:auto; height: 900px;">s
 									<div class="leftReadWindow" ng-show="showRDetails">
 										<div class="row">
 											<ul ng-value="currRBook">
@@ -452,6 +461,7 @@ table, th, td {
 											</ul>
 								    	</div>
 									</div>
+									<!-- Add review -->
 									<div ng-show="popUpAddReview" class="col-lg-8">
 										<div class="row">
 											<form>

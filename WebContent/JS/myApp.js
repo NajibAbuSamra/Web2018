@@ -151,7 +151,7 @@ angular.module('myApp',[])
 		}
 		regValidity = true;
 	};
-	/*TOGGLE*/
+	/*Used to hide registeration div if user presses login*/
 	$scope.toggleRegister = function(){
 		$scope.registered = !($scope.registered);
 		$scope.regUname = "";
@@ -171,7 +171,7 @@ angular.module('myApp',[])
 	}
 	
 	
-	/*BROWSE*/
+	/*Return list of not owned ebooks*/
 	$scope.browse = function(){
 		var val = JSON.stringify({uName:loggedUser , uPass:loggedPass})
 		$http.post("/Web2018/GetAvailableBooks",val).success(
@@ -196,7 +196,7 @@ angular.module('myApp',[])
 				})
 	}
 	
-	/* Read book */
+	/* Return list of owned books */
 	$scope.readBook =function() {
 		var val = JSON.stringify({uName:loggedUser , uPass:loggedPass})
 		/* Change getAvailableBooks with GetMyBooks*/
@@ -224,7 +224,8 @@ angular.module('myApp',[])
 
 	}
 	
-	$scope.browseUsers =function() {
+	/* Return list of active users */
+	$scope.browseUsers = function() {
 		var val = JSON.stringify({uName:loggedUser , uPass:loggedPass})
 		/* Change getAvailableBooks with GetMyBooks*/
 		$http.post("/Web2018/GetAllUsers",val).success(
@@ -271,6 +272,7 @@ angular.module('myApp',[])
 	$scope.hideLikes = function() {
 		$scope.pressed = false;
 	}
+	/* When user likes an owned book it is added to the likes of that book*/
 	$scope.updateLikers = function(book) {
 		var val = JSON.stringify({username:loggedUser, bookid:book.bookId})
 		$http.post("/Web2018/AddLike",val).success(
@@ -284,6 +286,8 @@ angular.module('myApp',[])
 					/*SHOW ERROR*/
 				})
 	}
+	
+	/* Unlike a book and update*/
 	$scope.removeLike = function(book) {
 		var val = JSON.stringify({username:loggedUser, bookid:book.bookId})
 		$http.post("/Web2018/RemoveLike",val).success(
@@ -302,6 +306,7 @@ angular.module('myApp',[])
 		$scope.isHovering = false;
 	}
 	
+	/* When user presses on a book in the list, more info is shown*/
 	$scope.showBook = function(clicked_id){
 		$scope.booksReviews = clicked_id.reviews;
 		$scope.showDetails = true;
@@ -320,6 +325,7 @@ angular.module('myApp',[])
 		$scope.pressed = false;
 	}	
 	
+	/* When admin presses on user this function is triggered*/
 	$scope.showUser = function(user, flag){
 		if (flag == "1") {
 			$scope.showDetails = false;
@@ -345,11 +351,11 @@ angular.module('myApp',[])
 		console.log(user);
 	}	
 	
+	/* Used to hide user details if admin presses on his name in likers*/
 	$scope.retFromViewingUserInLikers = function(){
 		$scope.showDetails = true;
 		$scope.showUserDetailsInRead = false;
 	}	
-	
 	
 	
 	$scope.showReadingBook = function(book_being_read){
@@ -379,6 +385,7 @@ angular.module('myApp',[])
 				})
 		
 	}
+	/* Triggered when admin presses the delete button on user profile */
 	$scope.deleteUser = function(user, flag) {
 		var val = JSON.stringify({username:user.username})
 		$http.post("/Web2018/RemoveUser",val).success(
@@ -395,6 +402,7 @@ angular.module('myApp',[])
 					/*SHOW ERROR*/
 				})
 	}
+	/* Returns the transactions of the specific book*/
 	$scope.recentTransactions = function(bookId) {
 		var val = JSON.stringify({bookid:bookId})
 		$http.post("/Web2018/GetTransactionsByBook",val).success(
@@ -412,6 +420,7 @@ angular.module('myApp',[])
 					/*SHOW ERROR*/
 				})
 	}
+	/* This function can only be triggered by admin and it displays the people who bought that book*/
 	$scope.dispLikesforAdmin = function(bookID){
 		var val = JSON.stringify({bookid:bookID})
 		$http.post("/Web2018/GetLikersByBook",val).success(
@@ -430,22 +439,24 @@ angular.module('myApp',[])
 					/*SHOW ERROR*/
 				})
 	}
-	
+	/*Used to hide the transaction div*/
 	$scope.hideTransactions = function(){
 		$scope.viewBuys = true;	
 		$scope.dispTransactions = false;
 	}
-	
+	/*Shows the div which contains the buy filling information*/
 	$scope.buyBook = function(bookId) {
 		$scope.optBuy = true;
 		$scope.showDetails = false;
 		desiredBook = bookId;
 	}
+	/* if user decides not to buy, the buying div is hidden*/
 	$scope.retToBrowseBooks = function() {
 		$scope.optBuy = false;
 		$scope.showDetails = true;
 	}
 
+	/* Triggered when user payment and billing information are filled*/
 	$scope.finishBuy = function() {
 		/* INPUT VALIDITY CHECK! */
 		/* Check card number contains only digits and size is 16 */
@@ -558,11 +569,13 @@ angular.module('myApp',[])
 				$scope.inputValidity = true;
 			}
 	}
+	/* Displays the review div*/
 	$scope.addReview = function(currRBook){
 		$scope.showRDetails = false;
 		$scope.popUpAddReview = true;
 		$scope.showContent = false;
 	}
+	/* When user writes a review and submits it, this function is triggered */
 	$scope.submitReview = function(currRBook){
 		var val = JSON.stringify({username:loggedUser, nickname:loggedNick, bookID:currRBook.bookId, text:$scope.regRev});
 		$http.post("/Web2018/AddReview",val).success(
@@ -577,10 +590,12 @@ angular.module('myApp',[])
 					/*SHOW ERROR*/
 				})
 	}
+	/* Triggered when user wants to go back from writing a review */
 	$scope.CancelReview = function(){
 		$scope.showRDetails = true;
 		$scope.popUpAddReview = false;
 	}
+	/* Shows the review in browsing not owned books*/
 	$scope.collapseReviews = function(){
 		$scope.showReviews = true;
 		$scope.viewBuys = true;	
@@ -589,23 +604,27 @@ angular.module('myApp',[])
 		$scope.showUnapprovedReviews = false;
 		$scope.dispTransactions = false;
 	}
+	/* shows the reviews in the owned books*/
 	$scope.collapseRReviews = function(){
 		$scope.showRReviews = true;
 		$scope.showContent = false;
 	}
+	/* hides the reviews in the not owned books*/
 	$scope.hideReviews = function(){
 		$scope.showReviews = false;
 	}
+	/* hides the reviews in the owned books*/
 	$scope.hideRReviews = function(){
 		$scope.showRReviews = false;
 	}
+	/* Opens book for reading*/
 	$scope.openBookForReading = function (currRBook) {
 		$scope.showContentOfBook = currRBook.link;
 		$scope.showRDetails = false;
 		$scope.isReading = false;
 		$scope.reading = true;
 	}
-
+	/* Saves scrolling reading position when user exits from reading the book*/
 	$scope.saveSpot = function (currRBook) {
 		var pos = $(".ReadWrapper").scrollTop();
 		var val = JSON.stringify({username:loggedUser, bookid:currRBook.bookId, ypos:pos});
@@ -620,6 +639,7 @@ angular.module('myApp',[])
 					/*SHOW ERROR*/
 				})
 	}
+	/* Triggered when user decides to read from last place (loads where he left)*/
 	$scope.openBookForReadingFromLastPosi = function (currRBook) {
 		var val = JSON.stringify({username:loggedUser, bookid:currRBook.bookId, ypos:0});
 		$http.post("/Web2018/GetScrollPosition",val).success(
@@ -634,7 +654,7 @@ angular.module('myApp',[])
 		$scope.unverifiedRevs = true;
 		$scope.showUnapprovedReviews = false;
 	}
-	
+	/* Return list of unverified reviews for admin*/
 	$scope.unverifiedReviews = function(bookId) {
 		var val = JSON.stringify({bookid : bookId});
 		$http.post("/Web2018/GetUnapprovedReviewsForBook",val).success(
@@ -650,6 +670,7 @@ angular.module('myApp',[])
 					/*SHOW ERROR*/
 				})		
 	}
+	/* Triggered when admin approves a review */
 	$scope.approveReview = function(reviewIndex) {
 		if ($scope.revIndex == "" || $scope.revIndex == null) {
 			$scope.revIndex = "";
