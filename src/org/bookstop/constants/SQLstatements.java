@@ -5,6 +5,9 @@ import org.bookstop.dataAccess.DataContract;
 /**
  * This class holds all the SQL DDL and DML commands that are used in the
  * DataAccess and at the time of initializing the DB (context listener).
+ * 
+ * Assumptions: Any field that was not specified in the project guidelines
+ * as required or optional was considered optional for User.
  * @author najib
  *
  */

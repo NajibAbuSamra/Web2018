@@ -100,7 +100,8 @@ public class Register extends HttpServlet {
 
 			if (user.getNickname() == null || user.getNickname().isEmpty() || user.getNickname().length() > 20
 					|| user.getPassword() == null || user.getPassword().isEmpty() || user.getPassword().length() > 8
-					|| user.getEmail() == null || user.getEmail().isEmpty() || user.getEmail().contains("@") == false) {
+					|| user.getEmail() == null
+					|| ((user.getEmail().isEmpty() == false) && (user.getEmail().contains("@") == false))) {
 				response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 				return;
 			}
