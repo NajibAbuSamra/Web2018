@@ -21,10 +21,7 @@ import org.bookstop.constants.AppConstants;
 import org.bookstop.dataAccess.DA;
 import org.bookstop.model.Book;
 import org.bookstop.model.BookId;
-import org.bookstop.model.BookInfo;
-import org.bookstop.model.Review;
 import org.bookstop.model.User;
-import org.bookstop.model.UserLogin;
 
 import com.google.gson.Gson;
 
@@ -40,7 +37,6 @@ public class GetLikersByBook extends HttpServlet {
 	 */
 	public GetLikersByBook() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
 	/**
@@ -65,6 +61,10 @@ public class GetLikersByBook extends HttpServlet {
 		logger.log(Level.INFO, "doPost: Start...");
 
 		Gson gson = new Gson();
+		// 	NOTE: it is possible to use the Book model to store the bookid given in the json.
+		//	at the time of writing this servlet we had problems with Gson and the first solution
+		//	that worked was to create a new model. We didn't have time to change things on the 
+		//	client side and server side to match the Book model so Gson works.
 		BookId bookid = null;
 		try {
 			StringBuilder sb = new StringBuilder();
@@ -78,11 +78,15 @@ public class GetLikersByBook extends HttpServlet {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		if (bookid == null || bookid.getBookid() == 0) {
-			// TODO: check and handle error
+		if (bookid == null) {
+			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 			return;
 		}
-
+		if(bookid.getBookid() < 0) {
+			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+			return;
+		}
+		
 		try {
 
 			// obtain CustomerDB data source from Tomcat's context
@@ -93,27 +97,35 @@ public class GetLikersByBook extends HttpServlet {
 			logger.log(Level.INFO, "doPost: connection opened...");
 			DA da = new DA(conn);
 
-			ArrayList<String> usernames = da.selectUsernameFromLikesByBookId(bookid.getBookid());
+			Book b = da.selectBookById(bookid.getBookid());
+			if (b == null) {
+				response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+			} else {
 
-			ArrayList<User> likers = new ArrayList<User>();
+				ArrayList<String> usernames = da.selectUsernameFromLikesByBookId(bookid.getBookid());
 
-			for (String username : usernames) {
-				likers.add(da.selectUserByUsername(username));
+				ArrayList<User> likers = new ArrayList<User>();
+				// sending full user information (specifically username and password) is a
+				// violation, so we clear out the password field)
+				// this could have been achieved by not selecing the password column from the
+				// sql table, but it's too late to change now...
+				// we'll save this for the next iteration/optimizations
+				for (String username : usernames) {
+					User u = da.selectUserByUsername(username);
+					u.setPassword("");
+					likers.add(u);
+				}
+				String json = new Gson().toJson(likers);
+				response.setContentType("application/json");
+				response.setCharacterEncoding("UTF-8");
+				response.getWriter().write(json);
+				da.closeConnection();
 			}
-			String json = new Gson().toJson(likers);
-			response.setContentType("application/json");
-			response.setCharacterEncoding("UTF-8");
-			response.getWriter().write(json);
-			da.closeConnection();
-			if (conn.isClosed() == false) {
-				logger.log(Level.WARNING, "doPost: connection not closed after DA method, closing manually");
-				conn.close();
-			}
-
 		} catch (SQLException | NamingException e) {
 			// log error
 			logger.log(Level.SEVERE, "doPost: FAILED");
-
+			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+			e.printStackTrace();
 		}
 	}
 

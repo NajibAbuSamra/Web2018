@@ -28,4 +28,8 @@ public interface AppConstants {
 	public final String PROTOCOL = "jdbc:derby:"; 
 	public final String OPEN = "Open";
 	public final String SHUTDOWN = "Shutdown";
+	
+	public final int USERTYPE_USER = 0;
+	public final int USERTYPE_ADMIN = 1;
+	
 }

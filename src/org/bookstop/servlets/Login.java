@@ -35,7 +35,6 @@ public class Login extends HttpServlet {
 	 */
 	public Login() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
 	/**
@@ -44,43 +43,8 @@ public class Login extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		String uName = request.getParameter("uName");
-		String uPass = request.getParameter("uPass");
-		Logger logger = Logger.getLogger("LoginServlet");
-		logger.log(Level.INFO, "doGet: attempting connection to DB...");
-		try {
-
-			// obtain CustomerDB data source from Tomcat's context
-			Context context = new InitialContext();
-			BasicDataSource ds = (BasicDataSource) context
-					.lookup(getServletContext().getInitParameter(AppConstants.DB_DATASOURCE) + AppConstants.OPEN);
-			Connection conn = ds.getConnection();
-			logger.log(Level.INFO, "doGet: connection opened...");
-			DA da = new DA(conn);
-			User user = da.selectUserByUsername(uName);
-			if (user == null) {
-				logger.log(Level.WARNING, "doGet: user NOT found");
-				response.setStatus(HttpServletResponse.SC_NOT_FOUND);
-			} else if (user.getPassword().matches(uPass)) {
-				logger.log(Level.INFO, "doGet: user found, password matched...");
-				String json = new Gson().toJson(user);
-				response.setContentType("application/json");
-				response.setCharacterEncoding("UTF-8");
-				response.getWriter().write(json);
-			} else {
-				logger.log(Level.WARNING, "doGet: user found, password MISMATCHED!!!");
-				response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-			}
-			da.closeConnection();
-			if (conn.isClosed() == false) {
-				logger.log(Level.WARNING, "doPost: connection not closed after DA method, closing manually");
-				conn.close();
-			}
-		} catch (SQLException | NamingException e) {
-			// log error
-			logger.log(Level.SEVERE, "doGet: FAILED");
-
-		}
+		// TODO Auto-generated method stub
+		response.getWriter().append("Served at: ").append(request.getContextPath());
 	}
 
 	/**
@@ -110,7 +74,7 @@ public class Login extends HttpServlet {
 			e.printStackTrace();
 		}
 		if (user == null) {
-			// TODO: check and handle error
+			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 			return;
 		}
 		try {
@@ -142,7 +106,8 @@ public class Login extends HttpServlet {
 		} catch (SQLException | NamingException e) {
 			// log error
 			logger.log(Level.SEVERE, "doGet: FAILED");
-
+			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+			e.printStackTrace();
 		}
 
 	}

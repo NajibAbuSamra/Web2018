@@ -1,5 +1,13 @@
 package org.bookstop.model;
 
+/**
+ * Helper class used to handle sent book ids from client.
+ * During the work on the servlets we had difficulties working with Gson,
+ * specifically converting basic types from json, so this class was used
+ * to convert bookid from json.
+ * @author najib
+ *
+ */
 public class BookId {
 	int bookid;
 

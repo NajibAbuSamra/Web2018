@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -40,7 +39,6 @@ public class GetMyBooks extends HttpServlet {
 	 */
 	public GetMyBooks() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
 	/**
@@ -81,7 +79,7 @@ public class GetMyBooks extends HttpServlet {
 			e.printStackTrace();
 		}
 		if (user == null) {
-			// TODO: check and handle error
+			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 			return;
 		}
 		try {
@@ -94,7 +92,9 @@ public class GetMyBooks extends HttpServlet {
 			logger.log(Level.INFO, "doPost: connection opened...");
 			DA da = new DA(conn);
 			User fullUser = da.selectUserByUsername(user.getuName());
-			if (fullUser.getPassword().matches(user.getuPass())) {
+			if(fullUser == null) {
+				response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+			} else if (fullUser.getPassword().matches(user.getuPass())) {
 				logger.log(Level.INFO, "doPost: user found, password matched...");
 
 				ArrayList<Book> books = da.getAllBooks();
@@ -114,7 +114,7 @@ public class GetMyBooks extends HttpServlet {
 				ArrayList<BookInfo> booksInfo = new ArrayList<BookInfo>();
 				for (Book b : ownedBooks) {
 					int likes = da.countLikesByBookId(b.getBookId());
-					ArrayList<Review> reviews = da.selectReviewsByBookId(b.getBookId());
+					ArrayList<Review> reviews = da.selectReviewsByBookId(b.getBookId(),true);
 					booksInfo.add(new BookInfo(b, likes, reviews));
 				}
 				String json = new Gson().toJson(booksInfo);
@@ -126,15 +126,12 @@ public class GetMyBooks extends HttpServlet {
 				response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
 			}
 			da.closeConnection();
-			if (conn.isClosed() == false) {
-				logger.log(Level.WARNING, "doPost: connection not closed after DA method, closing manually");
-				conn.close();
-			}
 
 		} catch (SQLException | NamingException e) {
 			// log error
 			logger.log(Level.SEVERE, "doPost: FAILED");
-
+			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+			e.printStackTrace();
 		}
 	}
 

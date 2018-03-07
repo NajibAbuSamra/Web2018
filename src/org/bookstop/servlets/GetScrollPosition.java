@@ -18,6 +18,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.tomcat.dbcp.dbcp2.BasicDataSource;
 import org.bookstop.constants.AppConstants;
 import org.bookstop.dataAccess.DA;
+import org.bookstop.model.Book;
 import org.bookstop.model.ScrollPosition;
 import org.bookstop.model.User;
 
@@ -35,7 +36,6 @@ public class GetScrollPosition extends HttpServlet {
 	 */
 	public GetScrollPosition() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
 	/**
@@ -72,6 +72,11 @@ public class GetScrollPosition extends HttpServlet {
 			e.printStackTrace();
 		}
 
+		if (scrollPosition == null) {
+			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+			return;
+		}
+
 		try {
 
 			// obtain CustomerDB data source from Tomcat's context
@@ -82,22 +87,25 @@ public class GetScrollPosition extends HttpServlet {
 			logger.log(Level.INFO, "doPost: connection opened...");
 			DA da = new DA(conn);
 
-			int Y = (da.selectYposByUsernameAndBookid(scrollPosition.getUsername(), scrollPosition.getBookid()));
+			User u = da.selectUserByUsername(scrollPosition.getUsername());
+			Book b = da.selectBookById(scrollPosition.getBookid());
 
-			if (Y == -1) {
-				response.setStatus(HttpServletResponse.SC_NOT_FOUND); // no ypos saved/found
-				return;
+			if (u == null || b == null) {
+				response.setStatus(HttpServletResponse.SC_BAD_REQUEST); // no ypos saved/found
 			} else {
-				String json = new Gson().toJson(Y);
-				response.setContentType("application/json");
-				response.setCharacterEncoding("UTF-8");
-				response.getWriter().write(json);
+
+				int Y = (da.selectYposByUsernameAndBookid(scrollPosition.getUsername(), scrollPosition.getBookid()));
+
+				if (Y == -1) {
+					response.setStatus(HttpServletResponse.SC_NOT_FOUND); // no ypos saved/found
+				} else {
+					String json = new Gson().toJson(Y);
+					response.setContentType("application/json");
+					response.setCharacterEncoding("UTF-8");
+					response.getWriter().write(json);
+				}
 			}
 			da.closeConnection();
-			if (conn.isClosed() == false) {
-				logger.log(Level.WARNING, "doPost: connection not closed after DA method, closing manually");
-				conn.close();
-			}
 
 		} catch (SQLException | NamingException e) {
 			// log error

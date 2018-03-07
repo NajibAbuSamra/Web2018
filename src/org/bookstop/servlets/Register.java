@@ -34,7 +34,6 @@ public class Register extends HttpServlet {
 	 */
 	public Register() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
 	/**
@@ -71,6 +70,10 @@ public class Register extends HttpServlet {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		if (user == null) {
+			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+			return;
+		}
 
 		try {
 
@@ -83,26 +86,34 @@ public class Register extends HttpServlet {
 			DA da = new DA(conn);
 
 			User temp = null;
+			if (user.getUsername() == null) {
+				response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+				return;
+			}
+
 			temp = da.selectUserByUsername(user.getUsername());
 
 			if (temp != null) {
-				response.setStatus(HttpServletResponse.SC_BAD_REQUEST); // user exists with that username
+				response.setStatus(HttpServletResponse.SC_FORBIDDEN); // user exists with that username
+				return;
+			}
+
+			if (user.getNickname() == null || user.getNickname().isEmpty() || user.getNickname().length() > 20
+					|| user.getPassword() == null || user.getPassword().isEmpty() || user.getPassword().length() > 8
+					|| user.getEmail() == null
+					|| ((user.getEmail().isEmpty() == false) && (user.getEmail().contains("@") == false))) {
+				response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 				return;
 			}
 
 			da.insertUser(user);
 			da.closeConnection();
-			if (conn.isClosed() == false) {
-				logger.log(Level.WARNING, "doPost: connection not closed after DA method, closing manually");
-				conn.close();
-			}
 
 		} catch (SQLException | NamingException e) {
 			// log error
 			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 			logger.log(Level.SEVERE, "doPost: FAILED");
 			e.printStackTrace();
-			// TODO: handle errors
 		}
 		return; // By default the response will be 200 "OK"
 	}
