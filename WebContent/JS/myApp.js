@@ -37,7 +37,7 @@ angular.module('myApp',[])
 	/*LOGIN*/
 	$scope.loginFunc = function(){
 		var val = JSON.stringify({uName:$scope.uName , uPass:$scope.uPass});
-		$http.post("/Web2018/Login",val).
+		$http.post("/BooksForAll/Login",val).
 		success(function(data,status,headers,config){
 			$scope.loggedIn=true;
 			$scope.user = data.nickname;
@@ -119,7 +119,7 @@ angular.module('myApp',[])
 		}
 		if ($scope.regValidity)
 		{
-			$http.post("/Web2018/Register", val).success(
+			$http.post("/BooksForAll/Register", val).success(
 					function(data, status, headers, config) {
 						$scope.loggedIn = true;
 						loggedUser = $scope.regUname;
@@ -174,7 +174,7 @@ angular.module('myApp',[])
 	/*Return list of not owned ebooks*/
 	$scope.browse = function(){
 		var val = JSON.stringify({uName:loggedUser , uPass:loggedPass})
-		$http.post("/Web2018/GetAvailableBooks",val).success(
+		$http.post("/BooksForAll/GetAvailableBooks",val).success(
 				function(data, status, headers, config) {
 					/*PUT BOOKS IN PROPER DIV*/
 					$scope.isBrowsed = true;
@@ -200,7 +200,7 @@ angular.module('myApp',[])
 	$scope.readBook =function() {
 		var val = JSON.stringify({uName:loggedUser , uPass:loggedPass})
 		/* Change getAvailableBooks with GetMyBooks*/
-		$http.post("/Web2018/GetMyBooks",val).success(
+		$http.post("/BooksForAll/GetMyBooks",val).success(
 				function(data, status, headers, config) {
 					/*PUT BOOKS IN PROPER DIV*/
 					$scope.isReading = true;
@@ -228,7 +228,7 @@ angular.module('myApp',[])
 	$scope.browseUsers = function() {
 		var val = JSON.stringify({uName:loggedUser , uPass:loggedPass})
 		/* Change getAvailableBooks with GetMyBooks*/
-		$http.post("/Web2018/GetAllUsers",val).success(
+		$http.post("/BooksForAll/GetAllUsers",val).success(
 				function(data, status, headers, config) {
 					/*PUT BOOKS IN PROPER DIV*/
 					$scope.isBrowsingUsers = true;
@@ -258,7 +258,7 @@ angular.module('myApp',[])
 	/*Show Likes*/
 	$scope.displayLikes = function(bookID){
 		var val = JSON.stringify({bookid:bookID})
-		$http.post("/Web2018/GetLikersByBook",val).success(
+		$http.post("/BooksForAll/GetLikersByBook",val).success(
 				function(data, status, headers, config) {
 					/*Display Likes*/
 					$scope.browseLikers = data;
@@ -275,7 +275,7 @@ angular.module('myApp',[])
 	/* When user likes an owned book it is added to the likes of that book*/
 	$scope.updateLikers = function(book) {
 		var val = JSON.stringify({username:loggedUser, bookid:book.bookId})
-		$http.post("/Web2018/AddLike",val).success(
+		$http.post("/BooksForAll/AddLike",val).success(
 				function(data, status, headers, config) {
 					/*Display Likes*/
 					$scope.liked = true;
@@ -290,7 +290,7 @@ angular.module('myApp',[])
 	/* Unlike a book and update*/
 	$scope.removeLike = function(book) {
 		var val = JSON.stringify({username:loggedUser, bookid:book.bookId})
-		$http.post("/Web2018/RemoveLike",val).success(
+		$http.post("/BooksForAll/RemoveLike",val).success(
 				function(data, status, headers, config) {
 					/*Display Likes*/
 					$scope.liked = false;
@@ -371,7 +371,7 @@ angular.module('myApp',[])
 
 		
 		var val = JSON.stringify({bookid:book_being_read.bookId})
-		$http.post("/Web2018/GetLikersByBook",val).success(
+		$http.post("/BooksForAll/GetLikersByBook",val).success(
 				function(data, status, headers, config) {
 					/*Display Likes*/
 					angular.forEach(data, function(value, key) {
@@ -388,7 +388,7 @@ angular.module('myApp',[])
 	/* Triggered when admin presses the delete button on user profile */
 	$scope.deleteUser = function(user, flag) {
 		var val = JSON.stringify({username:user.username})
-		$http.post("/Web2018/RemoveUser",val).success(
+		$http.post("/BooksForAll/RemoveUser",val).success(
 				function(data, status, headers, config) {
 					if (flag == "1") {
 						$scope.browseUsers();
@@ -405,7 +405,7 @@ angular.module('myApp',[])
 	/* Returns the transactions of the specific book*/
 	$scope.recentTransactions = function(bookId) {
 		var val = JSON.stringify({bookid:bookId})
-		$http.post("/Web2018/GetTransactionsByBook",val).success(
+		$http.post("/BooksForAll/GetTransactionsByBook",val).success(
 				function(data, status, headers, config) {
 					$scope.dispTransactions = true;
 					$scope.transactions = data;
@@ -423,7 +423,7 @@ angular.module('myApp',[])
 	/* This function can only be triggered by admin and it displays the people who bought that book*/
 	$scope.dispLikesforAdmin = function(bookID){
 		var val = JSON.stringify({bookid:bookID})
-		$http.post("/Web2018/GetLikersByBook",val).success(
+		$http.post("/BooksForAll/GetLikersByBook",val).success(
 				function(data, status, headers, config) {
 					/*Display Likes*/
 					$scope.browseLikersForAdmin = data;
@@ -541,7 +541,7 @@ angular.module('myApp',[])
 		if ($scope.inputValidity)
 			{
 				console.log("After validity");
-				$http.post("/Web2018/BuyBook", val).success(
+				$http.post("/BooksForAll/BuyBook", val).success(
 						function(data, status, headers, config) {
 							$scope.optBuy = false;
 							$scope.showDetails = false;
@@ -578,7 +578,7 @@ angular.module('myApp',[])
 	/* When user writes a review and submits it, this function is triggered */
 	$scope.submitReview = function(currRBook){
 		var val = JSON.stringify({username:loggedUser, nickname:loggedNick, bookID:currRBook.bookId, text:$scope.regRev});
-		$http.post("/Web2018/AddReview",val).success(
+		$http.post("/BooksForAll/AddReview",val).success(
 				function(data, status, headers, config) {
 					$scope.showRDetails = true;
 					$scope.popUpAddReview = false;
@@ -628,7 +628,7 @@ angular.module('myApp',[])
 	$scope.saveSpot = function (currRBook) {
 		var pos = $(".ReadWrapper").scrollTop();
 		var val = JSON.stringify({username:loggedUser, bookid:currRBook.bookId, ypos:pos});
-		$http.post("/Web2018/SaveScrollPosition",val).success(
+		$http.post("/BooksForAll/SaveScrollPosition",val).success(
 				function(data, status, headers, config) {
 					$scope.showRDetails = true;
 					$scope.isReading = true;
@@ -642,7 +642,7 @@ angular.module('myApp',[])
 	/* Triggered when user decides to read from last place (loads where he left)*/
 	$scope.openBookForReadingFromLastPosi = function (currRBook) {
 		var val = JSON.stringify({username:loggedUser, bookid:currRBook.bookId, ypos:0});
-		$http.post("/Web2018/GetScrollPosition",val).success(
+		$http.post("/BooksForAll/GetScrollPosition",val).success(
 				function(data, status, headers, config) {
 					$(".ReadWrapper").scrollTop(data);
 				}).error(
@@ -657,7 +657,7 @@ angular.module('myApp',[])
 	/* Return list of unverified reviews for admin*/
 	$scope.unverifiedReviews = function(bookId) {
 		var val = JSON.stringify({bookid : bookId});
-		$http.post("/Web2018/GetUnapprovedReviewsForBook",val).success(
+		$http.post("/BooksForAll/GetUnapprovedReviewsForBook",val).success(
 				function(data, status, headers, config) {
 					$scope.showUnapprovedReviews = true;
 					$scope.unverifiedRevs = false;
@@ -678,7 +678,7 @@ angular.module('myApp',[])
 		} else {
 			var val = JSON.stringify({reviewid : $scope.unapprovedReviews[$scope.revIndex-1].id});
 			var bookID = $scope.unapprovedReviews[$scope.revIndex-1].bookID;
-			$http.post("/Web2018/VerifyReview",val).success(
+			$http.post("/BooksForAll/VerifyReview",val).success(
 					function(data, status, headers, config) {
 						$scope.revIndex = "";
 						$scope.unverifiedReviews(bookID);
